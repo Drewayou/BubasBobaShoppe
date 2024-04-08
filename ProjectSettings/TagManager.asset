@@ -50,15 +50,18 @@ TagManager:
   - name: Buildings
     uniqueID: 2978869189
     locked: 0
+  - name: BackgroundFoliage
+    uniqueID: 1154325021
+    locked: 0
   - name: Player
     uniqueID: 1689503121
-    locked: 0
-  - name: Foliage
-    uniqueID: 3297817929
     locked: 0
   - name: Enemy
     uniqueID: 3898049241
     locked: 0
   - name: Npc
     uniqueID: 3122377967
+    locked: 0
+  - name: ForegroundFoliage
+    uniqueID: 3297817929
     locked: 0

@@ -225,6 +225,7 @@ MonoBehaviour:
   attackSpeed: 0
   tempInvTime: 0
   deathEffect: {fileID: 5114082984778242958, guid: 43482a01e7623d5439b6829fc7dcf051, type: 3}
+  willDropLoot: 0
   gotHitEffect: {fileID: 5114082984778242958, guid: 5ebebda840d7075418632db750a63e3a, type: 3}
   thisSpriteRenderer: {fileID: 0}
   thisBody: {fileID: 0}

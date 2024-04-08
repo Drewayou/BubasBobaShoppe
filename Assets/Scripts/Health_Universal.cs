@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Health_Universal : MonoBehaviour, IDamageable
 {
-
     [Header("Health Points")]
     [SerializeField]
     [Tooltip("(Int) This is the health set for this object/entity and should be variable depending on what they are")]
@@ -31,6 +30,11 @@ public class Health_Universal : MonoBehaviour, IDamageable
     [SerializeField]
     [Tooltip("This is the death effect of this object /entity depending on what they are")]
     public GameObject deathEffect;
+
+    [Header("Can Drop Loot")]
+    [SerializeField]
+    [Tooltip("If hit by the player or environment, this will insure the monster will drop loot")]
+    public bool willDropLoot = false;
 
     [Header("Got Hit Effect")]
     [SerializeField]
@@ -110,6 +114,8 @@ public class Health_Universal : MonoBehaviour, IDamageable
         //NOTE: You NEED to implement this codeblock for sfx!
         locationUponDeath = new Vector2(transform.position.x, transform.position.y);
 
+        DropLoot(willDropLoot);
+
         Destroy(this.gameObject);
 
         Instantiate(deathEffect, locationUponDeath, Quaternion.identity);
@@ -124,6 +130,17 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
         }
 
+    }
+
+    public void DropLoot(bool canDropLoot){
+        if(canDropLoot){
+            Debug.LogWarning("The name of the object killed : " + gameObject.name);
+            switch(gameObject.name){
+                case "CassavaSlime(Clone)":
+                Debug.LogWarning("The : " + gameObject.name + " Was killed!");
+                break;
+            }
+        }
     }
 
     /*Check what THIS object collides with and what "team" they are on
@@ -197,6 +214,9 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 }
 
                 if(!isThisThePlayer){
+
+                    //Since this is not the player, trigger possible loot drop upon death.
+                    willDropLoot = true;
 
                     thisSpriteRenderer.material.color = chosenRedColor;
                     Debug.Log(gameObject.name + "getting damage!");

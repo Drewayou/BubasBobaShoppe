@@ -95,10 +95,11 @@ public class Enemy_AttackRange : MonoBehaviour
         
         case 1:
 
-        //THIS IS THE SLIME CUSTOM ATTACK
+        //THIS IS THE SLIME'S CUSTOM ATTACK
         //
+        //Slime winds up to attack player for a quick microsecond
         //
-        //Once attack buildup = 0, re-enable agent and attack
+
         if(thisEnemyController.nextAttackIn <= 0){
             inAnAttackAnim = true;
         }
@@ -116,6 +117,11 @@ public class Enemy_AttackRange : MonoBehaviour
             }
         }
             break;
+
+        //END OF SLIME CUSTOM ATTACK
+        //
+        //
+        //
         
         default:
 

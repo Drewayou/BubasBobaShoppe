@@ -20,7 +20,7 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Movement Variables")]
     [Tooltip("The speed at which the player will move.")]
-    public float moveSpeed = 2.0f;
+    public float moveSpeed = 0.5f;
 
     private Player_AnimChanger thisPlayerAnim;
 
