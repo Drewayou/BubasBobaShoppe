@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 7617976633305788983}
   - component: {fileID: 6984987947274411386}
   m_Layer: 8
-  m_Name: CassavaSlime
+  m_Name: PandanShooter
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,7 @@ Animator:
   m_GameObject: {fileID: 7757213010464900041}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9fb7e8a901dab2943853a57a1b5819ba, type: 2}
+  m_Controller: {fileID: 9100000, guid: c52199ff08b968c48a4978a2049ca8c2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -103,7 +103,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 476767869, guid: 1b0f898c67ab5dd44906b422570b4f7d, type: 3}
+  m_Sprite: {fileID: -1921081808, guid: b503110871b89094688ab955608400e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,8 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 957cfefaf12b2774a95e5be6fcb07c5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
-  attackPoints: 5
+  health: 5
+  attackPoints: 1
   attackSpeed: 0
   tempInvTime: 0
   deathEffect: {fileID: 5114082984778242958, guid: 43482a01e7623d5439b6829fc7dcf051, type: 3}
@@ -156,10 +156,10 @@ MonoBehaviour:
   AgroRadius: {fileID: 4447996180704831342}
   thisEnemyAgroRange: {fileID: 555124388805837192}
   whatEnemyValIsThis: 1
-  attackRadiusfloat: 0.3
+  attackRadiusfloat: 0.75
   moveSpeed: 100
   attackSpeed: 2
-  attackBuildUp: 0.5
+  attackBuildUp: 1
   nextAttackIn: 0
   agent: {fileID: 0}
   isFreshlySpawned: 1
@@ -196,8 +196,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.1
-  m_Speed: 20.5
-  m_Acceleration: 8
+  m_Speed: 2
+  m_Acceleration: 4
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -338,6 +338,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: AttackRadius&Attack
       objectReference: {fileID: 0}
+    - target: {fileID: 5635043550356719071, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
+      propertyPath: m_Radius
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
+      propertyPath: attackRadiusfloat
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
+      propertyPath: thisEnemyProjectiles
+      value: 
+      objectReference: {fileID: 1204066686827137885, guid: 81e821c60b9e5914184e37c1ad09a3a5, type: 3}
+    - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
+      propertyPath: rangedAttackProjectileSpeed
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -415,6 +431,10 @@ PrefabInstance:
       propertyPath: thisEnemyAttackRange
       value: 
       objectReference: {fileID: 6017022953670711960}
+    - target: {fileID: 6741974451774090629, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
+      propertyPath: m_Radius
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

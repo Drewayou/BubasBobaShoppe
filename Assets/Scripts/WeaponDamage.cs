@@ -37,11 +37,11 @@ public class WeaponDamage : MonoBehaviour
     /*Check what THIS object collides with and what "team" they are on
     Then, does respective actions*/
     void OnCollisionEnter2D(Collision2D collision){
-        Debug.Log("Collision Started!");
+        //Debug.Log("Collision Started!");
 
         if(collision.gameObject.CompareTag("Enemy")) {
 
-                        Debug.Log(gameObject.name + "PlayerLanded a Meele attack!");
+                        //Debug.Log(gameObject.name + "PlayerLanded a Meele attack!");
                         collision.gameObject.GetComponent<IDamageable>().damageThis(attackPoints);
                 }
 

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4713236662016777466}
   - component: {fileID: 8238410533530109592}
   - component: {fileID: 5892640376574941957}
+  - component: {fileID: 2472583123948847305}
   m_Layer: 8
   m_Name: CassavaSlimeHome
   m_TagString: Objectives
@@ -77,7 +78,8 @@ MonoBehaviour:
   monsterToSpawn: {fileID: 7757213010464900041, guid: 4762d14c55791184983d378294c30493, type: 3}
   enemySpawnRadiusCollider: {fileID: 4713236662016777466}
   levelNavMesh: {fileID: 0}
-  coolDownPerNewSpawn: 5
+  coolDownPerNewSpawn: 0.1
+  timeleftToSpawnNextEnemy: 0
 --- !u!50 &2046367966540801030
 Rigidbody2D:
   serializedVersion: 4
@@ -120,7 +122,7 @@ PolygonCollider2D:
     m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -258,6 +260,32 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &2472583123948847305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31271903593435364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 957cfefaf12b2774a95e5be6fcb07c5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  attackPoints: 0
+  attackSpeed: 0
+  tempInvTime: 0
+  deathEffect: {fileID: 0}
+  willDropLoot: 0
+  gotHitEffect: {fileID: 0}
+  thisSpriteRenderer: {fileID: 0}
+  thisBody: {fileID: 0}
+  thisHitbox: {fileID: 0}
+  isThisThePlayer: 0
+  isInvulnerable: 0
+  canAttackRanged: 0
+  amIDeadYet: 0
 --- !u!1001 &4110439223739077207
 PrefabInstance:
   m_ObjectHideFlags: 0

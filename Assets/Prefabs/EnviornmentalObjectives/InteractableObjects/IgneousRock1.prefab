@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5312920875432318891}
   m_Layer: 7
   m_Name: IgneousRock1
-  m_TagString: Objectives
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,7 +76,7 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 4096
@@ -203,6 +203,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2852618597066880938}
     m_Modifications:
+    - target: {fileID: 299595290385336105, guid: 4fa901bf054c6304f89850a3443846c5, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 299595290385336105, guid: 4fa901bf054c6304f89850a3443846c5, type: 3}
+      propertyPath: m_CallbackLayers.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 299595290385336105, guid: 4fa901bf054c6304f89850a3443846c5, type: 3}
+      propertyPath: m_ContactCaptureLayers.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 299595290385336105, guid: 4fa901bf054c6304f89850a3443846c5, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.size
       value: 5

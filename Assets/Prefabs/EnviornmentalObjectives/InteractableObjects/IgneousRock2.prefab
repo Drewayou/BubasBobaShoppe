@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3635811766484286874}
   m_Layer: 7
   m_Name: IgneousRock2
-  m_TagString: Objectives
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -64,7 +64,7 @@ public class Enemy_Controller : MonoBehaviour
     private Vector3 ObjectToFollowPosition;
 
     // Temp Vector to know where to go for Navmesh attack
-    private Vector3 PlayerLastSeenPosition;
+    private Vector3 playerLastSeenPosition;
 
     //The current position of this enemy
     private Vector2 enemyCurrentPosition;
@@ -123,7 +123,7 @@ public class Enemy_Controller : MonoBehaviour
 
     //Set the last SEEN position of this Enemy (Useful for when out of range/attacks)
     public Vector2 getPlayerLastSeenLocation(){
-        return PlayerLastSeenPosition = new Vector2(Target.transform.position.x, Target.transform.position.y);
+        return playerLastSeenPosition = new Vector2(Target.transform.position.x, Target.transform.position.y);
     }
 
     //BOC to find where the player is to follow
@@ -132,15 +132,15 @@ public class Enemy_Controller : MonoBehaviour
     }
 
     public void setLocationOfObjectToFollow(GameObject targetsLocation){
-        PlayerLastSeenPosition = new Vector2 (targetsLocation.transform.position.x, targetsLocation.transform.position.y);
+        playerLastSeenPosition = new Vector2 (targetsLocation.transform.position.x, targetsLocation.transform.position.y);
     }
 
     //BOC used to minorly adjust the player location on the X-axis so the 2d Navmesh bug doesn't stop it
     public void SetDestinationTweaked(Vector3 targetToBeTweaked)
     {   
 		if(Mathf.Abs(enemyCurrentPosition.x - targetToBeTweaked.x) < agentDrift)
-        PlayerLastSeenPosition = targetToBeTweaked + new Vector3(agentDrift, 0f, 0f);
-        agent.SetDestination(PlayerLastSeenPosition);
+        playerLastSeenPosition = targetToBeTweaked + new Vector3(agentDrift, 0f, 0f);
+        agent.SetDestination(playerLastSeenPosition);
     }
 
     //Public methods below for other scripts to pull values of this controller
@@ -192,5 +192,9 @@ public class Enemy_Controller : MonoBehaviour
 
     public float ReturnAttackTime(){
         return nextAttackIn;
+    }
+
+    public Vector3 GetPlayerLastSeenPosition(){
+        return playerLastSeenPosition;
     }
 }

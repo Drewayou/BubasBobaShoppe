@@ -84,7 +84,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
     /* To evaluate if the this object/entity is indeed dead. Useful in cases
     where the attack damage taken != death.
     */
-    private bool amIDeadYet;
+    public bool amIDeadYet;
 
     /* To limit the SPAM of CollisionStay(); This allows a once change instead
     of constant event updates that there's a stay collision.
@@ -94,7 +94,6 @@ public class Health_Universal : MonoBehaviour, IDamageable
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 1;
         thisHitbox = GetComponent<PolygonCollider2D>();
         thisSpriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -146,7 +145,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
     /*Check what THIS object collides with and what "team" they are on
     Then, does respective actions*/
     void OnCollisionEnter2D(Collision2D collision){
-        Debug.Log("Collision Started!");
+        //Debug.Log("Collision Started!");
 
         tempInvCountdown = tempInvTime;
 
@@ -154,7 +153,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
                 //Temp Attack block
                     if(!canAttackRanged){
-                        Debug.Log(gameObject.name + "Sending damage!");
+                        //Debug.Log(gameObject.name + "Sending damage!");
                         collision.gameObject.GetComponent<IDamageable>().damageThis(attackPoints);
                 }
 
@@ -167,13 +166,13 @@ public class Health_Universal : MonoBehaviour, IDamageable
     }
 
     void OnCollisionStay2D(Collision2D collision){
-        Debug.Log("Collision Continues!");
+        //Debug.Log("Collision Continues!");
 
         if(collision.gameObject.CompareTag("Player")) {
 
                 //Temp Attack block
                     if(!canAttackRanged){
-                        Debug.Log(gameObject.name + "Sending damage!");
+                        //Debug.Log(gameObject.name + "Sending damage!");
                         collision.gameObject.GetComponent<IDamageable>().damageThis(attackPoints);
                 }
 
@@ -181,7 +180,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
     }
 
     void OnCollisionExit2D(Collision2D collision){
-        Debug.Log("Collision is gone!");
+        //Debug.Log("Collision is gone!");
     }
 
     /*What "team" is this entity on? Using Damage interface,
@@ -195,7 +194,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
         if(!amITakingDamage){
 			if (tempInvCountdown < tempInvTime) {
 				tempInvCountdown += Time.deltaTime;
-                Debug.Log("The time passed each frame: " + Time.deltaTime.ToString());
+                //Debug.Log("The time passed each frame: " + Time.deltaTime.ToString());
                 
                 if(tempInvCountdown >= tempInvTime){
                     thisSpriteRenderer.material.color = Color.white;
@@ -206,7 +205,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 if (isThisThePlayer && !isInvulnerable){
                     
                     thisSpriteRenderer.material.color = chosenRedColor;
-                    Debug.Log(gameObject.name + "getting damage!");
+                    //Debug.Log(gameObject.name + "getting damage!");
                     Instantiate(gotHitEffect, gameObject.transform);
                     health -= damage;
                     stillAliveChecker();
@@ -219,7 +218,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
                     willDropLoot = true;
 
                     thisSpriteRenderer.material.color = chosenRedColor;
-                    Debug.Log(gameObject.name + "getting damage!");
+                    //Debug.Log(gameObject.name + "getting damage!");
                     Instantiate(gotHitEffect, gameObject.transform);
                     health -= damage;
                     stillAliveChecker();
@@ -237,13 +236,13 @@ public class Health_Universal : MonoBehaviour, IDamageable
         
             if(thisSpriteColor != Color.white){
                 amITakingDamage = true;
-                Debug.Log(colorChangeVelocity.ToString());
+                //Debug.Log(colorChangeVelocity.ToString());
                 colorChangeVelocity = Color.white - Color.red; 
                 thisSpriteRenderer.material.color += colorChangeVelocity * Time.deltaTime;
 
                 if(tempColorChangetime>=0){
                     tempColorChangetime -= Time.deltaTime;
-                    Debug.Log(tempColorChangetime);
+                    //Debug.Log(tempColorChangetime);
                 }else{
                     amITakingDamage = false;
                     tempColorChangetime = tempInvTime;

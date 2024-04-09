@@ -14,7 +14,9 @@ public class Spawner_Player_Sensor : MonoBehaviour
     private CircleCollider2D thisCollider;
     public float timerTillDeactivate, timerTillReactivate;
 
-    private bool isSpawnerActive = true, playerInSensor = false;
+    private bool isSpawnerActive = true; 
+    
+    public bool playerInSensor = false;
 
     // Start is called before the first frame update
     void Start()

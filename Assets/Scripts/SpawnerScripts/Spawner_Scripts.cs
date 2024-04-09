@@ -37,6 +37,8 @@ public class Spawner_Scripts : MonoBehaviour
 
     private Animator thisSpawnerAnimator;
 
+    private Spawner_Player_Sensor attatchedPlayerSensor;
+
 
 /// <summary>
 /// Use below settings to set via other game objects / Game manager object
@@ -58,11 +60,11 @@ public class Spawner_Scripts : MonoBehaviour
     [Tooltip("Used reset spawn timer each time a new enemy spawns")]
     public float coolDownPerNewSpawn;
 
-    private float timeleftToSpawnNextEnemy;
+    public float timeleftToSpawnNextEnemy;
 
     Vector2 spawnPointEnemeyHere;
 
-    private bool playerNearSpawner = false, canSpawnEnemyTimerDone = true, levelOverpopulated = false;
+    private bool playerNearSpawner = false, canSpawnEnemyTimerDone = true, levelOverpopulated = false, boostedSpawnRate = false;
 
     // Start is called before the first frame update
     void Start()
@@ -75,6 +77,8 @@ public class Spawner_Scripts : MonoBehaviour
         //Get this spawner animator
         thisSpawnerAnimator = GetComponent<Animator>();
         thisSpawnerAnimator.Play("SpawnerReactivate");
+
+        attatchedPlayerSensor = GetComponentInChildren<Spawner_Player_Sensor>();
     }
 
     // Update is called once per frame
@@ -92,6 +96,12 @@ public class Spawner_Scripts : MonoBehaviour
         if(!levelOverpopulated && !playerNearSpawner && canSpawnEnemyTimerDone){
             //Debug.LogWarning("Spawning Slime");
             trySpawn();
+        }
+
+        if(attatchedPlayerSensor.playerInSensor){
+        boostedSpawnRate = true;
+        }else{
+        boostedSpawnRate = false;
         }
 
     }
@@ -147,7 +157,12 @@ public class Spawner_Scripts : MonoBehaviour
     }
 
     public void resetSpawnTimer(){
-        timeleftToSpawnNextEnemy = coolDownPerNewSpawn;
+        if(boostedSpawnRate){
+            float tempNewCooldown = coolDownPerNewSpawn - 3;
+            timeleftToSpawnNextEnemy = tempNewCooldown;
+            }else{
+                timeleftToSpawnNextEnemy = coolDownPerNewSpawn;
+            }
     }
 
     /* FIXME:
@@ -180,7 +195,7 @@ public class Spawner_Scripts : MonoBehaviour
         //Reactivate spawner and play the animation
         thisSpawnerAnimator.Play("SpawnerReactivate");
         playerNearSpawner = false;
-        Debug.LogWarning("Player left the spawner! Monsters will be summoned!");
+        //Debug.LogWarning("Player left the spawner! Monsters will be summoned!");
     }
 
     public float getSpawnerSpawnRadius(){

@@ -72,7 +72,7 @@ public void movePlayer(){
     if(!amIAttackng()){
 
     playerCurrentPosition = new Vector2(myRigidbody.position.x, myRigidbody.position.y);
-    Vector2 velocity = movementDirection * moveSpeed * Time.deltaTime;
+    Vector2 velocity = movementDirection * moveSpeed * Time.fixedDeltaTime;
 
     myRigidbody.MovePosition(playerCurrentPosition + velocity);
     }
@@ -111,8 +111,6 @@ public void processPlayerMovement(InputAction.CallbackContext context){
 // Pulls input of left click OR "A" (xbox/gamepad button) to be processed by methods above.
 public void processAttack(InputAction.CallbackContext context){
     attackButtonPressed = context.ReadValueAsButton();
-    Debug.Log("attackButtonPressed was pressed!");
-    Debug.Log("Bool setting :" + attackButtonPressed);
     }
 
 }

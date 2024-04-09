@@ -35,6 +35,10 @@ public class Enemy_Anim_Changer : MonoBehaviour
     [Tooltip("The speed at which this enemy will move.")]
     public float moveSpeed = 2.0f;
 
+    [Header("NameOfEnemy")]
+    [Tooltip("This is used to actuvate switch statements and co-responding animations")]
+    public string whatEnemyIsThis = null;
+
     //Added a navmesh agent thanks to some smart people that found out how to use it in 2D games
     [SerializeField]
     [Tooltip("The Enemy Navmesh Agent for this object")]
@@ -44,6 +48,8 @@ public class Enemy_Anim_Changer : MonoBehaviour
     void Start()
     {
         thisAttackController = GetComponentInChildren<Enemy_AttackRange>();
+
+        whatEnemyIsThis = gameObject.name;
         
         Instantiate (spawnInLevelEffect, transform.position, transform.rotation, transform);
     }
@@ -73,24 +79,74 @@ public class Enemy_Anim_Changer : MonoBehaviour
                 }
 
             }
-            if(currentAnimationThisObject != "CassavaSlimeAttack"){
-                animatorThisObject.Play("CassavaSlimeAttack");
-                currentAnimationThisObject = "CassavaSlimeAttack";
-                thisEnemyController.isCurrentlyAttacking = true;
-        }
+            
+            //Switch for attack animations
+            if(thisAttackController.CheckIfInAttackingAnimation()){
+
+            switch(whatEnemyIsThis){
+
+                case "CassavaSlime(Clone)":
+
+                    if(currentAnimationThisObject != "CassavaSlimeAttack"){
+                        animatorThisObject.Play("CassavaSlimeAttack");
+                        currentAnimationThisObject = "CassavaSlimeAttack";
+                        thisEnemyController.isCurrentlyAttacking = true;
+                    }
+
+                break;
+
+                case "PandanShooter(Clone)":
+
+                    if(currentAnimationThisObject != "PandanShooterShoots"){
+                        animatorThisObject.Play("PandanShooterShoots");
+                        currentAnimationThisObject = "PandanShooterShoots";
+                        thisEnemyController.isCurrentlyAttacking = true;
+                    }
+
+                break;
+            }
+            }
+
         }else{ 
 
-            if(isThisMoving && currentAnimationThisObject != "CassavaSlimeAboutToMove"){
-                animatorThisObject.Play("CassavaSlimeAboutToMove");
-                currentAnimationThisObject = "CassavaSlimeAboutToMove";
+            //Switch for movement animations
+
+            switch(whatEnemyIsThis){
+
+                case "CassavaSlime(Clone)":
+
+                    if(isThisMoving && currentAnimationThisObject != "CassavaSlimeAboutToMove"){
+                        animatorThisObject.Play("CassavaSlimeAboutToMove");
+                        currentAnimationThisObject = "CassavaSlimeAboutToMove";
+                    
+                    }else{ 
+
+                    if(isThisMoving != true && currentAnimationThisObject != "CassavaSlimeJiggleEat"){
+                        animatorThisObject.Play("CassavaSlimeJiggleEat");
+                        currentAnimationThisObject = "CassavaSlimeJiggleEat";
+                        }
+                    }
+            
+                break;
+
+                case "PandanShooter(Clone)":
+
+                    if(isThisMoving && currentAnimationThisObject != "PandanShooterAboutToMove"){
+                        animatorThisObject.Play("PandanShooterAboutToMove");
+                        currentAnimationThisObject = "PandanShooterAboutToMove";
+                    
+                    }else{ 
+
+                    if(isThisMoving != true && currentAnimationThisObject != "PandanShooterIdle"){
+                        animatorThisObject.Play("PandanShooterIdle");
+                        currentAnimationThisObject = "PandanShooterIdle";
+                        }
+                    }
+
+                break;
             }
 
-            else{ 
-                if(isThisMoving != true && currentAnimationThisObject != "CassavaSlimeJiggleEat"){
-                animatorThisObject.Play("CassavaSlimeJiggleEat");
-                currentAnimationThisObject = "CassavaSlimeJiggleEat";
-                }
-            }
+            
         }
     }
 }

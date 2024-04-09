@@ -58,10 +58,10 @@ PolygonCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 768
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 768
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -96,5 +96,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisObject: {fileID: 5711875838787403015}
-  thisTransparancy: {fileID: 2100000, guid: 824b0f98631a56445874f1bce0c109f3, type: 2}
-  normalTransparancy: {fileID: 2100000, guid: 824b0f98631a56445874f1bce0c109f3, type: 2}
+  materialOfThisObject: {fileID: 0}

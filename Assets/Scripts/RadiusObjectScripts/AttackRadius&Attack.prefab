@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5635043550356719071}
   - component: {fileID: 8987586540378038490}
   m_Layer: 0
-  m_Name: AttackRadius
+  m_Name: AttackRadius&Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e901b433a3fb7cf42b64eb8d5387b93a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thisEnemyProjectiles: {fileID: 0}
   attackRadiusfloat: 0.3
   tempAttackBuildupSaved: 0
   isAttacking: 0
   inAnAttackAnim: 0
+  whichEnemyAttackIsThis: 
