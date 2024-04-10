@@ -73,7 +73,7 @@ public class Enemy_AttackRange : MonoBehaviour
     public void OnTriggerEnter2D(UnityEngine.Collider2D collision){
         
         if(collision.CompareTag("Player")){
-        thisEnemyController.agent.isStopped = true;
+        thisEnemyController.thisAgent.isStopped = true;
         
         isAttacking = true;
         thisEnemyController.isCurrentlyAttacking = isAttacking;
@@ -88,7 +88,7 @@ public class Enemy_AttackRange : MonoBehaviour
 
         if(collision.CompareTag("Player")){
             if(thisEnemyMainObject != null){
-            thisEnemyController.agent.isStopped = false;
+            thisEnemyController.thisAgent.isStopped = false;
 
             isAttacking = false;
             thisEnemyController.isCurrentlyAttacking = isAttacking;
@@ -108,7 +108,7 @@ public class Enemy_AttackRange : MonoBehaviour
     public IEnumerator WaitSeconds(float num)
     {
         yield return new WaitForSecondsRealtime(num);
-        thisEnemyController.agent.isStopped = false;
+        thisEnemyController.thisAgent.isStopped = false;
     }
 
     public void DoCustomAttack(string enemySelected){
@@ -132,7 +132,7 @@ public class Enemy_AttackRange : MonoBehaviour
             inAnAttackAnim = false;
             thisEnemyController.attackBuildUp = tempAttackBuildupSaved;
 
-            thisEnemyController.agent.isStopped = false;
+            thisEnemyController.thisAgent.isStopped = false;
 
             isAttacking = false;
             thisEnemyController.isCurrentlyAttacking = isAttacking;
@@ -167,7 +167,7 @@ public class Enemy_AttackRange : MonoBehaviour
 
             Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
 
-            /*
+            /*FIXME: Try to make the pandan shooters run after attacking
             Vector3 directionAwayFromPlayer = (this.transform.position - thisEnemyController.GetPlayerLastSeenPosition()).normalized * -3;
             thisEnemyController.agent.SetDestination(directionAwayFromPlayer);
             StartCoroutine(WaitSeconds(3));
@@ -176,7 +176,7 @@ public class Enemy_AttackRange : MonoBehaviour
             inAnAttackAnim = false;
             thisEnemyController.attackBuildUp = tempAttackBuildupSaved;
 
-            thisEnemyController.agent.isStopped = false;
+            thisEnemyController.thisAgent.isStopped = false;
 
             isAttacking = false;
             thisEnemyController.isCurrentlyAttacking = isAttacking;

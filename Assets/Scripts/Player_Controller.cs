@@ -22,6 +22,12 @@ public class Player_Controller : MonoBehaviour
     [Tooltip("The speed at which the player will move.")]
     public float moveSpeed = 0.5f;
 
+    [Header("Stamina Variables")]
+    [Tooltip("The stamina at which the player cost to do actions.")]
+    public float playerMaxStamina = 10f, meeleAttackCost = 2f, penaltyTimeStaminaOut = 5f, penaltyTimer;
+
+    public float currentPlayerStamina , playerIdleStaminaRecoverBoost;
+
     private Player_AnimChanger thisPlayerAnim;
 
     //More variables for this script
@@ -32,18 +38,30 @@ public class Player_Controller : MonoBehaviour
     private Vector2 playerCurrentPosition;
 
     //Bool if attack button is pressed down
-    public bool attackButtonPressed;
+    public bool attackButtonPressed = true;
+
+    //Bool if standard meele attack or throwing bamboo are used
+    public bool wasMeeleAttack = true;
+
+    public bool inPenalty = false;
+
+    public bool isPlayerMoving = false;
 
 void Start(){
     myRigidbody = GetComponent<Rigidbody2D>();
     myHitbox = GetComponent<PolygonCollider2D>();
     thisPlayerAnim = GetComponent<Player_AnimChanger>();
+    currentPlayerStamina = playerMaxStamina;
+
+    playerIdleStaminaRecoverBoost = 2f;
 }
 
 void Update(){
    movePlayer();
    giveInpuValuesY();
    giveInpuValuesX();
+    attackCooldown();
+    processPenaltyTime();
 }
 
 //Gets player current location
@@ -69,6 +87,12 @@ public PolygonCollider2D giveCollider(){
 //Actual BOC to move the player in the game using vectors pulled from method "processPlayerMovement()" below
 public void movePlayer(){
 
+    if(movementDirection.x != 0 && movementDirection.y != 0){
+        isPlayerMoving = true;
+    }else{
+        isPlayerMoving = false;
+    }
+
     if(!amIAttackng()){
 
     playerCurrentPosition = new Vector2(myRigidbody.position.x, myRigidbody.position.y);
@@ -89,8 +113,39 @@ private bool amIAttackng()
 
 public bool attackButtonWasPressed()
     {
+        if(currentPlayerStamina>=0){
         return attackButtonPressed;
+        }
+        else{
+        return false;
+        }
     }
+
+public void attackCooldown(){
+    
+    //FIXME: 
+    /*
+    if(amISprinting){
+        currentPlayerStamina -= Time.fixedDeltaTime;
+    }
+    */
+
+    //Recover More Stamina if the player is not moving, otherwise, recover normally.
+    if(currentPlayerStamina<=playerMaxStamina && !inPenalty){
+        if(!isPlayerMoving){
+            currentPlayerStamina += playerIdleStaminaRecoverBoost * Time.deltaTime;
+        }else{
+            currentPlayerStamina += Time.deltaTime;
+        }
+    }
+
+    //FIXME: Basically, if the player spends more cooldown than they should for an attack
+    //Sprint, then they have a penalty of a 5 second wait. ADD a different UI Animation for the
+    //Image of the StaminaBar too!?
+    if(currentPlayerStamina<0){
+        inPenalty = true;
+    }
+}
 
 /// <summary>
 /// 
@@ -112,5 +167,34 @@ public void processPlayerMovement(InputAction.CallbackContext context){
 public void processAttack(InputAction.CallbackContext context){
     attackButtonPressed = context.ReadValueAsButton();
     }
+    
+public void processPenaltyTime(){
+    if(inPenalty){
+        if(!isPlayerMoving){
+        penaltyTimer += playerIdleStaminaRecoverBoost * Time.deltaTime;
+        }else{
+            penaltyTimer += Time.deltaTime;
+        }
+        if(penaltyTimer>=penaltyTimeStaminaOut){
+            inPenalty =  false;
+            penaltyTimer = 0f;
+            currentPlayerStamina = 0.1f;
+        }
+    }
+}
+
+public float returnCurrentStamina(){
+    return currentPlayerStamina;
+}
+
+public float returnCurrentPenaltyTimer(){
+    return penaltyTimer;
+}
+
+public bool returnIfPlayerIsMoving(){
+    return isPlayerMoving;
+}
 
 }
+
+

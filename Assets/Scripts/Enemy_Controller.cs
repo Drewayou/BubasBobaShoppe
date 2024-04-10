@@ -21,6 +21,8 @@ public class Enemy_Controller : MonoBehaviour
     [SerializeField]
     public Enemy_AgroRadius thisEnemyAgroRange;
 
+    private Health_Universal thisEnemyHealthManager;
+
     [Tooltip ("Get enemy Val of this Enemy")]
     [SerializeField]
     public int whatEnemyValIsThis;
@@ -51,7 +53,7 @@ public class Enemy_Controller : MonoBehaviour
     //Added a navmesh agent thanks to some smart people that found out how to use it in 2D games
     [SerializeField]
     [Tooltip("The Enemy Navmesh Agent for this object")]
-    public NavMeshAgent agent;
+    public NavMeshAgent thisAgent;
 
     //More variables for this script
 
@@ -95,18 +97,19 @@ public class Enemy_Controller : MonoBehaviour
     private void setUpEnemySettings(){
 
         //Set up agent settings
-        agent = GetComponent<NavMeshAgent>();
-		agent.updateRotation = false;
-		agent.updateUpAxis = false;
-        agent.speed = moveSpeed;
+        thisAgent = GetComponent<NavMeshAgent>();
+		thisAgent.updateRotation = false;
+		thisAgent.updateUpAxis = false;
+        thisAgent.speed = moveSpeed;
         SetDestinationTweaked(getPlayerLastSeenLocation());
-        agent.isStopped = true;
+        thisAgent.isStopped = true;
 
         //Set up agro radius
         AgroRadius = GetComponent<GameObject>();
         //thisEnemyAgroRange = AgroRadius.GetComponentInChildren<Enemy_AgroRadius>();
 
-        //Set up attack collision
+        //Set up health
+        thisEnemyHealthManager = GetComponent<Health_Universal>();
         
     }
 
@@ -138,9 +141,16 @@ public class Enemy_Controller : MonoBehaviour
     //BOC used to minorly adjust the player location on the X-axis so the 2d Navmesh bug doesn't stop it
     public void SetDestinationTweaked(Vector3 targetToBeTweaked)
     {   
+        //if(!thisEnemyHealthManager.amIDeadYet){
 		if(Mathf.Abs(enemyCurrentPosition.x - targetToBeTweaked.x) < agentDrift)
         playerLastSeenPosition = targetToBeTweaked + new Vector3(agentDrift, 0f, 0f);
-        agent.SetDestination(playerLastSeenPosition);
+        
+
+        if(thisAgent.enabled){
+            
+        thisAgent.SetDestination(playerLastSeenPosition);
+        }
+        
     }
 
     //Public methods below for other scripts to pull values of this controller
@@ -148,7 +158,7 @@ public class Enemy_Controller : MonoBehaviour
     //Check direction this enemy is moving
     public void directionOfMovement(){
         
-        if(agent.velocity.x > 0){
+        if(thisAgent.velocity.x > 0){
             if(transform.localScale.x == -1){
                     Vector3 FlipVector = new Vector3(1, 1, 1);
                     transform.localScale = FlipVector;
@@ -158,7 +168,7 @@ public class Enemy_Controller : MonoBehaviour
 
         }else{
 
-        if(agent.velocity.x < 0){
+        if(thisAgent.velocity.x < 0){
             if(transform.localScale.x == 1){
                     Vector3 FlipVector = new Vector3(-1, 1, 1);
                     transform.localScale = FlipVector;
@@ -177,7 +187,7 @@ public class Enemy_Controller : MonoBehaviour
     //Public method to Check if this enemy is moving, used by Enemy_Anim_Changer script;
     public bool AmIMoving(){
         Vector3 notMoving = new Vector3(0,0,0);
-        if(agent.velocity!=notMoving){
+        if(thisAgent.velocity!=notMoving){
             //Debug.Log("Velocity vector is moving!");
             return true;
         }else{

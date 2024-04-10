@@ -77,7 +77,7 @@ MonoBehaviour:
   monsterToSpawn: {fileID: 7757213010464900041, guid: 4762d14c55791184983d378294c30493, type: 3}
   enemySpawnRadiusCollider: {fileID: 4713236662016777466}
   levelNavMesh: {fileID: 0}
-  coolDownPerNewSpawn: 0.1
+  coolDownPerNewSpawn: 5
   timeleftToSpawnNextEnemy: 0
 --- !u!50 &2046367966540801030
 Rigidbody2D:

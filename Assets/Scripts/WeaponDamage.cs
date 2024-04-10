@@ -40,9 +40,10 @@ public class WeaponDamage : MonoBehaviour
         //Debug.Log("Collision Started!");
 
         if(collision.gameObject.CompareTag("Enemy")) {
-
+                        
                         //Debug.Log(gameObject.name + "PlayerLanded a Meele attack!");
                         collision.gameObject.GetComponent<IDamageable>().damageThis(attackPoints);
+                        
                 }
 
         }

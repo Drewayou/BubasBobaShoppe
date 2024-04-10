@@ -16,6 +16,11 @@ public class Enemy_AgroRadius : MonoBehaviour
     //Aggro Radius itself
     CircleCollider2D aggroRadius;
 
+    [SerializeField]
+    [Tooltip("Place in the Health_Universal prefab for this enemy FROM the parent")]
+    [Header("Healthy?")]
+    Health_Universal thisEnemyHealthManager;
+
     //Bool to use for other script to check if there's agro collision
     public bool isIndeedAgro = false;
     public bool playerIsInAgroRange = false;
@@ -33,6 +38,7 @@ public class Enemy_AgroRadius : MonoBehaviour
         aggroRadius.radius = agroRadiusfloat;
 
         thisEnemyController = GetComponentInParent<Enemy_Controller>();
+        //thisEnemyHealthManager = GetComponentInParent<Health_Universal>();
         //thisEnemyAttackRange = GetComponent<Enemy_AttackRange>();
     }
 
@@ -40,7 +46,7 @@ public class Enemy_AgroRadius : MonoBehaviour
     void Update()
     {
         if(isIndeedAgro && !thisEnemyAttackRange.isAttacking){
-            thisEnemyController.agent.isStopped = false;
+            thisEnemyController.thisAgent.isStopped = false;
             GameObject targetNewLocation = thisEnemyController.Target;
             thisEnemyController.setLocationOfObjectToFollow(targetNewLocation);
             thisEnemyController.SetDestinationTweaked(thisEnemyController.getPlayerLastSeenLocation());
@@ -66,12 +72,14 @@ public class Enemy_AgroRadius : MonoBehaviour
     {
         //Debug.Log("PlayerInAgroRangeOfSlime!");
 
+        if(thisEnemyController.thisAgent!=null){
         if(collision.CompareTag("Player")){
         thisEnemyController.isFreshlySpawned = false;
         playerIsInAgroRange = true;
         isIndeedAgro = true;
-        thisEnemyController.agent.isStopped = false;
+        thisEnemyController.thisAgent.isStopped = false;
         thisEnemyController.SetDestinationTweaked(thisEnemyController.getPlayerLastSeenLocation());
+        }
         }
 
     }
@@ -79,13 +87,18 @@ public class Enemy_AgroRadius : MonoBehaviour
     private void OnTriggerExit2D(UnityEngine.Collider2D collision)
     {
         //Debug.Log("PlayerLeftAgroRangeOfSlime!");
-
-        if(collision.CompareTag("Player")){
-        isIndeedAgro = false;
-        //FIXME:
-        //playerIsInAgroRange = false;
-        //thisEnemyController.SetDestinationTweaked(thisEnemyController.getPlayerLastSeenLocation());
+        
+        if(thisEnemyController.thisAgent!=null){
+            if(collision.CompareTag("Player")){
+            isIndeedAgro = false;
+        
+               
+                playerIsInAgroRange = false;
+                thisEnemyController.SetDestinationTweaked(thisEnemyController.getPlayerLastSeenLocation());
+                
+            }
         }
+        
 
     }
 

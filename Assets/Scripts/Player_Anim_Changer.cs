@@ -28,7 +28,7 @@ public class Player_AnimChanger : MonoBehaviour
     [Tooltip("The speed at which the player will move.")]
     public float idleDelayAnimTime;
 
-    bool playerWantsToMove = true, playerIsAttackingAnim = false;
+    public bool playerWantsToMove = true, playerIsAttackingAnim = false, didAttackCostStamina = false;
     bool playerLookingN = false, 
     playerLookingS = true, playerLookingE = false, playerLookingW = false,
     playerLookingNW = false, playerLookingNE = false, playerLookingSW = false,
@@ -78,9 +78,9 @@ public class Player_AnimChanger : MonoBehaviour
         if(playerWantsToMove){
 
             //Walking facing NORTH player animation
-            if (playerLookingN && currentAnimationThisObject != "BubbaNorthWalk"){
-                    currentAnimationThisObject = "BubbaNorthWalk";
-                    animatorThisObject.Play("BubbaNorthWalk",0,0);
+            if (playerLookingN && currentAnimationThisObject != "BubbaDiagWalkNorthEast"){
+                    currentAnimationThisObject = "BubbaDiagWalkNorthEast";
+                    animatorThisObject.Play("BubbaDiagWalkNorthEast",0,0);
 
                     //FlipVectorCharacter
                     if(transform.localScale.x == -1){
@@ -90,9 +90,9 @@ public class Player_AnimChanger : MonoBehaviour
             }
 
             //Walking facing SOUTH player animation
-            if (playerLookingS && currentAnimationThisObject != "BubbaFrontWalk"){
-                    currentAnimationThisObject = "BubbaFrontWalk";
-                    animatorThisObject.Play("BubbaFrontWalk",0,0);
+            if (playerLookingS && currentAnimationThisObject != "BubbaDiagWalkSouthEast"){
+                    currentAnimationThisObject = "BubbaDiagWalkSouthEast";
+                    animatorThisObject.Play("BubbaDiagWalkSouthEast",0,0);
 
                     //FlipVectorCharacter
                     if(transform.localScale.x == -1){
@@ -102,9 +102,9 @@ public class Player_AnimChanger : MonoBehaviour
             }
 
             //Walking facing EAST player animation
-            if (playerLookingE && currentAnimationThisObject != "BubbaWalkingRight" && currentAnimationThisObject != "BubbaDiagWalkSouthEast" && currentAnimationThisObject != "BubbaDiagWalkNorthEast"){
-                    currentAnimationThisObject = "BubbaWalkingRight";
-                    animatorThisObject.Play("BubbaWalkingRight",0,0);
+            if (playerLookingE && currentAnimationThisObject != "BubbaDiagWalkSouthEast" && currentAnimationThisObject != "BubbaDiagWalkSouthEast" && currentAnimationThisObject != "BubbaDiagWalkNorthEast"){
+                    currentAnimationThisObject = "BubbaDiagWalkSouthEast";
+                    animatorThisObject.Play("BubbaDiagWalkSouthEast",0,0);
 
                     //FlipVectorCharacter
                     if(transform.localScale.x == -1){
@@ -114,9 +114,9 @@ public class Player_AnimChanger : MonoBehaviour
             }
 
             //Walking facing WEST player animation
-            if (playerLookingW && currentAnimationThisObject != "BubbaWalkingLeft" && currentAnimationThisObject != "BubbaDiagWalkSouthWest" && currentAnimationThisObject != "BubbaDiagWalkNorthWest"){
-                    currentAnimationThisObject = "BubbaWalkingLeft";
-                    animatorThisObject.Play("BubbaWalkingLeft",0,0);
+            if (playerLookingW && currentAnimationThisObject != "BubbaDiagWalkSouthWest" && currentAnimationThisObject != "BubbaDiagWalkSouthWest" && currentAnimationThisObject != "BubbaDiagWalkNorthWest"){
+                    currentAnimationThisObject = "BubbaDiagWalkSouthWest";
+                    animatorThisObject.Play("BubbaDiagWalkSouthWest",0,0);
 
                     //FlipVectorCharacterWEST
                     if(transform.localScale.x == 1){
@@ -239,6 +239,8 @@ public class Player_AnimChanger : MonoBehaviour
         //Meele Attack Animation
         if(controllerThisObject.attackButtonWasPressed()){
 
+            attackStaminaCostApplied(controllerThisObject.wasMeeleAttack);
+
             //ATTACK facing NORTHEAST player animation
             if (playerLookingN || playerLookingNE && currentAnimationThisObject != "BubbaNorthEastAttack"){
                 currentAnimationThisObject = "BubbaNorthEastAttack";
@@ -276,7 +278,6 @@ public class Player_AnimChanger : MonoBehaviour
                 controllerThisObject.transform.position.y+0.05f, 
                 controllerThisObject.transform.position.z);
                 
-
                 Player_Weapon_Attacks = Instantiate (Player_Weapon,offsetAttackPosition,controllerThisObject.transform.rotation);
                 
                 Vector3 FlipVector = new Vector3(-1, 1, 1);
@@ -296,7 +297,7 @@ public class Player_AnimChanger : MonoBehaviour
             if (playerLookingS || playerLookingE || playerLookingSE && currentAnimationThisObject != "BubbaSouthEastAttack"){
                 currentAnimationThisObject = "BubbaSouthEastAttack";
                 animatorThisObject.Play("BubbaSouthEastAttack",0,0);
-                Debug.Log("AttackingEast");
+                
 
                 if(!playerIsAttackingAnim){
 
@@ -346,7 +347,9 @@ public class Player_AnimChanger : MonoBehaviour
                     transform.localScale = FlipVector;
                     }
                 }
-            }
+
+            //Refund the bool to former state if the attack button was released
+            }else{didAttackCostStamina=false;}
         }
     }
 
@@ -481,5 +484,12 @@ public class Player_AnimChanger : MonoBehaviour
         }else{
             return false;
         };
+    }
+
+    public void attackStaminaCostApplied(bool meeleAttack){
+        if(meeleAttack && !didAttackCostStamina){
+        controllerThisObject.currentPlayerStamina -= controllerThisObject.meeleAttackCost;
+        didAttackCostStamina = true;
+        }
     }
 }

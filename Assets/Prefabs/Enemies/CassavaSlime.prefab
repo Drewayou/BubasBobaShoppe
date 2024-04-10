@@ -157,11 +157,11 @@ MonoBehaviour:
   thisEnemyAgroRange: {fileID: 555124388805837192}
   whatEnemyValIsThis: 1
   attackRadiusfloat: 0.3
-  moveSpeed: 100
+  moveSpeed: 0.5
   attackSpeed: 2
   attackBuildUp: 0.5
   nextAttackIn: 0
-  agent: {fileID: 0}
+  thisAgent: {fileID: 0}
   isFreshlySpawned: 1
   isCurrentlyAttacking: 0
   amIMoving: 0
@@ -415,6 +415,10 @@ PrefabInstance:
       propertyPath: thisEnemyAttackRange
       value: 
       objectReference: {fileID: 6017022953670711960}
+    - target: {fileID: 3657074466630097644, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
+      propertyPath: thisEnemyHealthManager
+      value: 
+      objectReference: {fileID: 1219988296258408942}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -157,7 +157,7 @@ MonoBehaviour:
   thisEnemyAgroRange: {fileID: 555124388805837192}
   whatEnemyValIsThis: 1
   attackRadiusfloat: 0.75
-  moveSpeed: 100
+  moveSpeed: 0.5
   attackSpeed: 2
   attackBuildUp: 1
   nextAttackIn: 0

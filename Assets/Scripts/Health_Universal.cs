@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Health_Universal : MonoBehaviour, IDamageable
 {
@@ -8,6 +9,8 @@ public class Health_Universal : MonoBehaviour, IDamageable
     [SerializeField]
     [Tooltip("(Int) This is the health set for this object/entity and should be variable depending on what they are")]
     public int health;
+
+    private int maxHealth;
 
     [Header("Attack Points")]
     [SerializeField]
@@ -81,6 +84,8 @@ public class Health_Universal : MonoBehaviour, IDamageable
     // Hidden location where this object dies to spawn the death effect
     private Vector2 locationUponDeath;
 
+    private NavMeshAgent thisAgent;
+
     /* To evaluate if the this object/entity is indeed dead. Useful in cases
     where the attack damage taken != death.
     */
@@ -94,11 +99,14 @@ public class Health_Universal : MonoBehaviour, IDamageable
     // Start is called before the first frame update
     void Start()
     {
+        maxHealth = health;
         thisHitbox = GetComponent<PolygonCollider2D>();
         thisSpriteRenderer = GetComponent<SpriteRenderer>();
 
         colorChangeVelocity = Color.white - thisSpriteRenderer.material.color; 
         tempColorChangetime = tempInvTime;
+
+        thisAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -110,20 +118,29 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
     void commitDeath(){
             
+        if(!isThisThePlayer){
+        thisAgent.enabled = false;
+        }
+        
         //NOTE: You NEED to implement this codeblock for sfx!
         locationUponDeath = new Vector2(transform.position.x, transform.position.y);
 
         DropLoot(willDropLoot);
 
-        Destroy(this.gameObject);
-
         Instantiate(deathEffect, locationUponDeath, Quaternion.identity);
+
+        DestroyNDetachChildren();
+
+        Destroy(this.gameObject);
+        
+
+        
     }
 
     void stillAliveChecker(){
 
         if(health <= 0){
-
+            
             amIDeadYet = true;
             commitDeath();
 
@@ -133,13 +150,17 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
     public void DropLoot(bool canDropLoot){
         if(canDropLoot){
-            Debug.LogWarning("The name of the object killed : " + gameObject.name);
+            
             switch(gameObject.name){
                 case "CassavaSlime(Clone)":
-                Debug.LogWarning("The : " + gameObject.name + " Was killed!");
+                
                 break;
             }
         }
+    }
+
+    public int RetrieveMaxHealth(){
+        return maxHealth;
     }
 
     /*Check what THIS object collides with and what "team" they are on
@@ -250,5 +271,24 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 }
             }
 
+    }
+
+    //Detatches Children Prefabs to avoid update errors that the children still exist 
+    //Despite parent being destroyed.
+    private void DestroyNDetachChildren()
+    {
+        if (Application.isPlaying)
+        {
+            int childCount = transform.childCount;
+            for (int i = childCount - 1; i >= 0; i--)
+            {
+                GameObject childObject = transform.GetChild(i).gameObject;
+                if (childObject != null)
+                {
+                    Destroy(childObject);
+                }
+            }
+        }
+        transform.DetachChildren();
     }
 }

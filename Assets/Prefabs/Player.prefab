@@ -57,6 +57,7 @@ MonoBehaviour:
   attackSpeed: 0
   tempInvTime: 1.5
   deathEffect: {fileID: 0}
+  willDropLoot: 0
   gotHitEffect: {fileID: 5114082984778242958, guid: 994810e5fa00e074192a6e08a7328285, type: 3}
   thisSpriteRenderer: {fileID: 8735452324648684018}
   thisBody: {fileID: 0}
@@ -64,6 +65,7 @@ MonoBehaviour:
   isThisThePlayer: 1
   isInvulnerable: 0
   canAttackRanged: 0
+  amIDeadYet: 0
 --- !u!114 &7022653823411009734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +250,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1689503121
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: -1613797479, guid: 635b95cf028c4834fa82a4e22632f7e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
