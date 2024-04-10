@@ -82,7 +82,16 @@ MonoBehaviour:
   myRigidbody: {fileID: 1367891785326466373}
   myHitbox: {fileID: 0}
   moveSpeed: 8
+  playerMaxStamina: 10
+  meeleAttackCost: 2
+  penaltyTimeStaminaOut: 5
+  penaltyTimer: 0
+  currentPlayerStamina: 0
+  playerIdleStaminaRecoverBoost: 0
   attackButtonPressed: 0
+  wasMeeleAttack: 1
+  inPenalty: 0
+  isPlayerMoving: 0
 --- !u!114 &3429090588397925845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,6 +106,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player_Weapon: {fileID: 739485951922522515, guid: 1e7e756ae1d848341a2598f39e64b9ae, type: 3}
   idleDelayAnimTime: 0
+  playerWantsToMove: 1
+  playerIsAttackingAnim: 0
+  didAttackCostStamina: 0
 --- !u!50 &1367891785326466373
 Rigidbody2D:
   serializedVersion: 4
@@ -185,6 +197,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3aba08eb-3242-4acc-9823-9e279ff486f8
     m_ActionName: PlayerActionMap/AttackButton[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4210813427365742076}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4b7919cf-9813-4882-9515-79b95a9f9c76
+    m_ActionName: PlayerActionMap/SprintButton[/Keyboard/shift,/XInputControllerWindows/buttonWest]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerActionMap
@@ -382,9 +410,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.0022779044
-    width: 0.99871963
-    height: 0.9931663
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60

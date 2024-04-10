@@ -33,7 +33,7 @@ public class PlayerHPValAndUIScript : MonoBehaviour
     //[Header("Player Object for the round")]
     TMP_Text thisUIHealthText;
 
-    float healthBarMultiplier = 1f;
+    //float healthBarMultiplier = 1f;
 
   
     UnityEngine.UI.Image thisUIImage;

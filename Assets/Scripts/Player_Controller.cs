@@ -20,7 +20,9 @@ public class Player_Controller : MonoBehaviour
 
     [Header("Movement Variables")]
     [Tooltip("The speed at which the player will move.")]
-    public float moveSpeed = 0.5f;
+    public float moveSpeed = 1.5f;
+
+    public float sprintingSpeed = 2.0f;
 
     [Header("Stamina Variables")]
     [Tooltip("The stamina at which the player cost to do actions.")]
@@ -40,6 +42,9 @@ public class Player_Controller : MonoBehaviour
     //Bool if attack button is pressed down
     public bool attackButtonPressed = true;
 
+    //Bool if sprint button is pressed down
+    public bool sprintingButtonPressed = false;
+
     //Bool if standard meele attack or throwing bamboo are used
     public bool wasMeeleAttack = true;
 
@@ -54,13 +59,14 @@ void Start(){
     currentPlayerStamina = playerMaxStamina;
 
     playerIdleStaminaRecoverBoost = 2f;
+    sprintingButtonPressed = false;
 }
 
 void Update(){
    movePlayer();
    giveInpuValuesY();
    giveInpuValuesX();
-    attackCooldown();
+    staminaRegen();
     processPenaltyTime();
 }
 
@@ -87,7 +93,7 @@ public PolygonCollider2D giveCollider(){
 //Actual BOC to move the player in the game using vectors pulled from method "processPlayerMovement()" below
 public void movePlayer(){
 
-    if(movementDirection.x != 0 && movementDirection.y != 0){
+    if(movementDirection.x != 0 || movementDirection.y != 0){
         isPlayerMoving = true;
     }else{
         isPlayerMoving = false;
@@ -96,9 +102,15 @@ public void movePlayer(){
     if(!amIAttackng()){
 
     playerCurrentPosition = new Vector2(myRigidbody.position.x, myRigidbody.position.y);
-    Vector2 velocity = movementDirection * moveSpeed * Time.fixedDeltaTime;
-
-    myRigidbody.MovePosition(playerCurrentPosition + velocity);
+    
+    if(sprintingButtonPressed && !inPenalty){
+        Vector2 velocitySprinting = movementDirection * sprintingSpeed * Time.fixedDeltaTime;
+        myRigidbody.MovePosition(playerCurrentPosition + velocitySprinting);
+        currentPlayerStamina -= 3f * Time.deltaTime;
+    }else{
+        Vector2 velocity = movementDirection * moveSpeed * Time.fixedDeltaTime;
+        myRigidbody.MovePosition(playerCurrentPosition + velocity);
+    }
     }
 }
 
@@ -109,7 +121,7 @@ private bool amIAttackng()
         return thisPlayerAnim.isSequencialAnimationInProgress();
     }
 
-// Anoter public method used by the Player_Anim_Controller to check if an attack button was pressed
+// Another public method used by the Player_Anim_Controller to check if an attack button was pressed
 
 public bool attackButtonWasPressed()
     {
@@ -121,53 +133,18 @@ public bool attackButtonWasPressed()
         }
     }
 
-public void attackCooldown(){
-    
-    //FIXME: 
-    /*
-    if(amISprinting){
-        currentPlayerStamina -= Time.fixedDeltaTime;
-    }
-    */
 
-    //Recover More Stamina if the player is not moving, otherwise, recover normally.
-    if(currentPlayerStamina<=playerMaxStamina && !inPenalty){
-        if(!isPlayerMoving){
-            currentPlayerStamina += playerIdleStaminaRecoverBoost * Time.deltaTime;
-        }else{
-            currentPlayerStamina += Time.deltaTime;
+//Another public method used to check if player is sprinting.
+    
+public bool sprintingPlayer(){
+    if(currentPlayerStamina>=0){
+        return sprintingButtonPressed;
+        }
+        else{
+        return false;
         }
     }
 
-    //FIXME: Basically, if the player spends more cooldown than they should for an attack
-    //Sprint, then they have a penalty of a 5 second wait. ADD a different UI Animation for the
-    //Image of the StaminaBar too!?
-    if(currentPlayerStamina<0){
-        inPenalty = true;
-    }
-}
-
-/// <summary>
-/// 
-/// NOTE: ALL INPUT EVENT SYSTEM CALL BACKS ARE BELOW
-/// 
-/// </summary>
-/// 
-// Input Action Callback events to use in order to read the input systems
-
-// Pulls input vectors from WASD or Joystick movement to be processed by methods above.
-public void processPlayerMovement(InputAction.CallbackContext context){
-
-    movementDirection = context.ReadValue<Vector2>();
-    //Debug.Log("Input movemen sensed :" + movementDirection.x + "," + movementDirection.y);
-    
-}
-
-// Pulls input of left click OR "A" (xbox/gamepad button) to be processed by methods above.
-public void processAttack(InputAction.CallbackContext context){
-    attackButtonPressed = context.ReadValueAsButton();
-    }
-    
 public void processPenaltyTime(){
     if(inPenalty){
         if(!isPlayerMoving){
@@ -195,6 +172,55 @@ public bool returnIfPlayerIsMoving(){
     return isPlayerMoving;
 }
 
+    
+public void staminaRegen(){
+
+    //Recover More Stamina if the player is not moving, otherwise, recover normally.
+    if(currentPlayerStamina<=playerMaxStamina && !inPenalty){
+        if(!isPlayerMoving){
+            currentPlayerStamina += playerIdleStaminaRecoverBoost * Time.deltaTime;
+        }
+        if(!isPlayerMoving && !sprintingButtonPressed){
+            currentPlayerStamina += Time.deltaTime;
+        }
+        if(isPlayerMoving){
+            currentPlayerStamina += Time.deltaTime * 0.5f;
+        }
+    }
+
+    //FIXME: Basically, if the player spends more cooldown than they should for an attack
+    //Sprint, then they have a penalty of a 5 second wait. ADD a different UI Animation for the
+    //Image of the StaminaBar too!?
+    if(currentPlayerStamina<0){
+        inPenalty = true;
+    }
+}
+
+/// <summary>
+/// 
+/// NOTE: ALL INPUT EVENT SYSTEM CALL BACKS ARE BELOW
+/// 
+/// </summary>
+/// 
+// Input Action Callback events to use in order to read the input systems
+
+// Pulls input vectors from WASD or Joystick movement to be processed by methods above.
+public void processPlayerMovement(InputAction.CallbackContext context){
+
+    movementDirection = context.ReadValue<Vector2>();
+    //Debug.Log("Input movemen sensed :" + movementDirection.x + "," + movementDirection.y);
+    
+}
+
+// Pulls input of left click OR "Right Trigger" (xbox/gamepad button) to be processed by methods above.
+public void processAttack(InputAction.CallbackContext context){
+    attackButtonPressed = context.ReadValueAsButton();
+    }
+    
+// Pulls input of "Shift" click OR "A" (xbox/gamepad button) to be processed by methods above.
+public void processSprint(InputAction.CallbackContext context){
+    sprintingButtonPressed = context.ReadValueAsButton();
+    }
 }
 
 
