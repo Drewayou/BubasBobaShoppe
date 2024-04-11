@@ -82,6 +82,7 @@ MonoBehaviour:
   myRigidbody: {fileID: 1367891785326466373}
   myHitbox: {fileID: 0}
   moveSpeed: 8
+  sprintingSpeed: 2.5
   playerMaxStamina: 10
   meeleAttackCost: 2
   penaltyTimeStaminaOut: 5
@@ -89,6 +90,7 @@ MonoBehaviour:
   currentPlayerStamina: 0
   playerIdleStaminaRecoverBoost: 0
   attackButtonPressed: 0
+  sprintingButtonPressed: 1
   wasMeeleAttack: 1
   inPenalty: 0
   isPlayerMoving: 0

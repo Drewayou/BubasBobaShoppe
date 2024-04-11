@@ -60,7 +60,7 @@ public class PlayerStaminaBarScript : MonoBehaviour
         
         //Similar to above, but if bar is "Filled" (Timer hits 0) set to zero.
         penaltyTimerRemaining = thisPlayerController.returnCurrentPenaltyTimer();
-        Debug.Log(penaltyTimerRemaining);
+        
         if(penaltyTimerRemaining != 0f){
             thisUIImagePenaltyTimer.fillAmount = 1f - (penaltyTimerRemaining / penaltyStartingTimeOut);
         }else{

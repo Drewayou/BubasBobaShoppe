@@ -20,14 +20,4 @@ public class InteractableFoliageScript : MonoBehaviour
     {
         
     }
-
-    void OnBecameInvisible()
-    {
-        enabled = false;
-    }
-
-    void OnBecameVisible()
-    {
-        enabled = true;
-    }
 }

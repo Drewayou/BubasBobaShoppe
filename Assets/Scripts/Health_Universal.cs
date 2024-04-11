@@ -49,6 +49,11 @@ public class Health_Universal : MonoBehaviour, IDamageable
     [Tooltip("This is for the 'flash' of dmg effect of this object /entity depending on what they are")]
     public SpriteRenderer thisSpriteRenderer;
 
+    [Header("Set RoundObject")]
+    [Tooltip("This is for the Round Manager to pull it's scripts and calculate round essentials")]
+    private GameObject thisRoundCalculatorObject;
+    private RoundManagerScript thisRoundManagerScript;
+
     // Private variables to let this sprite flash a chosen color (Red) when taken damage
     private Color chosenRedColor = new Color(255,0,0,1);
     private Color colorChangeVelocity;
@@ -99,6 +104,13 @@ public class Health_Universal : MonoBehaviour, IDamageable
     // Start is called before the first frame update
     void Start()
     {
+        //Set up round manager script and record this enemy instance
+        thisRoundCalculatorObject = GameObject.Find("RoundManager");
+        thisRoundManagerScript = thisRoundCalculatorObject.GetComponent<RoundManagerScript>();
+
+        //FIXME: Find a way to incorperate the enemy level cap depending
+        //On what this entity is!
+
         maxHealth = health;
         thisHitbox = GetComponent<PolygonCollider2D>();
         thisSpriteRenderer = GetComponent<SpriteRenderer>();
@@ -153,7 +165,10 @@ public class Health_Universal : MonoBehaviour, IDamageable
             
             switch(gameObject.name){
                 case "CassavaSlime(Clone)":
-                
+                thisRoundManagerScript.AddCassavaSlimeBallsThisRound(1);
+                break;
+                case "PandanShooter(Clone)":
+                thisRoundManagerScript.AddPandanLeavesThisRound(1);
                 break;
             }
         }
@@ -163,8 +178,12 @@ public class Health_Universal : MonoBehaviour, IDamageable
         return maxHealth;
     }
 
-    /*Check what THIS object collides with and what "team" they are on
-    Then, does respective actions*/
+    /*Below are methods that check what THIS object collides with and what "team" they are on
+    Then, does respective actions*/ 
+    /// <summary>
+    /// THE SCRIPTS BELOW ARE MORE FOR DEALING DAMAGE TO a different entity
+    /// </summary>
+
     void OnCollisionEnter2D(Collision2D collision){
         //Debug.Log("Collision Started!");
 
