@@ -18,15 +18,26 @@ public class Player_Controller : MonoBehaviour
     [Tooltip("The Polygon hitbox to use for collision detection.")]
     public PolygonCollider2D myHitbox = null;
 
+    public Health_Universal attachedHealthUni;
+
     [Header("Movement Variables")]
     [Tooltip("The speed at which the player will move.")]
     public float moveSpeed = 1.5f;
+
+    //attackPoints Taken from JSONGameScript
+    public int playerAttackPoints = 5;
+
+    //playerMaxHealth Taken from JSONGameScript
+    public int playerMaxHealth = 15;
+
+    //playerMaxStamina is taken from JSONGameScript
+    public float playerMaxStamina = 10f;
 
     public float sprintingSpeed = 2.0f;
 
     [Header("Stamina Variables")]
     [Tooltip("The stamina at which the player cost to do actions.")]
-    public float playerMaxStamina = 10f, meeleAttackCost = 2f, penaltyTimeStaminaOut = 5f, penaltyTimer;
+    public float meeleAttackCost = 2f, penaltyTimeStaminaOut = 5f, penaltyTimer;
 
     public float currentPlayerStamina , playerIdleStaminaRecoverBoost;
 
@@ -53,6 +64,8 @@ public class Player_Controller : MonoBehaviour
     public bool isPlayerMoving = false;
 
 void Start(){
+    attachedHealthUni = GetComponent<Health_Universal>();
+    attachedHealthUni.health = playerMaxHealth;
     myRigidbody = GetComponent<Rigidbody2D>();
     myHitbox = GetComponent<PolygonCollider2D>();
     thisPlayerAnim = GetComponent<Player_AnimChanger>();
@@ -221,6 +234,12 @@ public void processAttack(InputAction.CallbackContext context){
 public void processSprint(InputAction.CallbackContext context){
     sprintingButtonPressed = context.ReadValueAsButton();
     }
+
+public int getPLayerMaxHealth(){
+    return playerMaxHealth;
 }
+}
+
+
 
 

@@ -75,7 +75,7 @@ public class Enemy_Controller : MonoBehaviour
     void Start()
     {
         //Find Agro Radius Prefab Script Object
-        AgroRadius = PrefabUtility.GetCorrespondingObjectFromSource(AgroRadius);
+        //AgroRadius = GameObject(AgroRadius);
     
         //Set up player target, find their instance on the scene
         Target = GameObject.Find("Player");

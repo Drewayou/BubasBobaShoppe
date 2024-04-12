@@ -6,11 +6,8 @@ using UnityEngine.AI;
 public class Health_Universal : MonoBehaviour, IDamageable
 {
     [Header("Health Points")]
-    [SerializeField]
     [Tooltip("(Int) This is the health set for this object/entity and should be variable depending on what they are")]
     public int health;
-
-    private int maxHealth;
 
     [Header("Attack Points")]
     [SerializeField]
@@ -53,6 +50,9 @@ public class Health_Universal : MonoBehaviour, IDamageable
     [Tooltip("This is for the Round Manager to pull it's scripts and calculate round essentials")]
     private GameObject thisRoundCalculatorObject;
     private RoundManagerScript thisRoundManagerScript;
+
+    [SerializeField]
+    public Player_Controller thisPlayerController;
 
     // Private variables to let this sprite flash a chosen color (Red) when taken damage
     private Color chosenRedColor = new Color(255,0,0,1);
@@ -107,11 +107,9 @@ public class Health_Universal : MonoBehaviour, IDamageable
         //Set up round manager script and record this enemy instance
         thisRoundCalculatorObject = GameObject.Find("RoundManager");
         thisRoundManagerScript = thisRoundCalculatorObject.GetComponent<RoundManagerScript>();
-
         //FIXME: Find a way to incorperate the enemy level cap depending
-        //On what this entity is!
+        //On what this entity is! (Move this Fixmeto round manager?)
 
-        maxHealth = health;
         thisHitbox = GetComponent<PolygonCollider2D>();
         thisSpriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -174,8 +172,8 @@ public class Health_Universal : MonoBehaviour, IDamageable
         }
     }
 
-    public int RetrieveMaxHealth(){
-        return maxHealth;
+    public int RetrieveMaxHealthFromHealth_Universal(){
+        return health;
     }
 
     /*Below are methods that check what THIS object collides with and what "team" they are on

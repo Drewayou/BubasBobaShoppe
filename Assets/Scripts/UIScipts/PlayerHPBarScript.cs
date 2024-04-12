@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +25,8 @@ public class PlayerHPValAndUIScript : MonoBehaviour
     
     Health_Universal thePlayersHealth;
 
+    Player_Controller thePlayersController;
+
     float playerMaxHealthOverInput;
 
 
@@ -45,6 +46,7 @@ public class PlayerHPValAndUIScript : MonoBehaviour
         thePlayersHealth = player.GetComponent<Health_Universal>();
         thisUIHealthText = TextObject.GetComponent<TMP_Text>();
         thisUIImage = UIHealthObject.GetComponent<UnityEngine.UI.Image>();
+        thePlayersController = player.GetComponent<Player_Controller>();
 
         playerMaxHealthOverInput = thePlayersHealth.health;
     }
@@ -52,12 +54,12 @@ public class PlayerHPValAndUIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        thisUIHealthText.text = thePlayersHealth.health + "/50hp";
+        thisUIHealthText.text = thePlayersHealth.health + "/" + thePlayersController.getPLayerMaxHealth().ToString();
         thisUIImage.fillAmount = thePlayersHealth.health / playerMaxHealthOverInput;
     }
 
     void LateUpdate(){
-        playerMaxHealthOverInput = thePlayersHealth.RetrieveMaxHealth();
+        playerMaxHealthOverInput = thePlayersHealth.RetrieveMaxHealthFromHealth_Universal();
     }
     
 }

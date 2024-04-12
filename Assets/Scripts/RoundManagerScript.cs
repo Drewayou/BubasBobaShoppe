@@ -40,9 +40,9 @@ public class RoundManagerScript : MonoBehaviour
     [Header("Endof-RoundUITextObjects")]
     [Tooltip("Put the game's End-Of-RoundUI TextObjects to update at the end")]
     TMP_Text OolongDemandTxt, OolongSoldTxt, PandanDemandTxt, PandanSoldTxt, BananaDemandTxt, BananaSoldTxt,
-    StrawberryDemandTxt, StrawberrySoldTxt, MangoDemandTxt, MangoSoldTxt, UbeDemandTxt, UbeSoldTxt;
+    StrawberryDemandTxt, StrawberrySoldTxt, MangoDemandTxt, MangoSoldTxt, UbeDemandTxt, UbeSoldTxt, TotalNewGoldTxt;
 
-    private bool roundIsOver = false;
+    //FIXME private bool roundIsOver = false;
 
     //FIXME: Temp PUBLIC value to see the time in game. SET TO PRIVATE AFTER DEBUGGING.
     //Timer for this round.
@@ -65,7 +65,7 @@ public class RoundManagerScript : MonoBehaviour
     StrawberryMultiplier = 1.0f, MangoMultiplier = 1.0f, UbeMultiplier = 1.0f;
 
     //Player Increased coind value by how much this round?
-    private float playerEarnedCoins = 0f;
+    public float playerEarnedCoins = 0f;
 
     // Start is called before the first frame update.
     void Start()
@@ -75,11 +75,12 @@ public class RoundManagerScript : MonoBehaviour
         //      VVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
         //      getRoundSettingData();
 
-        //Make Sure the end of game UI isn't on
+        //Make Sure the ENDOFGAME UI isn't on and the INGAME UI is.
         EndOfRoundUIObject.SetActive(false);
+        inGameUIObject.SetActive(true);
 
         //Start the round timer and make sure the timescale is set to 1. Moreover, make sure this round is over bool is not true.
-        roundIsOver = false;
+        //FIXME:roundIsOver = false;
         roundTimer = 0f;
         Time.timeScale = 1;
 
@@ -166,7 +167,7 @@ public class RoundManagerScript : MonoBehaviour
             string selectedDrinkToMake = possibleDrinksList[UnityEngine.Random.Range(0,possibleDrinksList.Count)];
 
             //FIXME:
-            Debug.LogWarning(selectedDrinkToMake);
+            //Debug.LogWarning(selectedDrinkToMake);
 
             switch(selectedDrinkToMake){
 
@@ -272,6 +273,7 @@ public class RoundManagerScript : MonoBehaviour
         MangoSoldTxt.text = "x" +MangoSold.ToString(); 
         UbeDemandTxt.text = UbeMultiplier.ToString("F2"); 
         UbeSoldTxt.text = "x" +UbeSold.ToString();
+        TotalNewGoldTxt.text = playerEarnedCoins.ToString();
     }
 
     private void endTheRound(){
@@ -287,7 +289,7 @@ public class RoundManagerScript : MonoBehaviour
         Time.timeScale = 0;
 
         //FIXME: use this second variable incase of other scripts still running after Time.timescale = 0
-        roundIsOver = true;
+        //FIXME: roundIsOver = true;
 
         //Turn off other UI after these many seconds
         StartCoroutine(TurnOffInGameUIAfterNSeconds(5f));
@@ -308,8 +310,7 @@ public class RoundManagerScript : MonoBehaviour
     public IEnumerator TurnOffInGameUIAfterNSeconds(float num)
     {
         yield return new WaitForSecondsRealtime(num);
-        inGameUIAnimator.enabled = false;
-        inGameUIObject.SetActive(false);
+    
     }
 
 }

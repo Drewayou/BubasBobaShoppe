@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.WebSockets;
-using UnityEditor.EditorTools;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class TransparencyCollisionScript : MonoBehaviour

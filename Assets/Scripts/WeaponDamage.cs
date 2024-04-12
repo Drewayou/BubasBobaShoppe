@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponDamage : MonoBehaviour
+public class PlayersWeaponDamage : MonoBehaviour
 {
 
-    //Below is used for the attack of Bubba's Staff
-    [SerializeField]
-    [Tooltip("(Int) What's the attack of this object?")]
+    
+    //Below is used for the attack of Bubba's Staff pulled from the player_controller
     public int attackPoints;
 
     //Below is used for collision detection to animate deatheffects with the ridgedbody velocity of this target object
@@ -25,6 +24,7 @@ public class WeaponDamage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        attackPoints = GameObject.Find("Player").GetComponent<Player_Controller>().playerAttackPoints;
         thisHitbox = GetComponent<CompositeCollider2D>();
     }
 
