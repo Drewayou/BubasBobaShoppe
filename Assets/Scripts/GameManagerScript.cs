@@ -7,7 +7,6 @@ using System;
 using System.Runtime.CompilerServices;
 using UnityEngine.PlayerLoop;
 using System.Threading;
-using UnityEditor.EditorTools;
 
 public class GameManagerScript : MonoBehaviour
 {

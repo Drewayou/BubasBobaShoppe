@@ -104,6 +104,16 @@ public class Enemy_Anim_Changer : MonoBehaviour
                     }
 
                 break;
+
+                case "BananaShaman(Clone)":
+
+                    if(currentAnimationThisObject != "BananaShamanShoots"){
+                        animatorThisObject.Play("BananaShamanShoots");
+                        currentAnimationThisObject = "BananaShamanShoots";
+                        thisEnemyController.isCurrentlyAttacking = true;
+                    }
+
+                break;
             }
             }
 
@@ -140,6 +150,22 @@ public class Enemy_Anim_Changer : MonoBehaviour
                     if(isThisMoving != true && currentAnimationThisObject != "PandanShooterIdle"){
                         animatorThisObject.Play("PandanShooterIdle");
                         currentAnimationThisObject = "PandanShooterIdle";
+                        }
+                    }
+
+                break;
+
+                case "BananaShaman(Clone)":
+
+                    if(isThisMoving && currentAnimationThisObject != "BananaShamanAboutToMove"){
+                        animatorThisObject.Play("BananaShamanAboutToMove");
+                        currentAnimationThisObject = "BananaShamanAboutToMove";
+                    
+                    }else{ 
+
+                    if(isThisMoving != true && currentAnimationThisObject != "BananaShamanIdle"){
+                        animatorThisObject.Play("BananaShamanIdle");
+                        currentAnimationThisObject = "BananaShamanIdle";
                         }
                     }
 

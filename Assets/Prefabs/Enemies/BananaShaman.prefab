@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 7617976633305788983}
   - component: {fileID: 6984987947274411386}
   m_Layer: 8
-  m_Name: PandanShooter
+  m_Name: BananaShaman
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,7 @@ Animator:
   m_GameObject: {fileID: 7757213010464900041}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c52199ff08b968c48a4978a2049ca8c2, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5473aac62cceb2a4d9ab9da618c712cd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -103,7 +103,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1921081808, guid: b503110871b89094688ab955608400e4, type: 3}
+  m_Sprite: {fileID: -1738402585, guid: 843fae361fbbd5c4e80dc19a2f5bd8f8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -157,10 +157,10 @@ MonoBehaviour:
   AgroRadius: {fileID: 4447996180704831342}
   thisEnemyAgroRange: {fileID: 555124388805837192}
   whatEnemyValIsThis: 1
-  attackRadiusfloat: 0.75
-  moveSpeed: 0.5
+  attackRadiusfloat: 1
+  moveSpeed: 0.4
   attackSpeed: 2
-  attackBuildUp: 1
+  attackBuildUp: 3
   nextAttackIn: 0
   thisAgent: {fileID: 0}
   isFreshlySpawned: 1
@@ -184,7 +184,7 @@ MonoBehaviour:
   thisEnemyController: {fileID: 1479622039686433908}
   thisAttackController: {fileID: 0}
   thisRigidbody: {fileID: 0}
-  moveSpeed: 0.5
+  moveSpeed: 0.4
   whatEnemyIsThis: 
   agent: {fileID: 6449258139919160243}
 --- !u!195 &6449258139919160243
@@ -280,12 +280,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.026350297, y: -0.0072994046}
-      - {x: -0.05890902, y: -0.05137471}
-      - {x: -0.05815073, y: -0.099241585}
-      - {x: 0.050425723, y: -0.099999994}
-      - {x: 0.051184013, y: -0.05289129}
-      - {x: 0.020900277, y: -0.012607556}
+    - - {x: -0.002817798, y: 0.07541768}
+      - {x: -0.03673972, y: 0.020813148}
+      - {x: -0.051575314, y: -0.046485573}
+      - {x: -0.01659305, y: -0.078462735}
+      - {x: -0.005661071, y: -0.0798977}
+      - {x: 0.005812332, y: -0.081665725}
+      - {x: 0.042628016, y: -0.047391012}
+      - {x: 0.034956552, y: 0.0032821484}
   m_UseDelaunayMesh: 0
 --- !u!1001 &3403190970873461314
 PrefabInstance:
@@ -345,12 +347,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
       propertyPath: attackRadiusfloat
-      value: 0.35
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
       propertyPath: thisEnemyProjectiles
       value: 
-      objectReference: {fileID: 1204066686827137885, guid: 81e821c60b9e5914184e37c1ad09a3a5, type: 3}
+      objectReference: {fileID: 1204066686827137885, guid: 9bdb5a4670423294db50ac206f2ef7c3, type: 3}
     - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
       propertyPath: rangedAttackProjectileSpeed
       value: 1

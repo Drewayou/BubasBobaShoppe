@@ -194,6 +194,53 @@ public class Enemy_AttackRange : MonoBehaviour
             //
             //
             //
+
+        case "BananaShaman(Clone)":
+
+            //THIS IS THE BANANA SHAMAN'S CUSTOM ATTACK
+            //
+            //Banana Shaman shoots a long-lasting, but slow Orb prefab at the character
+            //
+
+        if(thisEnemyController.nextAttackIn <= 0){
+            inAnAttackAnim = true;
+            }
+
+        if(isAttacking && inAnAttackAnim){
+           if(thisEnemyController.attackBuildUp <=0){
+
+            //Debug.LogWarning(thisEnemyProjectiles.name + "Fired");
+            //Debug.LogWarning(transform.position + "Locatiion");
+
+            Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
+
+            /*FIXME: Try to make the banana shaman try kamakazi Diving at the player after attacking
+            Vector3 directionAwayFromPlayer = (this.transform.position - thisEnemyController.GetPlayerLastSeenPosition()).normalized * -3;
+            thisEnemyController.agent.SetDestination(directionAwayFromPlayer);
+            StartCoroutine(WaitSeconds(3));
+            */
+            
+            inAnAttackAnim = false;
+            thisEnemyController.attackBuildUp = tempAttackBuildupSaved;
+
+            thisEnemyController.thisAgent.isStopped = false;
+
+            isAttacking = false;
+            thisEnemyController.isCurrentlyAttacking = isAttacking;
+
+            
+            
+
+            }else{
+                thisEnemyController.attackBuildUp -= Time.deltaTime;
+            }
+            }
+            break;
+
+            //END OF PANDAN'S CUSTOM ATTACK
+            //
+            //
+            //
         
         default:
 

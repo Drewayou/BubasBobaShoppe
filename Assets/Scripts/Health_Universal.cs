@@ -168,6 +168,9 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 case "PandanShooter(Clone)":
                 thisRoundManagerScript.AddPandanLeavesThisRound(1);
                 break;
+                case "BananaShaman(Clone)":
+                thisRoundManagerScript.AddBananaMinisThisRound(1);
+                break;
             }
         }
     }

@@ -74,10 +74,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesInLevel: {fileID: 0}
-  monsterToSpawn: {fileID: 7757213010464900041, guid: 4762d14c55791184983d378294c30493, type: 3}
+  monsterToSpawn: {fileID: 7757213010464900041, guid: 0f3f34dcdaaa4fb45bcbcdf71cc07f3e, type: 3}
   enemySpawnRadiusCollider: {fileID: 4713236662016777466}
   levelNavMesh: {fileID: 0}
   coolDownPerNewSpawn: 5
+  timeleftToSpawnNextEnemy: 0
 --- !u!50 &2046367966540801030
 Rigidbody2D:
   serializedVersion: 4
@@ -237,7 +238,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1689503121
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -224422087, guid: 3232400ca787ee84a9bdda14602c83a7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

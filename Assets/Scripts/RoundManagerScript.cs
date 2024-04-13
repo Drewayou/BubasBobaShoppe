@@ -125,7 +125,7 @@ public class RoundManagerScript : MonoBehaviour
     public void AddPandanLeavesThisRound(int addedLoot){
         PandanLeaves += addedLoot;
     }
-    public void AddCBananaMinisThisRound(int addedLoot){
+    public void AddBananaMinisThisRound(int addedLoot){
         BananaMinis += addedLoot;
     }
     public void AddStrawberryMinisThisRound(int addedLoot){

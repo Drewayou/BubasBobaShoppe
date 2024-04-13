@@ -8,7 +8,7 @@ AnimationClip:
   m_PrefabAsset: {fileID: 0}
   m_Name: PandanShooterBullet
   serializedVersion: 7
-  m_Legacy: 1
+  m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves: []
@@ -17,26 +17,7 @@ AnimationClip:
   m_PositionCurves: []
   m_ScaleCurves: []
   m_FloatCurves: []
-  m_PPtrCurves:
-  - serializedVersion: 2
-    curve:
-    - time: 0
-      value: {fileID: 24576931, guid: 051c2ebf7c8e31542a55d9d792c6037e, type: 3}
-    - time: 0.016666668
-      value: {fileID: -732979937, guid: 051c2ebf7c8e31542a55d9d792c6037e, type: 3}
-    - time: 0.033333335
-      value: {fileID: 1771760603, guid: 051c2ebf7c8e31542a55d9d792c6037e, type: 3}
-    - time: 0.05
-      value: {fileID: -1812298666, guid: 051c2ebf7c8e31542a55d9d792c6037e, type: 3}
-    - time: 0.06666667
-      value: {fileID: 618146796, guid: 051c2ebf7c8e31542a55d9d792c6037e, type: 3}
-    - time: 0.083333336
-      value: {fileID: -250549454, guid: 051c2ebf7c8e31542a55d9d792c6037e, type: 3}
-    attribute: m_Sprite
-    path: 
-    classID: 212
-    script: {fileID: 0}
-    flags: 2
+  m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 0
   m_Bounds:
@@ -50,7 +31,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.1
+    m_StopTime: 1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

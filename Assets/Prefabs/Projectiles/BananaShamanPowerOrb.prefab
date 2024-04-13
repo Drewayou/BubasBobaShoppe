@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 6188640243708361643}
   - component: {fileID: 4446476096222681772}
   - component: {fileID: 1174603921966293186}
-  - component: {fileID: 6535616207111521211}
+  - component: {fileID: 3425803297271959576}
   m_Layer: 8
-  m_Name: PandanPellet
+  m_Name: BananaShamanPowerOrb
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4686c776bd94ca548bc95b10ae47e236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 0.25
+  projectileSpeed: 0.1
 --- !u!212 &5126839811710500187
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -92,7 +92,7 @@ SpriteRenderer:
   m_SortingLayerID: -396918055
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 24576931, guid: 051c2ebf7c8e31542a55d9d792c6037e, type: 3}
+  m_Sprite: {fileID: 1356591746, guid: b00ad38328f06a849bd91e0185be7b4f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -139,7 +139,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.2, y: 0.2}
+    oldSize: {x: 0.05, y: 0.05}
     newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -147,10 +147,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.010305498, y: -0.020791383}
-      - {x: 0.009687223, y: 0.00030549616}
-      - {x: -0.010232301, y: -0.00050144363}
-      - {x: -0.009451559, y: -0.019389002}
+    - - {x: 0.014828406, y: -0.0160531}
+      - {x: 0.015071638, y: 0.01538186}
+      - {x: -0.014970587, y: 0.015436425}
+      - {x: -0.014835973, y: -0.015081469}
   m_UseDelaunayMesh: 0
 --- !u!114 &6188640243708361643
 MonoBehaviour:
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a30d8bc0a27fc5458748f668de9b748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 3
+  lifetime: 7
   destroyChildrenOnDeath: 1
 --- !u!114 &4446476096222681772
 MonoBehaviour:
@@ -178,8 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8127b3237ad484d88be38bea5b67f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisProjectileHealth: 2
-  thisProjectileDamagePoints: 5
+  thisProjectileHealth: 5
+  thisProjectileDamagePoints: 10
   thisHitbox: {fileID: 0}
   playersProjectile: 0
 --- !u!50 &1174603921966293186
@@ -209,7 +209,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!95 &6535616207111521211
+--- !u!95 &3425803297271959576
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -219,7 +219,7 @@ Animator:
   m_GameObject: {fileID: 1204066686827137885}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 320aaecf9d79e5f46af5bda31b14158a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1f360d00a80fab2428e19e2ab1f6ec0b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
