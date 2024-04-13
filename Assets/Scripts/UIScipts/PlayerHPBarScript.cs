@@ -48,18 +48,13 @@ public class PlayerHPValAndUIScript : MonoBehaviour
         thisUIImage = UIHealthObject.GetComponent<UnityEngine.UI.Image>();
         thePlayersController = player.GetComponent<Player_Controller>();
 
-        playerMaxHealthOverInput = thePlayersHealth.health;
+        playerMaxHealthOverInput = thePlayersController.getPlayerMaxHealth();
     }
 
     // Update is called once per frame
     void Update()
     {
-        thisUIHealthText.text = thePlayersHealth.health + "/" + thePlayersController.getPLayerMaxHealth().ToString();
+        thisUIHealthText.text = thePlayersHealth.health + "/" + thePlayersController.getPlayerMaxHealth().ToString();
         thisUIImage.fillAmount = thePlayersHealth.health / playerMaxHealthOverInput;
     }
-
-    void LateUpdate(){
-        playerMaxHealthOverInput = thePlayersHealth.RetrieveMaxHealthFromHealth_Universal();
-    }
-    
 }

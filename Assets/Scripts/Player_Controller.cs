@@ -235,7 +235,7 @@ public void processSprint(InputAction.CallbackContext context){
     sprintingButtonPressed = context.ReadValueAsButton();
     }
 
-public int getPLayerMaxHealth(){
+public int getPlayerMaxHealth(){
     return playerMaxHealth;
 }
 }

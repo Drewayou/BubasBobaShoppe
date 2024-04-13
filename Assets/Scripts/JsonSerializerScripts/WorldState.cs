@@ -22,4 +22,9 @@ public class WorldState
     public float chanceOfStrawberry { get; set; }
     public float chanceOfMango { get; set; }
     public float chanceOfUbe { get; set; }
+
+    public bool isThereABoss = false;
+    public int bossHP = 100;
+
+    public bool bossDefeated = false;
 }

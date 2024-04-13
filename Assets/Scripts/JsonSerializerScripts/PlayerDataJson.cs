@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 [Serializable]
 public class PlayerDataJson 
 {
+    public float playerCoins { get; set; }
     public int playerMaxHealth { get; set; }
     public float playerMaxStamina { get; set; }
     public int playerAttackPoints { get; set; }

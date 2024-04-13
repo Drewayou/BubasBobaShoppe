@@ -9,13 +9,19 @@ using JetBrains.Annotations;
 public class RoundManagerScript : MonoBehaviour
 {
     //FIXME:
-    /*
-    //The Game's OverallManager Object to pull/put scripts from
-    [SerializeField]
+    
+    //The Game's OverallManager Object to pull/put scripts from.
     [Header("GameManager")]
     [Tooltip("Put the game's overall Manager Object to end the game / check if paused / unpaused")]
     GameObject overallGameManager;
-    */
+
+    //The Game's OverallManager SCRIPT to pull/put scripts and values from.
+    [Header("GameManagerSCRIPT")]
+    [Tooltip("Pull Values from this script")]
+    GameManagerScript thisGamesOverallInstance;
+    
+    //Spawnrates and spawners pulled from WorldState, which in turn is pulled from the GameManager.
+    private WorldState whichWorldWasSelected;
 
     //The Game's In-GameUI object to use / move during / after the game has ended.
     [SerializeField]
@@ -70,25 +76,32 @@ public class RoundManagerScript : MonoBehaviour
     // Start is called before the first frame update.
     void Start()
     {
-        //FIXME: ADD THE SETTING OF VALUES FROM THE OVERALLGAME MANAGER (Hint this may be from the JSON serialization scriptableobject?)
-
-        //      VVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-        //      getRoundSettingData();
+        //FIXME: ADD THE SETTING OF VALUES FROM THE OVERALLGAME MANAGER (Hint this may be from the JSON serialization of scriptableobject Gamemanager Script?)
+        overallGameManager = GameObject.Find("GameManagerObject");
+        thisGamesOverallInstance = overallGameManager.GetComponent<GameManagerScript>();
 
         //Make Sure the ENDOFGAME UI isn't on and the INGAME UI is.
         EndOfRoundUIObject.SetActive(false);
         inGameUIObject.SetActive(true);
 
-        //Start the round timer and make sure the timescale is set to 1. Moreover, make sure this round is over bool is not true.
-        //FIXME:roundIsOver = false;
-        roundTimer = 0f;
-        Time.timeScale = 1;
-
         //Other LOC to yeild values
         //LOC to pull animator objects of these UI's for proper use/view/animations
         inGameUIAnimator = inGameUIObject.GetComponentInChildren<Animator>();
         EndOfRoundUIAnimator = EndOfRoundUIObject.GetComponentInChildren <Animator>();
+    
+        //FIXME: 
+        
+        //Check which world the player selected to go to. If default, set to world 1.
+       
+        //Debug.LogWarning(thisGamesOverallInstance.ReturnWorldSelected(worldSelected));
 
+        whichWorldWasSelected = thisGamesOverallInstance.ReturnWorldSelectedViaRound();
+        
+
+        //Start the round timer and make sure the timescale is set to 1. Moreover, make sure this round is over bool is not true.
+        //FIXME:roundIsOver = false;
+        roundTimer = 0f;
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
@@ -220,8 +233,7 @@ public class RoundManagerScript : MonoBehaviour
         playerEarnedCoins = (oolongSold * oolongMultiplier) + (PandanSold * PandanMultiplier) + 
         (BananaSold * BananaMultiplier) + (StrawberrySold * StrawberryMultiplier) + (MangoSold * MangoMultiplier) + (UbeSold * UbeMultiplier);
 
-        //Debug.Log(playerEarnedCoins);
-
+        Debug.Log(playerEarnedCoins);
     }
 
     private void makePossibleDrinkList(){
@@ -276,6 +288,9 @@ public class RoundManagerScript : MonoBehaviour
         TotalNewGoldTxt.text = playerEarnedCoins.ToString();
     }
 
+    //This method is used by the "Continue" button at the end of the round and updates
+    //the overall gold the player has, and saves new data (Produces this levels states
+    //into the save as well).
     private void endTheRound(){
 
         //Enable end of game UI
@@ -299,6 +314,19 @@ public class RoundManagerScript : MonoBehaviour
 
         //Update End of Round UI
         UpdateEndRoundUI();
+    }
+
+    //This will be connected to the button for the "Continue" at the end of game UI.
+    public void saveBeforeContinuingBackToMainMenuButton(){
+
+        //Call GameManager to change spawn rates for next round
+        thisGamesOverallInstance.SetNewWorldSpawnRatesState(whichWorldWasSelected);
+
+        //Update overall coin stats
+        thisGamesOverallInstance.updatePlayerCoinStats((int)playerEarnedCoins);
+
+        //Save new states
+        thisGamesOverallInstance.SaveGameAfterRound(whichWorldWasSelected);
     }
     
 
