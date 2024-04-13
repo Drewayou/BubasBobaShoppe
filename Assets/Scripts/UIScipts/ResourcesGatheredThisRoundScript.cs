@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class ResourcesGatheredThisRoundScript : MonoBehaviour
 {
+
+    [SerializeField]
+    public GameObject CassavaObject,PandanObject,BananaObject,StrawberryObject,MangoObject,UbeObject;
+
     [SerializeField]
     public TMP_Text Cassava,Pandan,Banana,Strawberry,Mango,Ube;
 
@@ -14,6 +18,7 @@ public class ResourcesGatheredThisRoundScript : MonoBehaviour
     [Header("Set RoundObject")]
     [Tooltip("This is for the Round Manager to pull it's scripts and calculate round essentials")]
     private GameObject thisRoundGameObject;
+
     private RoundManagerScript thisGamesRoundManager;
 
     // Start is called before the first frame update
@@ -29,11 +34,29 @@ public class ResourcesGatheredThisRoundScript : MonoBehaviour
     void Update()
     {
         //Debug.Log(thisGamesRoundManager.GetCassavaSlimeBallsThisRound());
+        if(Cassava.text != "x0"){
+            CassavaObject.SetActive(true);
+        }
         Cassava.text = "x"+ thisGamesRoundManager.GetCassavaSlimeBallsThisRound();
+        if(Pandan.text != "x0"){
+            PandanObject.SetActive(true);
+        }
         Pandan.text = "x"+ thisGamesRoundManager.GetPandanLeavesThisRound();
+        if(Banana.text != "x0"){
+            BananaObject.SetActive(true);
+        }
         Banana.text = "x"+ thisGamesRoundManager.GetBananaMinisThisRound();
+        if(Strawberry.text != "x0"){
+            StrawberryObject.SetActive(true);
+        }
         Strawberry.text = "x"+ thisGamesRoundManager.GetStrawberryMinisThisRound();
+        if(Mango.text != "x0"){
+            MangoObject.SetActive(true);
+        }
         Mango.text = "x"+ thisGamesRoundManager.GetMangoMinisThisRound();
+        if(Ube.text != "x0"){
+            UbeObject.SetActive(true);
+        }
         Ube.text = "x"+ thisGamesRoundManager.GetUbeMinisThisRound();
     }   
 }

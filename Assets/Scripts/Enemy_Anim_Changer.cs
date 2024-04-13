@@ -114,6 +114,16 @@ public class Enemy_Anim_Changer : MonoBehaviour
                     }
 
                 break;
+
+                case "PricklyStrawberry(Clone)":
+
+                    if(currentAnimationThisObject != "PricklyStrawberryAttacks"){
+                        animatorThisObject.Play("PricklyStrawberryAttacks");
+                        currentAnimationThisObject = "PricklyStrawberryAttacks";
+                        thisEnemyController.isCurrentlyAttacking = true;
+                    }
+
+                break;
             }
             }
 
@@ -166,6 +176,22 @@ public class Enemy_Anim_Changer : MonoBehaviour
                     if(isThisMoving != true && currentAnimationThisObject != "BananaShamanIdle"){
                         animatorThisObject.Play("BananaShamanIdle");
                         currentAnimationThisObject = "BananaShamanIdle";
+                        }
+                    }
+
+                break;
+
+                case "PricklyStrawberry(Clone)":
+
+                    if(isThisMoving && currentAnimationThisObject != "PricklyStrawberryAboutToMove"){
+                        animatorThisObject.Play("PricklyStrawberryAboutToMove");
+                        currentAnimationThisObject = "PricklyStrawberryAboutToMove";
+                    
+                    }else{ 
+
+                    if(isThisMoving != true && currentAnimationThisObject != "PricklyStrawberryrIdle"){
+                        animatorThisObject.Play("PricklyStrawberryrIdle");
+                        currentAnimationThisObject = "PricklyStrawberryrIdle";
                         }
                     }
 

@@ -115,23 +115,23 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4800
+    m_Bits: 4608
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 256
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 512
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 512
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 512
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 512
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisProjectileHealth: 2
-  thisProjectileDamagePoints: 5
+  thisProjectileDamagePoints: 2
   thisHitbox: {fileID: 0}
   playersProjectile: 0
 --- !u!50 &1174603921966293186

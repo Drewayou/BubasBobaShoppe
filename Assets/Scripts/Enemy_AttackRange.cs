@@ -241,10 +241,64 @@ public class Enemy_AttackRange : MonoBehaviour
             //
             //
             //
+
+        case "PricklyStrawberry(Clone)":
+
+            //THIS IS THE PRICKLYSTRAWBERRY'S CUSTOM ATTACK
+            //
+            //Prickly Strawberry quckly shoots a prickly seeds prefab at the character
+            //
+
+        if(thisEnemyController.nextAttackIn <= 0){
+            inAnAttackAnim = true;
+            }
+
+        if(isAttacking && inAnAttackAnim){
+           if(thisEnemyController.attackBuildUp <=0){
+
+            //Debug.LogWarning(thisEnemyProjectiles.name + "Fired");
+            //Debug.LogWarning(transform.position + "Locatiion");
+
+            Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
+            //StartCoroutine(PricklyStrawberryShootBuffer());
+            //Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
+            //StartCoroutine(PricklyStrawberryShootBuffer());
+            //Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
+
+            /*FIXME: Try to make the Prickly Straberry Randomly move while shootingat the player.
+            Vector3 directionAwayFromPlayer = (this.transform.position - thisEnemyController.GetPlayerLastSeenPosition()).normalized * -3;
+            thisEnemyController.agent.SetDestination(directionAwayFromPlayer);
+            StartCoroutine(WaitSeconds(3));
+            */
+
+            StartCoroutine(PricklyStrawberryShootBuffer());
+            
+            inAnAttackAnim = false;
+            thisEnemyController.attackBuildUp = tempAttackBuildupSaved;
+
+            thisEnemyController.thisAgent.isStopped = false;
+
+            isAttacking = false;
+            thisEnemyController.isCurrentlyAttacking = isAttacking;
+
+            }else{
+                thisEnemyController.attackBuildUp -= Time.deltaTime;
+            }
+            }
+            break;
+
+            //END OF PRICKLYSTRAWBERRY'S CUSTOM ATTACK
+            //
+            //
+            //
         
         default:
 
         break;
         }
+    }
+
+    IEnumerator PricklyStrawberryShootBuffer(){
+        yield return new WaitForSeconds(.2f);
     }
 }

@@ -345,7 +345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
       propertyPath: attackRadiusfloat
-      value: 0.35
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
       propertyPath: thisEnemyProjectiles
@@ -427,6 +427,10 @@ PrefabInstance:
     - target: {fileID: 634672868801281034, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
       propertyPath: m_Name
       value: AgroRadius
+      objectReference: {fileID: 0}
+    - target: {fileID: 3657074466630097644, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
+      propertyPath: agroRadiusfloat
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3657074466630097644, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
       propertyPath: thisEnemyAttackRange

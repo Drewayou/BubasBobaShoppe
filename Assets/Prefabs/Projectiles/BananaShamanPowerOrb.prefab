@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4686c776bd94ca548bc95b10ae47e236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 0.1
+  projectileSpeed: 0.05
 --- !u!212 &5126839811710500187
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -115,23 +115,23 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4800
+    m_Bits: 4608
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 256
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 512
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 512
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 512
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 512
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a30d8bc0a27fc5458748f668de9b748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 7
+  lifetime: 10
   destroyChildrenOnDeath: 1
 --- !u!114 &4446476096222681772
 MonoBehaviour:
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisProjectileHealth: 5
-  thisProjectileDamagePoints: 10
+  thisProjectileDamagePoints: 5
   thisHitbox: {fileID: 0}
   playersProjectile: 0
 --- !u!50 &1174603921966293186
@@ -194,7 +194,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 50
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0

@@ -171,6 +171,9 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 case "BananaShaman(Clone)":
                 thisRoundManagerScript.AddBananaMinisThisRound(1);
                 break;
+                case "PricklyStrawberry(Clone)":
+                thisRoundManagerScript.AddStrawberryMinisThisRound(1);
+                break;
             }
         }
     }
