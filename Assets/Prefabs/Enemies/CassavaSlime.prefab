@@ -134,6 +134,7 @@ MonoBehaviour:
   willDropLoot: 0
   gotHitEffect: {fileID: 5114082984778242958, guid: 5ebebda840d7075418632db750a63e3a, type: 3}
   thisSpriteRenderer: {fileID: 0}
+  thisPlayerController: {fileID: 0}
   thisBody: {fileID: 0}
   thisHitbox: {fileID: 0}
   isThisThePlayer: 0
@@ -207,7 +208,7 @@ NavMeshAgent:
   m_Height: 0.2
   m_BaseOffset: 0.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 3
+  m_ObstacleAvoidanceType: 1
 --- !u!50 &7617976633305788983
 Rigidbody2D:
   serializedVersion: 4
@@ -419,6 +420,10 @@ PrefabInstance:
       propertyPath: thisEnemyHealthManager
       value: 
       objectReference: {fileID: 1219988296258408942}
+    - target: {fileID: 3657074466630097644, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
+      propertyPath: desiredMultiplicityPatrolRadius
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

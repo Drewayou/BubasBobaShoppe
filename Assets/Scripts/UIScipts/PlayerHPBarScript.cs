@@ -25,7 +25,7 @@ public class PlayerHPValAndUIScript : MonoBehaviour
     
     Health_Universal thePlayersHealth;
 
-    Player_Controller thePlayersController;
+    GameManagerScript thisOverallGameData;
 
     float playerMaxHealthOverInput;
 
@@ -45,15 +45,16 @@ public class PlayerHPValAndUIScript : MonoBehaviour
         thePlayersHealth = player.GetComponent<Health_Universal>();
         thisUIHealthText = TextObject.GetComponent<TMP_Text>();
         thisUIImage = UIHealthObject.GetComponent<UnityEngine.UI.Image>();
-        thePlayersController = player.GetComponent<Player_Controller>();
 
-        playerMaxHealthOverInput = thePlayersController.getPlayerMaxHealth();
+        //Pull player's currently saved max HP
+        thisOverallGameData = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
+        playerMaxHealthOverInput = thisOverallGameData.ReturnPlayerStats().playerMaxHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        thisUIHealthText.text = thePlayersHealth.health + "/" + thePlayersController.getPlayerMaxHealth().ToString();
+        thisUIHealthText.text = thePlayersHealth.health + "/" + playerMaxHealthOverInput;
         thisUIImage.fillAmount = thePlayersHealth.health / playerMaxHealthOverInput;
     }
 }

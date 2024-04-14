@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using NavMeshPlus.Extensions;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy_AgroRadius : MonoBehaviour
 {
-
     Enemy_Controller thisEnemyController;
 
     [SerializeField]
@@ -21,30 +21,76 @@ public class Enemy_AgroRadius : MonoBehaviour
     [Header("Healthy?")]
     Health_Universal thisEnemyHealthManager;
 
+    //Round manager to set diffiulty of things
+    RoundManagerScript thisRoundManager;
+
+    //Pull level navmesh for patrol purposes
+    public NavMeshData levelNavMesh;
+
     //Bool to use for other script to check if there's agro collision
     public bool isIndeedAgro = false;
     public bool playerIsInAgroRange = false;
+
+    [SerializeField]
+    [Tooltip("Is the enemy ready to patrol in it's agro radius?")]
+    [Header("Patroling")]
+    public bool randomPatrol = false;
+
+    [SerializeField]
+    [Tooltip("A random point in the enemy agro radius they will patrol to")]
+    [Header("Patrol Random Point")]
+    private Vector2 randomPatrolPoint;
+
+    [SerializeField]
+    [Tooltip("How much MORE BIGGER than the AGGRO RADIUS do you want the patrol radius to fire? This will ADD to the Patrol Radius")]
+    [Header("Patrol Radius Multiplier")]
+    public float desiredMultiplicityPatrolRadius = 1;
+
+    [SerializeField]
+    [Tooltip("How long until the enemy would wander to a new point in it's agro range")]
+    [Header("Patrol Timer")]
+    public float enemyFidgetTimerCountdown = 15f;
+
+    public float enemyFidgetTimer;
 
     //Trigger collider radius
     [Header("Agro radius")]
     [Tooltip("Trigger collider for agro radius in float")]
     public float agroRadiusfloat = 2.0f;
 
+    //FOR USE OF HIGHER LEVEL DIFFICULTY.
+    //On lower levels, the chance that the enemy will always be following the player is low... Visa versa as the game progresses!
+    [Header("Locked On Player?")]
+    [Tooltip("Enemy will follow and attack the player no matter how far!")]
+    public bool LockedOnPlayer = false;
+
+    //FIXME: Use level difficulty set by JSON files FOR USE OF HIGHER LEVEL DIFFICULTY. DO NOT set above 25%!!!! Too many navAI's slow down the game performance!
+    //On lower levels, the chance that the enemy will always be following the player is low... Visa versa as the game progresses! This is the value (% * 100 already done)
+    public float lockedOnDifficultyPercentage;
+
     // Start is called before the first frame update
     void Start()
     {
+        thisRoundManager = GameObject.Find("RoundManager").GetComponent<RoundManagerScript>();
+
         //Set up agro radius
         aggroRadius = GetComponent<CircleCollider2D>();
         aggroRadius.radius = agroRadiusfloat;
 
+        //Set enemy controller
         thisEnemyController = GetComponentInParent<Enemy_Controller>();
-        //thisEnemyHealthManager = GetComponentInParent<Health_Universal>();
-        //thisEnemyAttackRange = GetComponent<Enemy_AttackRange>();
+
+
+        //set possibity of this enemy to forever be agro to player
+        lockedOnDifficultyPercentage = thisRoundManager.ProbabilityOfPerpertualPlayerAgro();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(LockedOnPlayer){
+            isIndeedAgro = true;
+        }
         if(isIndeedAgro && !thisEnemyAttackRange.isAttacking){
             thisEnemyController.thisAgent.isStopped = false;
             GameObject targetNewLocation = thisEnemyController.Target;
@@ -56,7 +102,42 @@ public class Enemy_AgroRadius : MonoBehaviour
             //Player'sLastLocation
             //thisEnemyController.agent.isStopped = true;
             }
-        }    
+        }
+
+        //Below BOC is for the enemies to patrol or go to player after a set time. The patrol they will go is set to agroradius * desiredMultiplicityPatrolRadius
+        if(randomPatrol && !isIndeedAgro && !playerIsInAgroRange && !thisEnemyAttackRange.isAttacking){
+
+            //Attempt to perform a patrol
+            float desiredPatrolRadius = aggroRadius.radius + desiredMultiplicityPatrolRadius;
+            randomPatrolPoint = (Vector2)transform.position + (Random.insideUnitCircle * desiredPatrolRadius);
+            if(checkSpawnPointOnNavMesh(randomPatrolPoint)){
+
+                thisEnemyController.SetIsNotFreshlySpawned();
+                thisEnemyController.thisAgent.isStopped = false;
+                thisEnemyController.thisAgent.SetDestination(randomPatrolPoint);
+                randomPatrol = false;
+                enemyFidgetTimer = enemyFidgetTimerCountdown;
+
+                //Attempt to perpetually lock on the player
+                tryForeverAgro();
+            }
+        }
+        else{FidgetyTimer();}
+    }
+
+    public void FidgetyTimer(){
+        if(enemyFidgetTimer>0){
+        enemyFidgetTimer -= Time.deltaTime;
+        }else{
+            randomPatrol = true;
+        }
+    }
+
+    //Below BOC makes it so that by set chance (out of 100%) depending on level difficulty (lockedOnDifficulty), the enemy weill perpetually hunt the player
+    public void tryForeverAgro(){
+        if(UnityEngine.Random.Range(1,100)<=lockedOnDifficultyPercentage){
+            LockedOnPlayer = true;
+        }
     }
 
     private void OnTriggerStay2D(UnityEngine.Collider2D collision){
@@ -84,6 +165,17 @@ public class Enemy_AgroRadius : MonoBehaviour
 
     }
 
+    //Check if a point selected is on the navmesh
+    bool checkSpawnPointOnNavMesh(Vector3 randomPointSelected)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPointSelected, out hit, aggroRadius.radius, NavMesh.AllAreas))
+        {
+            return true;
+        }
+        return false;
+    }
+
     private void OnTriggerExit2D(UnityEngine.Collider2D collision)
     {
         //Debug.Log("PlayerLeftAgroRangeOfSlime!");
@@ -100,6 +192,10 @@ public class Enemy_AgroRadius : MonoBehaviour
         }
         
 
+    }
+
+    IEnumerator doPatrol(){
+        yield return new WaitForSeconds(7.5f);
     }
 
     public bool CheckIfAgro(){

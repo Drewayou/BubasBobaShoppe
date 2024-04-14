@@ -51,6 +51,8 @@ public class Health_Universal : MonoBehaviour, IDamageable
     private GameObject thisRoundCalculatorObject;
     private RoundManagerScript thisRoundManagerScript;
 
+    private GameManagerScript thisGlobalGameManager;
+
     [SerializeField]
     public Player_Controller thisPlayerController;
 
@@ -101,9 +103,14 @@ public class Health_Universal : MonoBehaviour, IDamageable
     */
     private bool amITakingDamage = false;
 
+    //This values below are only in use IF&OIF this is the player and there's lives remaining
+    private bool playerReviving = false;
+    private float timeForRevive = 5f;
+
     // Start is called before the first frame update
     void Start()
     {
+        thisGlobalGameManager = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
         //Set up round manager script and record this enemy instance
         thisRoundCalculatorObject = GameObject.Find("RoundManager");
         thisRoundManagerScript = thisRoundCalculatorObject.GetComponent<RoundManagerScript>();
@@ -116,7 +123,12 @@ public class Health_Universal : MonoBehaviour, IDamageable
         colorChangeVelocity = Color.white - thisSpriteRenderer.material.color; 
         tempColorChangetime = tempInvTime;
 
+        //If this is an enemy, set up the navmesh, else set up HP
+        if(!isThisThePlayer){
         thisAgent = GetComponent<NavMeshAgent>();
+        }else{
+            health = thisGlobalGameManager.ReturnPlayerStats().playerMaxHealth;
+        }
     }
 
     // Update is called once per frame
@@ -124,7 +136,44 @@ public class Health_Universal : MonoBehaviour, IDamageable
     {
         stillAliveChecker();
         resetNormalSpriteColor(thisSpriteRenderer.material.color);
+        RevivingPlayer(playerReviving);
     }
+
+    void stillAliveChecker(){
+
+
+        //Enemy death condition
+        if(!isThisThePlayer && health <= 0){
+            amIDeadYet = true;
+            commitDeath();
+        }
+
+        if(isThisThePlayer && health <= 0 && thisRoundManagerScript.ReturnPlayerLives() > 0){
+            playerReviving = true;
+        }
+        
+        //Player death condition no more lives
+        if(!playerReviving && isThisThePlayer && thisRoundManagerScript.ReturnPlayerLives() == 0){
+            thisRoundManagerScript.endTheRoundDueToDeath();
+        }
+    }
+
+    private void RevivingPlayer(bool playerHadDied){
+        //FIXME: Player death condition but lives remain 
+        if(playerHadDied){
+            float tempTimeForRevive = timeForRevive; 
+            if(tempTimeForRevive > 0 & health < thisGlobalGameManager.ReturnPlayerStats().playerMaxHealth){
+                timeForRevive -= Time.deltaTime;
+                isInvulnerable = true;
+                health += 5;
+            }else{
+                thisRoundManagerScript.TakePlayerLives();
+                isInvulnerable = false;
+                playerReviving = false;
+            }
+        }
+    }
+
 
     void commitDeath(){
             
@@ -135,6 +184,9 @@ public class Health_Universal : MonoBehaviour, IDamageable
         //NOTE: You NEED to implement this codeblock for sfx!
         locationUponDeath = new Vector2(transform.position.x, transform.position.y);
 
+        //Tell the round manager an enemy was killed to make room for spawn cap!
+        thisRoundManagerScript.EnemyKilled();
+
         DropLoot(willDropLoot);
 
         Instantiate(deathEffect, locationUponDeath, Quaternion.identity);
@@ -142,19 +194,6 @@ public class Health_Universal : MonoBehaviour, IDamageable
         DestroyNDetachChildren();
 
         Destroy(this.gameObject);
-        
-
-        
-    }
-
-    void stillAliveChecker(){
-
-        if(health <= 0){
-            
-            amIDeadYet = true;
-            commitDeath();
-
-        }
 
     }
 

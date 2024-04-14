@@ -23,8 +23,13 @@ public class RoundManagerScript : MonoBehaviour
     //Spawnrates and spawners pulled from WorldState, which in turn is pulled from the GameManager.
     private WorldState whichWorldWasSelected;
 
+    private string nameOfThisWorldSelected;
+
     //Drink rate demands DrinkMultiplierScripts, which in turn is pulled from the GameManager.
     private DrinkMultiplierScripts whatDrinksArePopular;
+
+    //The stats of this players shop is pulled from the GameManager.
+    private ShopCostsNEarnings playersCurrentShopStats;
 
     //The Game's In-GameUI object to use / move during / after the game has ended.
     [SerializeField]
@@ -49,7 +54,7 @@ public class RoundManagerScript : MonoBehaviour
     [Header("Endof-RoundUITextObjects")]
     [Tooltip("Put the game's End-Of-RoundUI TextObjects to update at the end")]
     TMP_Text OolongDemandTxt, OolongSoldTxt, PandanDemandTxt, PandanSoldTxt, BananaDemandTxt, BananaSoldTxt,
-    StrawberryDemandTxt, StrawberrySoldTxt, MangoDemandTxt, MangoSoldTxt, UbeDemandTxt, UbeSoldTxt, TotalNewGoldTxt;
+    StrawberryDemandTxt, StrawberrySoldTxt, MangoDemandTxt, MangoSoldTxt, UbeDemandTxt, UbeSoldTxt, ShopLevelNMultiplier, TotalNewGoldTxt;
 
     //FIXME private bool roundIsOver = false;
 
@@ -76,10 +81,44 @@ public class RoundManagerScript : MonoBehaviour
     //Player Increased coind value by how much this round?
     public float playerEarnedCoins = 0f;
 
+    //FIXME: These are connected to the Spawner scripts, enemy agro, ect. To manage the difficulty of the round. Should be modulated by a "level difficulty" method!
+    //The int should be pulled by the GAMEMANAGER script!
+    public int levelDifficulty;
+
+    //The chance for enemies to seek out the player no matter if in range or not
+    public float playerPerpetualAgroChance;
+
+    //Possible spawned spawners 
+    public float chanceOfSlime, chanceOfPandan, chanceOfBanana, chanceOfStrawberry, chanceOfMango, chanceOfUbe;
+
+    //Set how many spawners active if not destroyed (Note there will ALWAYS be at least 2, one slime cave and 1 clogged ley line that'll spawn on possible points)
+    private int spawnersActiveThisRound;
+
+    //Is there a boss? If so set these variables
+    bool isBossInLevel, isBossDefeated;
+
+    int bossHealth;
+
+    //Will be invoked if the player died and is coming back via a life spent
+    bool playerRegnsingHealth;
+
+    //Saves current enemies in the round
+    [Header("SpawnedEnemies")]
+    [Tooltip("Used count how many enemies are spawned in the world currently. Does not record any enemies pre-placed into the world!")]
+    public int enemiesSpawned = 0;
+
+    //Saves spawn cap for the round set by level difficulty
+    [Header("SpawnCap")]
+    [Tooltip("Used manage how many enemies are spawned. Does not record any enemies pre-placed into the world!")]
+    public int spawnCap;
+
+    //NOTE : Player ALWAYS starts with 3 lives!
+    public int playerLives;
+
     // Start is called before the first frame update.
     void Start()
     {
-        //FIXME: ADD THE SETTING OF VALUES FROM THE OVERALLGAME MANAGER (Hint this may be from the JSON serialization of scriptableobject Gamemanager Script?)
+        playerLives = 3;
         overallGameManager = GameObject.Find("GameManagerObject");
         thisGamesOverallInstance = overallGameManager.GetComponent<GameManagerScript>();
 
@@ -91,23 +130,42 @@ public class RoundManagerScript : MonoBehaviour
         //LOC to pull animator objects of these UI's for proper use/view/animations
         inGameUIAnimator = inGameUIObject.GetComponentInChildren<Animator>();
         EndOfRoundUIAnimator = EndOfRoundUIObject.GetComponentInChildren <Animator>();
-    
-        //FIXME: 
-        
-        //Check which world the player selected to go to. If default, set to world 1.
-       
-        //Debug.LogWarning(thisGamesOverallInstance.ReturnWorldSelected(worldSelected));
 
+        //Set and save this world's instances
         whichWorldWasSelected = thisGamesOverallInstance.ReturnWorldSelectedViaRound();
+
+        nameOfThisWorldSelected = whichWorldWasSelected.WorldName;
+        levelDifficulty = whichWorldWasSelected.LevelDifficulty;
+        spawnersActiveThisRound = whichWorldWasSelected.SpawnersAlive;
+
+        //FIXME: You need to use these settings to set the spawner rates / chances per level
+        //Set spawner rates and chances
+        chanceOfSlime = whichWorldWasSelected.chanceOfSlime;
+        chanceOfPandan = whichWorldWasSelected.chanceOfPandan;
+        chanceOfBanana = whichWorldWasSelected.chanceOfBanana;
+        chanceOfStrawberry = whichWorldWasSelected.chanceOfStrawberry;
+        chanceOfMango = whichWorldWasSelected. chanceOfMango;
+        chanceOfUbe = whichWorldWasSelected.chanceOfUbe;
+
+        //Set boss settings in the world if present
+        if(whichWorldWasSelected.isThereABoss){
+            isBossInLevel = whichWorldWasSelected.isThereABoss;
+            isBossDefeated = whichWorldWasSelected.bossDefeated;
+            bossHealth = whichWorldWasSelected.bossHP;
+        }
 
         //Get the drink demand from this game's manager and apply them to this round
         whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();
         UpdateThisRoundDrinksDemand();
 
+        //Setworld difficulty settings 
+        setLevelDifficultySettings(levelDifficulty);
+
         //Start the round timer and make sure the timescale is set to 1. Moreover, make sure this round is over bool is not true.
         //FIXME:roundIsOver = false;
         roundTimer = 0f;
         Time.timeScale = 1;
+        
     }
 
     // Update is called once per frame
@@ -122,6 +180,57 @@ public class RoundManagerScript : MonoBehaviour
 
     public float getRoundTime(){
         return roundTimer;
+    }
+
+    void setLevelDifficultySettings(int levelDifficultyFromGameManager){
+        switch(levelDifficultyFromGameManager){
+
+            case 1:
+                spawnCap = 40;
+                playerPerpetualAgroChance = 2.5f;
+            break;
+                
+            case 2:
+                spawnCap = 55;
+                playerPerpetualAgroChance = 5f;
+            break;
+
+            case 3:
+                spawnCap = 60;
+                playerPerpetualAgroChance = 10f;
+            break;
+
+            case 4:
+                spawnCap = 75;
+                playerPerpetualAgroChance = 25f;
+            break;
+
+            default:
+                spawnCap = 100;
+            break;
+        }
+    }
+
+    //For used by spawner scripts to keep track of how many enemies killed this round
+    public void EnemyKilled(){
+        enemiesSpawned -= 1;
+    }
+
+    //For used by spawner scripts to keep track of how many enemies are in this round
+    public void EnemySpawned(){
+        enemiesSpawned += 1;
+    }
+
+    public bool CheckIfSpawnCapIsReached(){
+        if(enemiesSpawned > spawnCap){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public float ProbabilityOfPerpertualPlayerAgro(){
+        return playerPerpetualAgroChance;
     }
 
     //Setter Methods for this round resources used in other scripts.
@@ -235,9 +344,9 @@ public class RoundManagerScript : MonoBehaviour
         }
 
         //Actually calculate the ammount of coin the user gained this round.
-
-        playerEarnedCoins = (oolongSold * oolongMultiplier) + (PandanSold * PandanMultiplier) + 
-        (BananaSold * BananaMultiplier) + (StrawberrySold * StrawberryMultiplier) + (MangoSold * MangoMultiplier) + (UbeSold * UbeMultiplier);
+        //Math goes like this = Player shop multiplier * (Total drinks sold * Their Multipliers)
+        playerEarnedCoins = thisGamesOverallInstance.ReturnPlayerShopCoinMultiplier() * ((oolongSold * oolongMultiplier) + (PandanSold * PandanMultiplier) + 
+        (BananaSold * BananaMultiplier) + (StrawberrySold * StrawberryMultiplier) + (MangoSold * MangoMultiplier) + (UbeSold * UbeMultiplier));
 
         Debug.Log(playerEarnedCoins);
     }
@@ -300,6 +409,8 @@ public class RoundManagerScript : MonoBehaviour
         MangoSoldTxt.text = "x" +MangoSold.ToString(); 
         UbeDemandTxt.text = UbeMultiplier.ToString("F2"); 
         UbeSoldTxt.text = "x" +UbeSold.ToString();
+        ShopLevelNMultiplier.text = "Lvl" +thisGamesOverallInstance.ReturnCurrentShopInstance().shopLevelAt.ToString() 
+        + " x " +thisGamesOverallInstance.ReturnCurrentShopInstance().playerShopDrinkSellAmmount.ToString("F2");
         TotalNewGoldTxt.text = playerEarnedCoins.ToString();
     }
 
@@ -331,6 +442,73 @@ public class RoundManagerScript : MonoBehaviour
         UpdateEndRoundUI();
     }
 
+    //FIXME: Will be called if the round is ended via the pause menu - you have yet to connect this to the main menu
+    public void endTheRoundEarly(){
+
+        //Enable end of game UI
+        EndOfRoundUIObject.SetActive(true);
+        
+        //FIXME: make custom early round end UI & animations
+        inGameUIAnimator.Play("EndOfGameMoveOutOfTheWay");
+        EndOfRoundUIAnimator.Play("MoveInEndOfRoundUI");
+
+        //Used to freeze game and MOSTLY everything
+        Time.timeScale = 0;
+
+        //FIXME: use this second variable incase of other scripts still running after Time.timescale = 0
+        //FIXME: roundIsOver = true;
+
+        //Turn off other UI after these many seconds
+        StartCoroutine(TurnOffInGameUIAfterNSeconds(5f));
+
+        //Use RNG and other values from the round start pulled via "getRoundSettingData()";
+        CalculateEndOfRoundScoreYields();
+
+        //Update End of Round UI
+        UpdateEndRoundUI();
+    }
+
+    //FIXME: Will be called if the round is ended via players lives being all taken. - You have yet to test this out.
+    public void endTheRoundDueToDeath(){
+
+        //Enable end of game UI
+        EndOfRoundUIObject.SetActive(true);
+        
+        //FIXME: make custom death UI & animations Morescript to pull end of game UI
+        inGameUIAnimator.Play("EndOfGameMoveOutOfTheWay");
+        EndOfRoundUIAnimator.Play("MoveInEndOfRoundUI");
+
+        //Used to freeze game and MOSTLY everything
+        Time.timeScale = 0;
+
+        //FIXME: use this second variable incase of other scripts still running after Time.timescale = 0
+        //FIXME: roundIsOver = true;
+
+        //Turn off other UI after these many seconds
+        StartCoroutine(TurnOffInGameUIAfterNSeconds(5f));
+
+        //Use RNG and other values from the round start pulled via "getRoundSettingData()";
+        CalculateEndOfRoundScoreYields();
+
+        ///
+        ///NOTE: MAKE AN IN-GAME UI THT SHOWS THIS /2 PENALTY OF COINS EARNED DUE TO PLAYER DEATH
+        ///
+        playerEarnedCoins /= 2;
+
+        //Update End of Round UI
+        UpdateEndRoundUI();
+    }
+
+    //Below is to activate by Uni_Health to take a player life away upon hp = 0
+    public void TakePlayerLives(){
+        playerLives -= 1;
+    }
+
+     //Below is to activate by Uni_Health to check if the player is actually dead
+    public int ReturnPlayerLives(){
+        return playerLives;
+    }
+
     //This will be connected to the button for the "Continue" at the end of game UI.
     public void saveBeforeContinuingBackToMainMenuButton(){
 
@@ -346,7 +524,6 @@ public class RoundManagerScript : MonoBehaviour
         //Save new states
         thisGamesOverallInstance.SaveGameAfterRound(whichWorldWasSelected);
     }
-    
 
     //FIXME: Make the method to pull scripts / data rom JSON serialized object? This is for the current round level, spawner settings / availability, etc.
     /* public void getRoundSettingData(){

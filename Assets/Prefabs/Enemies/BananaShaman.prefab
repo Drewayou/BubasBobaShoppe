@@ -208,7 +208,7 @@ NavMeshAgent:
   m_Height: 0.2
   m_BaseOffset: 0.1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 3
+  m_ObstacleAvoidanceType: 1
 --- !u!50 &7617976633305788983
 Rigidbody2D:
   serializedVersion: 4
@@ -434,6 +434,10 @@ PrefabInstance:
       propertyPath: thisEnemyAttackRange
       value: 
       objectReference: {fileID: 6017022953670711960}
+    - target: {fileID: 3657074466630097644, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
+      propertyPath: desiredMultiplicityPatrolRadius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6741974451774090629, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
       propertyPath: m_Radius
       value: 3

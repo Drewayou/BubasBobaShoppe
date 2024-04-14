@@ -6,8 +6,7 @@ using UnityEngine.AI;
 
 public class Spawner_Scripts : MonoBehaviour
 {
-
-    //Where to put clone
+    //Where to put clones of enemy prefabs
     [SerializeField]
     [Header("EnemiesOfLevel")]
     [Tooltip("Where to put gameobject in hirarchy for level")]
@@ -38,6 +37,9 @@ public class Spawner_Scripts : MonoBehaviour
 
     private Spawner_Player_Sensor attatchedPlayerSensor;
 
+    // This round's level setting
+    private RoundManagerScript thisRoundsSettings;
+
 
 /// <summary>
 /// Use below settings to set via other game objects / Game manager object
@@ -63,7 +65,7 @@ public class Spawner_Scripts : MonoBehaviour
 
     Vector2 spawnPointEnemeyHere;
 
-    private bool playerNearSpawner = false, canSpawnEnemyTimerDone = true, levelOverpopulated = false, boostedSpawnRate = false;
+    private bool playerNearSpawner = false, canSpawnEnemyTimerDone = true, boostedSpawnRate = false;
 
     // Start is called before the first frame update
     void Start()
@@ -78,21 +80,19 @@ public class Spawner_Scripts : MonoBehaviour
         thisSpawnerAnimator.Play("SpawnerReactivate");
 
         attatchedPlayerSensor = GetComponentInChildren<Spawner_Player_Sensor>();
+
+        //Get the round manager to set the settings of this spawner
+        thisRoundsSettings = GameObject.Find("RoundManager").GetComponent<RoundManagerScript>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        //FIXME:
-        //NEED TO CHECK ROUND MANAGER FOR HOW MANY MONSTERS ARE PRESENT
-        //checkLevelPopulation():
-
         //Count down timer to next spawn of this spawner
         tickDownSpawnTimer();
 
         //Spawn monsters if this spawner can
-        if(!levelOverpopulated && !playerNearSpawner && canSpawnEnemyTimerDone){
+        if(!IsLevelOverPopulated() && !playerNearSpawner && canSpawnEnemyTimerDone){
             //Debug.LogWarning("Spawning Slime");
             trySpawn();
         }
@@ -105,39 +105,19 @@ public class Spawner_Scripts : MonoBehaviour
 
     }
 
+    public bool IsLevelOverPopulated(){
+        if(thisRoundsSettings.CheckIfSpawnCapIsReached()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     void tickDownSpawnTimer(){
         if(timeleftToSpawnNextEnemy>=0){
             timeleftToSpawnNextEnemy -= Time.deltaTime;
         }else{
             canSpawnEnemyTimerDone = true;
-        }
-    }
-
-    //FIXME:
-    // Future method to set spawner strength
-
-    void setSpawnerStrength(int levelOfSpawner){
-        switch(levelOfSpawner){
-
-            case 1:
-
-            break;
-
-            case 2:
-
-            break;
-
-            case 3:
-
-            break;
-
-            case 4:
-
-            break;
-
-            default:
-
-            break;
         }
     }
 
@@ -151,6 +131,8 @@ public class Spawner_Scripts : MonoBehaviour
 
             resetSpawnTimer();
             canSpawnEnemyTimerDone = false;
+
+            thisRoundsSettings.EnemySpawned();
         };
 
     }
