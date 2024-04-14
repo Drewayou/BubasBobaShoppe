@@ -23,6 +23,9 @@ public class RoundManagerScript : MonoBehaviour
     //Spawnrates and spawners pulled from WorldState, which in turn is pulled from the GameManager.
     private WorldState whichWorldWasSelected;
 
+    //Drink rate demands DrinkMultiplierScripts, which in turn is pulled from the GameManager.
+    private DrinkMultiplierScripts whatDrinksArePopular;
+
     //The Game's In-GameUI object to use / move during / after the game has ended.
     [SerializeField]
     [Header("In-GameUIObject")]
@@ -66,7 +69,7 @@ public class RoundManagerScript : MonoBehaviour
     private int oolongSold = 0, PandanSold = 0, BananaSold = 0,
     StrawberrySold = 0, MangoSold = 0, UbeSold = 0;
 
-    //FIXME: ValuesOfEachDrinkSetPre-round by Overall Game Manager in pre-round UI and RNG.
+    //ValuesOfEachDrinkSetPre-round by Overall Game Manager in pre-round UI and RNG.
     private float oolongMultiplier = 1.0f, PandanMultiplier = 1.0f, BananaMultiplier = 1.0f,
     StrawberryMultiplier = 1.0f, MangoMultiplier = 1.0f, UbeMultiplier = 1.0f;
 
@@ -96,7 +99,10 @@ public class RoundManagerScript : MonoBehaviour
         //Debug.LogWarning(thisGamesOverallInstance.ReturnWorldSelected(worldSelected));
 
         whichWorldWasSelected = thisGamesOverallInstance.ReturnWorldSelectedViaRound();
-        
+
+        //Get the drink demand from this game's manager and apply them to this round
+        whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();
+        UpdateThisRoundDrinksDemand();
 
         //Start the round timer and make sure the timescale is set to 1. Moreover, make sure this round is over bool is not true.
         //FIXME:roundIsOver = false;
@@ -272,6 +278,15 @@ public class RoundManagerScript : MonoBehaviour
         }
     }
 
+    private void UpdateThisRoundDrinksDemand(){
+        oolongMultiplier = whatDrinksArePopular.OolongMultiplier;
+        PandanMultiplier = whatDrinksArePopular.PandanMultiplier;
+        BananaMultiplier = whatDrinksArePopular.BananaMultiplier;
+        StrawberryMultiplier = whatDrinksArePopular.StrawberryMultiplier;
+        MangoMultiplier = whatDrinksArePopular.MangoMultiplier;
+        UbeMultiplier = whatDrinksArePopular.UbeMultiplier;
+    }
+
     private void UpdateEndRoundUI(){
         OolongDemandTxt.text = oolongMultiplier.ToString("F2");
         OolongSoldTxt.text = "x" +oolongSold.ToString(); 
@@ -319,11 +334,14 @@ public class RoundManagerScript : MonoBehaviour
     //This will be connected to the button for the "Continue" at the end of game UI.
     public void saveBeforeContinuingBackToMainMenuButton(){
 
+        //Update overall coin stats
+        thisGamesOverallInstance.UpdatePlayerCoinStats((int)playerEarnedCoins);
+
         //Call GameManager to change spawn rates for next round
         thisGamesOverallInstance.SetNewWorldSpawnRatesState(whichWorldWasSelected);
 
-        //Update overall coin stats
-        thisGamesOverallInstance.updatePlayerCoinStats((int)playerEarnedCoins);
+        //Call GameManager to change drink demand rates for next round
+        thisGamesOverallInstance.SetNewDrinkDemandRates(whatDrinksArePopular);
 
         //Save new states
         thisGamesOverallInstance.SaveGameAfterRound(whichWorldWasSelected);

@@ -10,14 +10,16 @@ using System.Threading;
 
 public class GameManagerScript : MonoBehaviour
 {
-    //FIXME: Public Temp var for each world. This may need to be a Singleton!
+    //FIXME: Public Temp var for each world.
     [SerializeField]
     [Header("Which world is this?")]
     [Tooltip("Set this to the number of what world this manager is attached to!")]
     public int worldOfRound;
 
     //Set all JSON to the default base.
-    private PlayerDataJson PlayerStats = new PlayerDataJson();
+    private PlayerDataJson playerStats = new PlayerDataJson();
+
+    private ShopCostsNEarnings ShopData = new ShopCostsNEarnings();
     private WorldState world1 = new WorldState();
     private WorldState world2 = new WorldState();
     private WorldState world3 = new WorldState();
@@ -30,7 +32,11 @@ public class GameManagerScript : MonoBehaviour
 
     //Set all JSON to the default base.
     private PlayerDataJson PlayerStatsThisInstance = new PlayerDataJson();
+    private ShopCostsNEarnings thisInstanceOfPlayerShop = new ShopCostsNEarnings();
     private WorldState worldInstance = new WorldState();
+
+    //FIXME: TempVars for the MAXIMUM stats a player can grind to in this game
+    private int MaxHealthEverThisGame = 100, MaxStaminaEverThisGame = 20, MaxAttackEverThisGame = 20;
 
     /// <summary>
     /// FIXME: will implement encryption in the future
@@ -39,8 +45,12 @@ public class GameManagerScript : MonoBehaviour
 
     //Set which world is this from current instance and saves
     void Start(){
-        whichWorldIsThis(worldOfRound);
+        WhichWorldIsThis(worldOfRound);
         ContinueGame();
+    }
+
+    void Update(){
+        
     }
     
     /// <summary>
@@ -66,12 +76,15 @@ public class GameManagerScript : MonoBehaviour
         
         try
         {
-            DataService.SaveData("/alalaa/PlayerStats.json", PlayerStats, EncryptionEnabled);
+            DataService.SaveData("/alalaa/PlayerStats.json", playerStats, EncryptionEnabled);
+            DataService.SaveData("/alalaa/PlayerShopData.json", ShopData, EncryptionEnabled);
             DataService.SaveData("/alalaa/World1Stats.json", world1, EncryptionEnabled);
             DataService.SaveData("/alalaa/World2Stats.json", world2, EncryptionEnabled);
             DataService.SaveData("/alalaa/World3Stats.json", world3, EncryptionEnabled);
             DataService.SaveData("/alalaa/World4Stats.json", world4, EncryptionEnabled);
             DataService.SaveData("/alalaa/CassavaCastleStats.json", cassavaBossLevel, EncryptionEnabled);
+            DataService.SaveData("/alalaa/DrinkMultiplier.json", drinkMultiplier, EncryptionEnabled);
+
         }
         catch (Exception e)
         {
@@ -93,6 +106,22 @@ public class GameManagerScript : MonoBehaviour
 
         Debug.LogWarning("Setting Default World Settings...");
 
+        //Player default settings
+        playerStats.playerMaxHealth = 15;
+        playerStats.playerMaxStamina = 10f;
+        playerStats.playerAttackPoints = 5;
+
+        //Shop default settings
+        ShopData.shopLevelAt = 1;
+        ShopData.playerShopDrinkSellAmmount = 1.0f;
+        ShopData.shopLevelUpCost = 100;
+        ShopData.shopPlayerHPUpCost = 100;
+        ShopData.shopPlayerAttackUpCost = 100;
+        ShopData.shopPlayerStaminaUpCost = 100;
+        ShopData.world2Cost = 200;
+        ShopData.world3Cost = 300;
+        ShopData.world4Cost = 400;
+
         //Basic world settings
         world1.WorldName = "PandanForest";
         world1.SpawnersAlive = 3;
@@ -104,37 +133,37 @@ public class GameManagerScript : MonoBehaviour
         world1.chanceOfMango = 0f;
         world1.chanceOfUbe = 0f;
 
-        world1.WorldName = "PricklyDesert";
-        world1.SpawnersAlive = 3;
-        world1.LevelDifficulty = 1;
-        world1.chanceOfSlime = .25f;
-        world1.chanceOfPandan = 0f;
-        world1.chanceOfBanana = .25f;
-        world1.chanceOfStrawberry = .25f;
-        world1.chanceOfMango = 0f;
-        world1.chanceOfUbe = 0f;
+        world2.WorldName = "PricklyDesert";
+        world2.SpawnersAlive = 3;
+        world2.LevelDifficulty = 1;
+        world2.chanceOfSlime = .25f;
+        world2.chanceOfPandan = 0f;
+        world2.chanceOfBanana = .25f;
+        world2.chanceOfStrawberry = .25f;
+        world2.chanceOfMango = 0f;
+        world2.chanceOfUbe = 0f;
 
-        world1.WorldName = "MarshMellows";
-        world1.SpawnersAlive = 3;
-        world1.LevelDifficulty = 1;
-        world1.chanceOfSlime = 0f;
-        world1.chanceOfPandan = .20f;
-        world1.chanceOfBanana = .30f;
-        world1.chanceOfStrawberry = 0f;
-        world1.chanceOfMango = .50f;
-        world1.chanceOfUbe = 0f;
+        world3.WorldName = "MarshMellows";
+        world3.SpawnersAlive = 3;
+        world3.LevelDifficulty = 1;
+        world3.chanceOfSlime = 0f;
+        world3.chanceOfPandan = .20f;
+        world3.chanceOfBanana = .30f;
+        world3.chanceOfStrawberry = 0f;
+        world3.chanceOfMango = .50f;
+        world3.chanceOfUbe = 0f;
 
-        world1.WorldName = "PandanForest";
-        world1.SpawnersAlive = 3;
-        world1.LevelDifficulty = 1;
-        world1.chanceOfSlime = .30f;
-        world1.chanceOfPandan = .25f;
-        world1.chanceOfBanana = 0f;
-        world1.chanceOfStrawberry = .20f;
-        world1.chanceOfMango = 0f;
-        world1.chanceOfUbe = .20f;
+        world4.WorldName = "PandanForest";
+        world4.SpawnersAlive = 3;
+        world4.LevelDifficulty = 1;
+        world4.chanceOfSlime = .30f;
+        world4.chanceOfPandan = .25f;
+        world4.chanceOfBanana = 0f;
+        world4.chanceOfStrawberry = .20f;
+        world4.chanceOfMango = 0f;
+        world4.chanceOfUbe = .20f;
 
-        //Drink multiplier
+        //Defualt Drink multiplier
         drinkMultiplier.OolongMultiplier = 1.00f;
         drinkMultiplier.PandanMultiplier = 1.50f;
         drinkMultiplier.BananaMultiplier = 2.00f;
@@ -142,7 +171,7 @@ public class GameManagerScript : MonoBehaviour
         drinkMultiplier.MangoMultiplier = 3.00f;
         drinkMultiplier.UbeMultiplier = 3.00f;
 
-        //Basic boss level
+        //Defualt Basic boss level
         cassavaBossLevel.WorldName = "CassavaCastle";
         cassavaBossLevel.isThereABoss = true;
     }
@@ -154,11 +183,16 @@ public class GameManagerScript : MonoBehaviour
             try
             {
                 PlayerStatsThisInstance = DataService.LoadData<PlayerDataJson>("/alalaa/PlayerStats.json", EncryptionEnabled);
+                thisInstanceOfPlayerShop = DataService.LoadData<ShopCostsNEarnings>("/alalaa/PlayerShopData.json", EncryptionEnabled);
+                //FIXME: Unsure if code below should even be called
+                /*
                 world1 = DataService.LoadData<WorldState>("/alalaa/World1Stats.json", EncryptionEnabled);
                 world2 = DataService.LoadData<WorldState>("/alalaa/World2Stats.json", EncryptionEnabled);
                 world3 = DataService.LoadData<WorldState>("/alalaa/World3Stats.json", EncryptionEnabled);
                 world4 = DataService.LoadData<WorldState>("/alalaa/World4Stats.json", EncryptionEnabled);
                 cassavaBossLevel = DataService.LoadData<WorldState>("/alalaa/CassavaCastleStats.json", EncryptionEnabled);
+                */
+                drinkMultiplier = DataService.LoadData<DrinkMultiplierScripts>("/alalaa/DrinkMultiplier.json", EncryptionEnabled);
             }
             catch (Exception e)
             {
@@ -178,12 +212,16 @@ public class GameManagerScript : MonoBehaviour
         {
             try
             {
+                //FIXME: Unsure if code below should even be called
+                /*
                 DataService.SaveData("/alalaa/PlayerStats.json", PlayerStatsThisInstance, EncryptionEnabled);
                 DataService.SaveData("/alalaa/World1Stats.json", world1, EncryptionEnabled);
                 DataService.SaveData("/alalaa/World2Stats.json", world2, EncryptionEnabled);
                 DataService.SaveData("/alalaa/World3Stats.json", world3, EncryptionEnabled);
                 DataService.SaveData("/alalaa/World4Stats.json", world4, EncryptionEnabled);
                 DataService.SaveData("/alalaa/CassavaCastleStats.json", cassavaBossLevel, EncryptionEnabled);
+                DataService.SaveData("/alalaa/DrinkMultiplier.json", drinkMultiplier, EncryptionEnabled);
+                */
             }
             catch (Exception e)
             {
@@ -206,6 +244,28 @@ public class GameManagerScript : MonoBehaviour
                 DataService.SaveData("/alalaa/PlayerStats.json", PlayerStatsThisInstance, EncryptionEnabled);
                 DataService.SaveData("/alalaa" + ReturnThisRoundInstanceWorldPath(worldSelected), ReturnWorldStateSelected(worldSelected), EncryptionEnabled);
                 DataService.SaveData("/alalaa/CassavaCastleStats.json", cassavaBossLevel, EncryptionEnabled);
+                DataService.SaveData("/alalaa/DrinkMultiplier.json", drinkMultiplier, EncryptionEnabled);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Couldn't find files! Game Dev has yet to understand why! (Sorry :<) \n Error:" + e);
+            }
+        }
+        else
+        {
+            Debug.LogError("Could not save game! Files cannot be found! Game Dev has yet to understand why! (Sorry :<)");
+        }
+    }
+
+    //Call this save update after the player sucessfully purchases something from the shop
+    public void SaveShopAndPlayerDataAfterPurchase(ShopCostsNEarnings anInstanceOfShop, PlayerDataJson anInstanceOfPlayer){
+        string path = Application.persistentDataPath + "/alalaa";
+        if (File.Exists(path + "/PlayerShopData.json"))
+        {
+            try
+            {
+                DataService.SaveData("/alalaa/PlayerShopData.json", anInstanceOfShop, EncryptionEnabled);
+                DataService.SaveData("/alalaa/PlayerStats.json", anInstanceOfPlayer, EncryptionEnabled);
             }
             catch (Exception e)
             {
@@ -291,6 +351,64 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    public void SetNewDrinkDemandRates(DrinkMultiplierScripts drinkMultiplier){
+
+        int selectedDrinkDemandToIncreaseSpawn = UnityEngine.Random.Range(0,5);
+        int selectedDrinkDemandToDecreaseSpawn = UnityEngine.Random.Range(0,5);
+
+        switch(selectedDrinkDemandToIncreaseSpawn){
+            case 0:
+            drinkMultiplier.OolongMultiplier -= 0.10f;
+            break;
+
+            case 1:
+            drinkMultiplier.PandanMultiplier -= 0.10f;
+            break;
+
+            case 2:
+            drinkMultiplier.BananaMultiplier -= 0.10f;
+            break;
+    
+            case 3:
+            drinkMultiplier.StrawberryMultiplier -= 0.10f;
+            break;
+
+            case 4:
+            drinkMultiplier.MangoMultiplier -= 0.10f;
+            break;
+
+            case 5:
+            drinkMultiplier.UbeMultiplier -= 0.10f;
+            break;
+        }
+
+        switch(selectedDrinkDemandToDecreaseSpawn){
+            case 0:
+            drinkMultiplier.OolongMultiplier += 0.10f;
+            break;
+
+            case 1:
+            drinkMultiplier.PandanMultiplier += 0.10f;
+            break;
+
+            case 2:
+            drinkMultiplier.BananaMultiplier += 0.10f;
+            break;
+    
+            case 3:
+            drinkMultiplier.StrawberryMultiplier += 0.10f;
+            break;
+
+            case 4:
+            drinkMultiplier.MangoMultiplier += 0.10f;
+            break;
+
+            case 5:
+            drinkMultiplier.UbeMultiplier += 0.10f;
+            break;
+        }
+    }
+
     public PlayerDataJson ReturnStatsOfThisPlayer(){
         return PlayerStatsThisInstance;
     }
@@ -341,7 +459,7 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    public void whichWorldIsThis(int whichWorldIsThisSetting){
+    public void WhichWorldIsThis(int whichWorldIsThisSetting){
         switch(whichWorldIsThisSetting){
             case 1:
             setWorldInstanceToWorld1();
@@ -422,23 +540,53 @@ public class GameManagerScript : MonoBehaviour
         return cassavaBossLevel;
     }
 
-    public void updateHPStatsOfThisPlayer(int additionalHP){
+    public void UpdateHPStatsOfThisPlayer(int additionalHP){
         PlayerStatsThisInstance.playerMaxHealth += additionalHP;
     }
 
-    public void updateStaminaStatsOfThisPlayer(float additionalStamina){
+    public void UpdateStaminaStatsOfThisPlayer(float additionalStamina){
         PlayerStatsThisInstance.playerMaxStamina += additionalStamina;
     }
 
-    public void updateAttackStatsOfThisPlayer(int additionalAttack){
+    public void UpdateAttackStatsOfThisPlayer(int additionalAttack){
         PlayerStatsThisInstance.playerAttackPoints += additionalAttack;
     }
 
-    public int returnPlayerCoinStats(){
+    public int ReturnPlayerCoinStats(){
         return (int)PlayerStatsThisInstance.playerCoins;
     }
 
-    public void updatePlayerCoinStats(int additionalGoldCoins){
+    public void UpdatePlayerCoinStats(int additionalGoldCoins){
         PlayerStatsThisInstance.playerCoins += additionalGoldCoins;
+    }
+
+    public float ReturnPlayerShopCoinMultiplier(){
+        return thisInstanceOfPlayerShop.playerShopDrinkSellAmmount;
+    }
+
+    public void increasePlayerShopCoinMultiplier(){
+        thisInstanceOfPlayerShop.playerShopDrinkSellAmmount += .10f;
+    }
+
+    public ShopCostsNEarnings ReturnCurrentShopInstance(){
+        return thisInstanceOfPlayerShop;
+    }
+    
+    public DrinkMultiplierScripts ReturnDrinkRatesThisRound(){
+        return drinkMultiplier;
+    }
+
+    public PlayerDataJson ReturnPlayerStats(){
+        return PlayerStatsThisInstance;
+    }
+
+    public int ReturnMaxHealthStasThisGameCanHandle(){
+        return MaxHealthEverThisGame;
+    }
+    public int ReturnMaxStaminaStasThisGameCanHandle(){
+        return MaxStaminaEverThisGame;
+    }
+    public int ReturnMaxAttackStasThisGameCanHandle(){
+        return MaxAttackEverThisGame;
     }
 }

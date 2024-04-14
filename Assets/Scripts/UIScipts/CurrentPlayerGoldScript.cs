@@ -20,7 +20,7 @@ public class CurrentPlayerGoldScript : MonoBehaviour
     void Start()
     {
         overAllGameManagerScript = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
-        goldCollectedAllTime = overAllGameManagerScript.returnPlayerCoinStats();
+        goldCollectedAllTime = overAllGameManagerScript.ReturnPlayerCoinStats();
         //thisUIGoldTextOBJECT = GetComponent<GameObject>();
         thisUIGoldText = gameObject.GetComponent<TMP_Text>();
     }
@@ -28,7 +28,7 @@ public class CurrentPlayerGoldScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(overAllGameManagerScript.returnPlayerCoinStats());
+        //Debug.Log(overAllGameManagerScript.ReturnPlayerCoinStats());
         thisUIGoldText.text = goldCollectedAllTime + "c";
     }
 }

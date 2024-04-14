@@ -1618,6 +1618,18 @@ PrefabInstance:
       propertyPath: m_TagString
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4745418181268901340, guid: 5bc72b19c2f133244a9df3fb2b3242e5, type: 3}
+      propertyPath: attackMaxThisGame
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745418181268901340, guid: 5bc72b19c2f133244a9df3fb2b3242e5, type: 3}
+      propertyPath: healthMaxThisGame
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745418181268901340, guid: 5bc72b19c2f133244a9df3fb2b3242e5, type: 3}
+      propertyPath: staminaMaxThisGame
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 4961059624334699391, guid: 5bc72b19c2f133244a9df3fb2b3242e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

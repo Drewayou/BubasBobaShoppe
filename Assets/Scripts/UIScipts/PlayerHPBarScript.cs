@@ -36,7 +36,6 @@ public class PlayerHPValAndUIScript : MonoBehaviour
 
     //float healthBarMultiplier = 1f;
 
-  
     UnityEngine.UI.Image thisUIImage;
 
     // Start is called before the first frame update
