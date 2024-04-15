@@ -37,6 +37,7 @@ public class ShopManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1f;
         NotEnoughMoneyAnim = NotEnoughMoneyAlert.GetComponent<Animator>();
         thisGamesCurrentManagerScript = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
         thisGamesCurrentShopDataInstance = thisGamesCurrentManagerScript.ReturnCurrentShopInstance();

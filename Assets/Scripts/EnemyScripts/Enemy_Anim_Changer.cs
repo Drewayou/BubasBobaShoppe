@@ -95,6 +95,16 @@ public class Enemy_Anim_Changer : MonoBehaviour
 
                 break;
 
+                case "CassavaSlimeKnight(Clone)":
+
+                    if(currentAnimationThisObject != "SlimeKnightPerpetualHunt"){
+                        animatorThisObject.Play("SlimeKnightPerpetualHunt");
+                        currentAnimationThisObject = "SlimeKnightPerpetualHunt";
+                        thisEnemyController.isCurrentlyAttacking = true;
+                    }
+
+                break;
+
                 case "PandanShooter(Clone)":
 
                     if(currentAnimationThisObject != "PandanShooterShoots"){
@@ -144,6 +154,22 @@ public class Enemy_Anim_Changer : MonoBehaviour
                     if(isThisMoving != true && currentAnimationThisObject != "CassavaSlimeJiggleEat"){
                         animatorThisObject.Play("CassavaSlimeJiggleEat");
                         currentAnimationThisObject = "CassavaSlimeJiggleEat";
+                        }
+                    }
+            
+                break;
+
+                case "CassavaSlimeKnight(Clone)":
+
+                    if(isThisMoving && currentAnimationThisObject != "SlimeKnightPerpetualHunt"){
+                        animatorThisObject.Play("SlimeKnightPerpetualHunt");
+                        currentAnimationThisObject = "SlimeKnightPerpetualHunt";
+                    
+                    }else{ 
+
+                    if(isThisMoving != true && currentAnimationThisObject != "SlimeKnightPerpetualHunt"){
+                        animatorThisObject.Play("SlimeKnightPerpetualHunt");
+                        currentAnimationThisObject = "SlimeKnightPerpetualHunt";
                         }
                     }
             

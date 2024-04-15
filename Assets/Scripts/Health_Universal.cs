@@ -202,6 +202,12 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 case "CassavaSlime(Clone)":
                 thisRoundManagerScript.AddCassavaSlimeBallsThisRound(1);
                 break;
+                case "CassavaSlimeKnight(Clone)":
+                thisRoundManagerScript.AddCassavaSlimeBallsThisRound(1);
+                break;
+                case "CassavaSlimeKing":
+                thisRoundManagerScript.AddCassavaSlimeBallsThisRound(100);
+                break;
                 case "PandanShooter(Clone)":
                 thisRoundManagerScript.AddPandanLeavesThisRound(1);
                 break;
@@ -300,6 +306,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
                 if(!isThisThePlayer){
 
+                    willDropLoot = true;
                     thisSpriteRenderer.material.color = chosenRedColor;
                     //Debug.Log(gameObject.name + "getting damage!");
                     Instantiate(gotHitEffect, gameObject.transform);

@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy_AttackRange : MonoBehaviour
 {
+    [SerializeField]
+    [Tooltip("Drag The Enemy Prefab here")]
     GameObject thisEnemyMainObject;
 
     [SerializeField]
@@ -11,6 +14,12 @@ public class Enemy_AttackRange : MonoBehaviour
     [Tooltip("If the enemy does a ranged attack, use this projectile")]
     GameObject thisEnemyProjectiles;
     Enemy_Controller thisEnemyController;
+    
+
+    //GetEnemyAgroRadius via object
+    GameObject EnemyAgroObject;
+    [SerializeField]
+    Enemy_AgroRadius thisEnemyAgroRadius;
     CircleCollider2D attackRadius;
 
     Health_Universal thisEnemyHealth;
@@ -28,11 +37,11 @@ public class Enemy_AttackRange : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Set gameobject memory
-        //thisEnemyMainObject = GetComponentInParent<GameObject>();
-
         //Get enemy controller for this object 
-        thisEnemyController = GetComponentInParent<Enemy_Controller>();
+        thisEnemyController = thisEnemyMainObject.GetComponent<Enemy_Controller>();
+
+        //Get enemy agroRadius for this object
+        //thisEnemyAgroRadius = EnemyAgroObject.GetComponent<Enemy_AgroRadius>();
 
         //Get enemy Num Val
         whichEnemyAttackIsThis = thisEnemyController.gameObject.name;
@@ -43,7 +52,7 @@ public class Enemy_AttackRange : MonoBehaviour
 
         tempAttackBuildupSaved = thisEnemyController.attackBuildUp;
 
-        thisEnemyMainObject = GameObject.Find("PandanShooter");
+        
     }
 
     // Update is called once per frame
@@ -87,12 +96,12 @@ public class Enemy_AttackRange : MonoBehaviour
         //Debug.Log("PlayerLeftAttackRangeOfSlime!");
 
         if(collision.CompareTag("Player")){
-            if(thisEnemyMainObject != null){
+            if(thisEnemyController.thisAgent.enabled){
             thisEnemyController.thisAgent.isStopped = false;
 
             isAttacking = false;
             thisEnemyController.isCurrentlyAttacking = isAttacking;
-        }
+            }
         }
         
     }
@@ -144,6 +153,28 @@ public class Enemy_AttackRange : MonoBehaviour
             break;
 
             //END OF SLIME CUSTOM ATTACK
+            //
+            //
+            //
+
+        case "CassavaSlimeKnight(Clone)":
+
+            //THIS IS THE CASSAVASLIMEKNIGHT'S CUSTOM ATTACK
+            //
+            //Slime winds up to attack player for a quick microsecond, very similar to the normal slime,
+            //HOWEVER it is perpetually aggro'd to the player
+            
+        //Tell this knight to perpetually lock unto the player.
+        isAttacking = false;
+        thisEnemyAgroRadius.LockedOnPlayer = true;
+        inAnAttackAnim = false;
+        thisEnemyController.thisAgent.isStopped = false;
+        thisEnemyController.isCurrentlyAttacking = false;
+        thisEnemyController.attackBuildUp = 0;
+        thisEnemyAgroRadius.agroRadiusfloat = 50f;
+            break;
+
+            //END OF CASSAVASLIMEKNIGHT'S CUSTOM ATTACK
             //
             //
             //

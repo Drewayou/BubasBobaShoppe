@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 1.5
-  destroyChildrenOnDeath: 1
+  destroyChildrenOnDeath: 0
 --- !u!1 &2195900319233245274
 GameObject:
   m_ObjectHideFlags: 0
