@@ -50,6 +50,63 @@ public class PageChanger : MonoBehaviour
             break;
         }
 
+    
+
+        //Hide all pages first
+        hideAllPages();
+
+        //enable the selected page
+        pageDesired.SetActive(true);
+    }
+
+    public void switchPageViaIndex(int index){
+
+        switch(index){
+
+            case 1:
+
+            pageDesired = pagesOfThisUI[0];
+            break;
+
+            case 2:
+
+            pageDesired = pagesOfThisUI[1];
+            break;
+
+            case 3:
+
+            pageDesired = pagesOfThisUI[2];
+            break;
+
+            case 4:
+
+            pageDesired = pagesOfThisUI[3];
+            break;
+            case 5:
+
+            pageDesired = pagesOfThisUI[4];
+            break;
+            case 6:
+
+            pageDesired = pagesOfThisUI[5];
+            break;
+            case 7:
+
+            pageDesired = pagesOfThisUI[6];
+            break;
+            case 8:
+
+            pageDesired = pagesOfThisUI[7];
+            break;
+            case 9:
+
+            pageDesired = pagesOfThisUI[8];
+            break;
+
+        }
+
+    
+
         //Hide all pages first
         hideAllPages();
 

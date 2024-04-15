@@ -6,8 +6,18 @@ using UnityEngine;
 
 public class DontDestroy : MonoBehaviour
 {
+    [SerializeField]
+    [Header("MainMenuMusicPrefab")]
+    [Tooltip("Put the MainMenuMusicPrefab to play here")]
+    GameObject MainMenuMusicPrefab;
+    
     void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        if (GameObject.FindGameObjectWithTag("MainMenuMusic") == null){
+            Instantiate(MainMenuMusicPrefab);
+            
+        }else{
+            DontDestroyOnLoad(GameObject.FindGameObjectWithTag("MainMenuMusic"));
+        }
     }
 }

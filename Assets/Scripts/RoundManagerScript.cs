@@ -132,7 +132,7 @@ public class RoundManagerScript : MonoBehaviour
         EndOfRoundUIAnimator = EndOfRoundUIObject.GetComponentInChildren <Animator>();
 
         //Set and save this world's instances
-        whichWorldWasSelected = thisGamesOverallInstance.ReturnWorldSelectedViaRound();
+        whichWorldWasSelected = thisGamesOverallInstance.ReturnGameManagerWorldInstance();
 
         nameOfThisWorldSelected = whichWorldWasSelected.WorldName;
         levelDifficulty = whichWorldWasSelected.LevelDifficulty;
@@ -348,7 +348,7 @@ public class RoundManagerScript : MonoBehaviour
         playerEarnedCoins = thisGamesOverallInstance.ReturnPlayerShopCoinMultiplier() * ((oolongSold * oolongMultiplier) + (PandanSold * PandanMultiplier) + 
         (BananaSold * BananaMultiplier) + (StrawberrySold * StrawberryMultiplier) + (MangoSold * MangoMultiplier) + (UbeSold * UbeMultiplier));
 
-        Debug.Log(playerEarnedCoins);
+        //Debug.Log(playerEarnedCoins);
     }
 
     private void makePossibleDrinkList(){
@@ -464,6 +464,8 @@ public class RoundManagerScript : MonoBehaviour
         //Use RNG and other values from the round start pulled via "getRoundSettingData()";
         CalculateEndOfRoundScoreYields();
 
+        playerEarnedCoins /= 2;
+
         //Update End of Round UI
         UpdateEndRoundUI();
     }
@@ -516,7 +518,7 @@ public class RoundManagerScript : MonoBehaviour
         thisGamesOverallInstance.UpdatePlayerCoinStats((int)playerEarnedCoins);
 
         //Call GameManager to change spawn rates for next round
-        thisGamesOverallInstance.SetNewWorldSpawnRatesState(whichWorldWasSelected);
+        //FIXME:thisGamesOverallInstance.SetNewWorldSpawnRatesState(whichWorldWasSelected);
 
         //Call GameManager to change drink demand rates for next round
         thisGamesOverallInstance.SetNewDrinkDemandRates(whatDrinksArePopular);

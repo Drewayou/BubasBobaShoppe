@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6449258139919160243}
   - component: {fileID: 7617976633305788983}
   - component: {fileID: 6984987947274411386}
+  - component: {fileID: 3675440098456681577}
   m_Layer: 8
   m_Name: BananaShaman
   m_TagString: Enemy
@@ -103,7 +104,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1738402585, guid: 843fae361fbbd5c4e80dc19a2f5bd8f8, type: 3}
+  m_Sprite: {fileID: -307487768, guid: 57d939fc8400a374696de7da3b1e5106, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -289,6 +290,22 @@ PolygonCollider2D:
       - {x: 0.042628016, y: -0.047391012}
       - {x: 0.034956552, y: 0.0032821484}
   m_UseDelaunayMesh: 0
+--- !u!114 &3675440098456681577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7757213010464900041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adde851d44a55fe40814dc006857a584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentEnemyObject: {fileID: 7757213010464900041}
+  enemyAgroObject: {fileID: 4447996180704831342}
+  timeTillDespawnIsPossible: 20
+  despawnCountDownStartsAt: 20
 --- !u!1001 &3403190970873461314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -430,6 +447,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: AgroRadius
       objectReference: {fileID: 0}
+    - target: {fileID: 3657074466630097644, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
+      propertyPath: aggroPrefab
+      value: 
+      objectReference: {fileID: 7887505548702715238, guid: b8bdd209f74290e4fa44d9ffeb311e0f, type: 3}
+    - target: {fileID: 3657074466630097644, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
+      propertyPath: questionPrefab
+      value: 
+      objectReference: {fileID: 7887505548702715238, guid: c74bb1284d292d740aba2229c227f4d9, type: 3}
     - target: {fileID: 3657074466630097644, guid: 6d2708af20e7ed9458d12631bcd86312, type: 3}
       propertyPath: thisEnemyAttackRange
       value: 

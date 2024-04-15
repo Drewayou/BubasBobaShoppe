@@ -17,12 +17,27 @@ public class ShopManagerScript : MonoBehaviour
     [SerializeField]
     [Header("Add the TXT field to update costs of OBJ")]
     [Tooltip("Connect the fields to this to co-respond to the GameManager saved stats")]
-    TMP_Text PlayerTotalGameGold, UpgradeStoreCostTxt,StoreCurrentLevelNMultiplierTxt,HPCostTxt,PlayerCurrentHp,StaminaCostTxt,PlayerCurrentSp,AttackCostTxt,PlayerCurrentAtck,
+    TMP_Text PlayerTotalGameGold, PlayerTotalGameDays, UpgradeStoreCostTxt,StoreCurrentLevelNMultiplierTxt,HPCostTxt,PlayerCurrentHp,StaminaCostTxt,PlayerCurrentSp,AttackCostTxt,PlayerCurrentAtck,
     world2CostTxt,world3CostTxt,world4CostTxt;
+
+    [SerializeField]
+    [Header("BuyLevelButton")]
+    [Tooltip("Connect buttons to this to co-respond the levels theplayer can buy")]
+    GameObject Level2Buy, Level3Buy, Level4Buy, nextPage, CanvasMainMenu;
+
+    [SerializeField]
+    [Header("NotEnoughMoneyAlert")]
+    [Tooltip("What Pre-Fab to display if the player doesn't have enough money")]
+    GameObject NotEnoughMoneyAlert;
+
+    [Header("NotEnoughMoneyAlertAnimController")]
+    [Tooltip("Calls the anim if the player doesn't have enough money")]
+    Animator NotEnoughMoneyAnim;
 
     // Start is called before the first frame update
     void Start()
     {
+        NotEnoughMoneyAnim = NotEnoughMoneyAlert.GetComponent<Animator>();
         thisGamesCurrentManagerScript = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
         thisGamesCurrentShopDataInstance = thisGamesCurrentManagerScript.ReturnCurrentShopInstance();
         thisPlayersCurrentData = thisGamesCurrentManagerScript.ReturnStatsOfThisPlayer();
@@ -32,11 +47,26 @@ public class ShopManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(thisPlayersCurrentData.unlockedLeve2){
+            Level2Buy.SetActive(false);
+        }
+        if(thisPlayersCurrentData.unlockedLeve3){
+            Level3Buy.SetActive(false);
+        }
+        if(thisPlayersCurrentData.unlockedLeve4){
+            Level4Buy.SetActive(false);
+        }
+        if(thisPlayersCurrentData.unlockedBossFight){
+            nextPage.SetActive(true);
+        }
+        if(thisPlayersCurrentData.unlockedLeve2 && thisPlayersCurrentData.unlockedLeve3 && thisPlayersCurrentData.unlockedLeve4){
+            thisPlayersCurrentData.unlockedBossFight = true;
+        }
     }
 
     public void UpdateShopDisplay(){
         //Set main pre-round menu bars & texts to compare to max stats the player can reach in this game
+        PlayerTotalGameDays.text = "Day " + thisGamesCurrentManagerScript.ReturnPlayerStats().onDayNumber.ToString();
         PlayerTotalGameGold.text = thisGamesCurrentManagerScript.ReturnPlayerStats().playerCoins.ToString();
         hpMaxUpgradeMeter.fillAmount = (float)thisGamesCurrentManagerScript.ReturnPlayerStats().playerMaxHealth / (float)thisGamesCurrentManagerScript.ReturnMaxHealthStasThisGameCanHandle();
         staminaMaxUpgradeMeter.fillAmount = thisGamesCurrentManagerScript.ReturnPlayerStats().playerMaxStamina / thisGamesCurrentManagerScript.ReturnMaxStaminaStasThisGameCanHandle();
@@ -64,7 +94,7 @@ public class ShopManagerScript : MonoBehaviour
         //If true, does action
         if(thisPlayersCurrentData.playerCoins > thisGamesCurrentShopDataInstance.shopLevelUpCost){
             thisPlayersCurrentData.playerCoins -= thisGamesCurrentShopDataInstance.shopLevelUpCost;
-            thisGamesCurrentShopDataInstance.shopLevelUpCost += 100;
+            thisGamesCurrentShopDataInstance.shopLevelUpCost += 10;
             thisGamesCurrentShopDataInstance.playerShopDrinkSellAmmount += 0.10f;
             thisGamesCurrentShopDataInstance.shopLevelAt += 1;
             UpdateNSaveShop();
@@ -121,6 +151,8 @@ public class ShopManagerScript : MonoBehaviour
             thisPlayersCurrentData.unlockedLeve2 = true;
             // NOTE: No need to UpdateNSaveShop() after level unlock calls because data saved
             // for level unlocks are in PlayerStats instead!;
+            Level2Buy.SetActive(false);
+            UpdateNSaveShop();
         }else{
             PlayerIsBroke(); 
         }
@@ -135,6 +167,8 @@ public class ShopManagerScript : MonoBehaviour
             thisPlayersCurrentData.unlockedLeve3 = true;
             // NOTE: No need to UpdateNSaveShop() after level unlock calls because data saved
             // for level unlocks are in PlayerStats instead!;
+            Level3Buy.SetActive(false);
+            UpdateNSaveShop();
         }else{
             PlayerIsBroke();
         }
@@ -149,6 +183,8 @@ public class ShopManagerScript : MonoBehaviour
             thisPlayersCurrentData.unlockedLeve4 = true;
             // NOTE: No need to UpdateNSaveShop() after level unlock calls because data saved
             // for level unlocks are in PlayerStats instead!;
+            Level4Buy.SetActive(false);
+            UpdateNSaveShop();
         }else{
             PlayerIsBroke();
         }
@@ -164,6 +200,7 @@ public class ShopManagerScript : MonoBehaviour
         Debug.LogWarning("Player is broke!\n"
         + "Dev has yet to put a UI to show they cannot purchase this!");
 
-        //FIXME: Add a pop-up to tell the player is broke!
+        //FIXME: Instantiate the pop-up to tell the player is broke!
+        Instantiate(NotEnoughMoneyAlert,CanvasMainMenu.transform);
     }
 }

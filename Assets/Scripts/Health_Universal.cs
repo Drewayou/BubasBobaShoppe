@@ -114,8 +114,6 @@ public class Health_Universal : MonoBehaviour, IDamageable
         //Set up round manager script and record this enemy instance
         thisRoundCalculatorObject = GameObject.Find("RoundManager");
         thisRoundManagerScript = thisRoundCalculatorObject.GetComponent<RoundManagerScript>();
-        //FIXME: Find a way to incorperate the enemy level cap depending
-        //On what this entity is! (Move this Fixmeto round manager?)
 
         thisHitbox = GetComponent<PolygonCollider2D>();
         thisSpriteRenderer = GetComponent<SpriteRenderer>();
@@ -159,13 +157,13 @@ public class Health_Universal : MonoBehaviour, IDamageable
     }
 
     private void RevivingPlayer(bool playerHadDied){
-        //FIXME: Player death condition but lives remain 
+        //FIXME: Add player Revive effect?
         if(playerHadDied){
             float tempTimeForRevive = timeForRevive; 
             if(tempTimeForRevive > 0 & health < thisGlobalGameManager.ReturnPlayerStats().playerMaxHealth){
                 timeForRevive -= Time.deltaTime;
                 isInvulnerable = true;
-                health += 5;
+                health = thisGlobalGameManager.ReturnPlayerStats().playerMaxHealth;
             }else{
                 thisRoundManagerScript.TakePlayerLives();
                 isInvulnerable = false;
@@ -232,6 +230,11 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
         tempInvCountdown = tempInvTime;
 
+        if(collision.gameObject.CompareTag("PlayerWeapon")){
+            //If this collided with the player's weapons, trigger possible loot drop upon death.
+                    willDropLoot = true;
+        }
+
         if(collision.gameObject.CompareTag("Player")) {
 
                 //Temp Attack block
@@ -297,9 +300,6 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
                 if(!isThisThePlayer){
 
-                    //Since this is not the player, trigger possible loot drop upon death.
-                    willDropLoot = true;
-
                     thisSpriteRenderer.material.color = chosenRedColor;
                     //Debug.Log(gameObject.name + "getting damage!");
                     Instantiate(gotHitEffect, gameObject.transform);
@@ -345,12 +345,16 @@ public class Health_Universal : MonoBehaviour, IDamageable
             for (int i = childCount - 1; i >= 0; i--)
             {
                 GameObject childObject = transform.GetChild(i).gameObject;
-                if (childObject != null)
+                if (childObject.activeSelf)
                 {
                     Destroy(childObject);
                 }
             }
         }
         transform.DetachChildren();
+    }
+
+    public int ReturnThisHealth(){
+        return health;
     }
 }

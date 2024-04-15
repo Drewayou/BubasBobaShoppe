@@ -48,13 +48,14 @@ public class PlayerHPValAndUIScript : MonoBehaviour
 
         //Pull player's currently saved max HP
         thisOverallGameData = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
-        playerMaxHealthOverInput = thisOverallGameData.ReturnPlayerStats().playerMaxHealth;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        thisUIHealthText.text = thePlayersHealth.health + "/" + playerMaxHealthOverInput;
-        thisUIImage.fillAmount = thePlayersHealth.health / playerMaxHealthOverInput;
+        playerMaxHealthOverInput = thisOverallGameData.ReturnPlayerStats().playerMaxHealth;
+        thisUIHealthText.text = thePlayersHealth.ReturnThisHealth() + "/" + playerMaxHealthOverInput;
+        thisUIImage.fillAmount = thePlayersHealth.ReturnThisHealth() / playerMaxHealthOverInput;
     }
 }

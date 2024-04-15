@@ -8,6 +8,7 @@ TagManager:
   - PlayerWeapon
   - Objectives
   - GameManager
+  - MainMenuMusic
   layers:
   - Default
   - TransparentFX

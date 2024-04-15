@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 public class PlayerDataJson 
 {
     public float playerCoins { get; set; }
+    public int onDayNumber { get; set; }
     public int playerMaxHealth { get; set; }
     public float playerMaxStamina { get; set; }
     public int playerAttackPoints { get; set; }

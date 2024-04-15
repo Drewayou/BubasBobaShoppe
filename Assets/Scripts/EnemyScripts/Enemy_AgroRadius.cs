@@ -17,6 +17,14 @@ public class Enemy_AgroRadius : MonoBehaviour
     CircleCollider2D aggroRadius;
 
     [SerializeField]
+    [Tooltip("The Agro Alert to be summoned when player is in agro range")]
+    public GameObject aggroPrefab;
+
+    [SerializeField]
+    [Tooltip("The Question Alert to be summoned when player leaves agro range")]
+    public GameObject questionPrefab;
+
+    [SerializeField]
     [Tooltip("Place in the Health_Universal prefab for this enemy FROM the parent")]
     [Header("Healthy?")]
     Health_Universal thisEnemyHealthManager;
@@ -30,6 +38,9 @@ public class Enemy_AgroRadius : MonoBehaviour
     //Bool to use for other script to check if there's agro collision
     public bool isIndeedAgro = false;
     public bool playerIsInAgroRange = false;
+
+    //Below will be used by the "Enemy_Despawn" script if they have not interacted with the player within agro range in 20 sec.
+    public bool hasInteractedWithPlayer = false;
 
     [SerializeField]
     [Tooltip("Is the enemy ready to patrol in it's agro radius?")]
@@ -96,6 +107,7 @@ public class Enemy_AgroRadius : MonoBehaviour
             GameObject targetNewLocation = thisEnemyController.Target;
             thisEnemyController.setLocationOfObjectToFollow(targetNewLocation);
             thisEnemyController.SetDestinationTweaked(thisEnemyController.getPlayerLastSeenLocation());
+            
         }else{
             if(!playerIsInAgroRange && !thisEnemyAttackRange.isAttacking){
             //Note:UncommentingBelowCausesTheEnemyToStopOutOfRangeAndDoesNotCheckThe
@@ -137,6 +149,7 @@ public class Enemy_AgroRadius : MonoBehaviour
     public void tryForeverAgro(){
         if(UnityEngine.Random.Range(1,100)<=lockedOnDifficultyPercentage){
             LockedOnPlayer = true;
+            hasInteractedWithPlayer = true;
         }
     }
 
@@ -154,13 +167,18 @@ public class Enemy_AgroRadius : MonoBehaviour
         //Debug.Log("PlayerInAgroRangeOfSlime!");
 
         if(thisEnemyController.thisAgent!=null){
-        if(collision.CompareTag("Player")){
-        thisEnemyController.isFreshlySpawned = false;
-        playerIsInAgroRange = true;
-        isIndeedAgro = true;
-        thisEnemyController.thisAgent.isStopped = false;
-        thisEnemyController.SetDestinationTweaked(thisEnemyController.getPlayerLastSeenLocation());
-        }
+            if(collision.CompareTag("Player")){
+                thisEnemyController.isFreshlySpawned = false;
+                playerIsInAgroRange = true;
+                isIndeedAgro = true;
+                hasInteractedWithPlayer = true;
+                thisEnemyController.thisAgent.isStopped = false;
+                thisEnemyController.SetDestinationTweaked(thisEnemyController.getPlayerLastSeenLocation());
+
+                //Popup Agro Alert
+                Vector2 spawnAboveEnemy = new Vector2 (transform.position.x, transform.position.y + .22f);
+                Instantiate(aggroPrefab, spawnAboveEnemy, transform.rotation, transform);
+            }
         }
 
     }
@@ -188,17 +206,23 @@ public class Enemy_AgroRadius : MonoBehaviour
                 playerIsInAgroRange = false;
                 thisEnemyController.SetDestinationTweaked(thisEnemyController.getPlayerLastSeenLocation());
                 
+                //Popup question Alert
+                Vector2 spawnAboveEnemy = new Vector2 (transform.position.x, transform.position.y + .22f);
+
+                //Make the question alert effect
+                Instantiate(questionPrefab, spawnAboveEnemy, transform.rotation, transform);
             }
         }
         
 
     }
 
-    IEnumerator doPatrol(){
-        yield return new WaitForSeconds(7.5f);
+    public bool HasInteractedWithPlayer(){
+        return hasInteractedWithPlayer;
     }
 
     public bool CheckIfAgro(){
         return isIndeedAgro;
     }
+    
 }

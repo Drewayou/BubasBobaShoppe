@@ -38,17 +38,17 @@ public class BobaLIvesScript : MonoBehaviour
     void Update()
     {
         if(thisRoundManager.ReturnPlayerLives() == 3){
-            BobaLivesMeter1.fillAmount = thePlayersHealth.health / thePlayersController.getPlayerMaxHealth();
+            BobaLivesMeter1.fillAmount = thePlayersHealth.health / (float)thePlayersController.getPlayerMaxHealth();
         }
 
         if(thisRoundManager.ReturnPlayerLives() == 2){
             BobaLives1.SetActive(false);
-            BobaLivesMeter2.fillAmount = thePlayersHealth.health / thePlayersController.getPlayerMaxHealth();
+            BobaLivesMeter2.fillAmount = thePlayersHealth.health / (float)thePlayersController.getPlayerMaxHealth();
         }
 
         if(thisRoundManager.ReturnPlayerLives() == 1){
             BobaLives2.SetActive(false);
-            BobaLivesMeter3.fillAmount = thePlayersHealth.health / thePlayersController.getPlayerMaxHealth();
+            BobaLivesMeter3.fillAmount = thePlayersHealth.health / (float)thePlayersController.getPlayerMaxHealth();
         }
         if(thisRoundManager.ReturnPlayerLives() == 0){
             BobaLives1.SetActive(false);

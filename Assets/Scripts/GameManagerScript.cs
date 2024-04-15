@@ -7,6 +7,7 @@ using System;
 using System.Runtime.CompilerServices;
 using UnityEngine.PlayerLoop;
 using System.Threading;
+using JetBrains.Annotations;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -35,6 +36,8 @@ public class GameManagerScript : MonoBehaviour
     private ShopCostsNEarnings thisInstanceOfPlayerShop = new ShopCostsNEarnings();
     private WorldState worldInstance = new WorldState();
 
+    private RoundManagerScript roundConnected;
+
     //FIXME: TempVars for the MAXIMUM stats a player can grind to in this game
     private int MaxHealthEverThisGame = 100, MaxStaminaEverThisGame = 20, MaxAttackEverThisGame = 20;
 
@@ -45,7 +48,7 @@ public class GameManagerScript : MonoBehaviour
 
     //Set which world is this from current instance and saves
     void Start(){
-        WhichWorldIsThis(worldOfRound);
+
         ContinueGame();
     }
 
@@ -94,7 +97,7 @@ public class GameManagerScript : MonoBehaviour
         //FIXME: The world will always be set to world1 EVRYTIME you start a new game
         //This may be useful if you ever make a tutorial!
         Debug.LogWarning("World Default Settings Set! \n Starting New Game...");
-        worldInstance = world1;
+    
     }
 
     IEnumerator waitForDirectoryCreation(float waitSeconds)
@@ -107,6 +110,7 @@ public class GameManagerScript : MonoBehaviour
         Debug.LogWarning("Setting Default World Settings...");
 
         //Player default settings
+        playerStats.onDayNumber = 1;
         playerStats.playerMaxHealth = 15;
         playerStats.playerMaxStamina = 10f;
         playerStats.playerAttackPoints = 5;
@@ -114,8 +118,8 @@ public class GameManagerScript : MonoBehaviour
         //Shop default settings
         ShopData.shopLevelAt = 1;
         ShopData.playerShopDrinkSellAmmount = 1.0f;
-        ShopData.shopLevelUpCost = 100;
-        ShopData.shopPlayerHPUpCost = 100;
+        ShopData.shopLevelUpCost = 10;
+        ShopData.shopPlayerHPUpCost = 10;
         ShopData.shopPlayerAttackUpCost = 100;
         ShopData.shopPlayerStaminaUpCost = 100;
         ShopData.world2Cost = 200;
@@ -126,7 +130,7 @@ public class GameManagerScript : MonoBehaviour
         world1.WorldName = "PandanForest";
         world1.SpawnersAlive = 3;
         world1.LevelDifficulty = 1;
-        world1.chanceOfSlime = 1f;
+        world1.chanceOfSlime = 1.0f;
         world1.chanceOfPandan = 0f;
         world1.chanceOfBanana = 0f;
         world1.chanceOfStrawberry = 0f;
@@ -184,20 +188,22 @@ public class GameManagerScript : MonoBehaviour
             {
                 PlayerStatsThisInstance = DataService.LoadData<PlayerDataJson>("/alalaa/PlayerStats.json", EncryptionEnabled);
                 thisInstanceOfPlayerShop = DataService.LoadData<ShopCostsNEarnings>("/alalaa/PlayerShopData.json", EncryptionEnabled);
-                //FIXME: Unsure if code below should even be called
-                /*
+                //FIXME: Unsure if BOC below should even be called
+                
                 world1 = DataService.LoadData<WorldState>("/alalaa/World1Stats.json", EncryptionEnabled);
                 world2 = DataService.LoadData<WorldState>("/alalaa/World2Stats.json", EncryptionEnabled);
                 world3 = DataService.LoadData<WorldState>("/alalaa/World3Stats.json", EncryptionEnabled);
                 world4 = DataService.LoadData<WorldState>("/alalaa/World4Stats.json", EncryptionEnabled);
                 cassavaBossLevel = DataService.LoadData<WorldState>("/alalaa/CassavaCastleStats.json", EncryptionEnabled);
-                */
+                
                 drinkMultiplier = DataService.LoadData<DrinkMultiplierScripts>("/alalaa/DrinkMultiplier.json", EncryptionEnabled);
             }
             catch (Exception e)
             {
                 Debug.LogError($"Couldn't find directory! Game Dev has yet to understand why! (Sorry :<) \n Error:" + e);
             }
+            //Set this world instance
+            worldInstance = DataService.LoadData<WorldState>("/alalaa" + ReturnThisRoundInstanceWorldPath(ReturnWorldSelectedViaIntRoundVal()), EncryptionEnabled);
         }
         else
         {
@@ -241,8 +247,13 @@ public class GameManagerScript : MonoBehaviour
         {
             try
             {
+                SetNewWorldSpawnRatesIncreased();
+                SetNewWorldSpawnRatesDecreased();
+                playerStats.onDayNumber =+ 1;
+
+                //thisTestState.chanceOfSlime = 1000f;
                 DataService.SaveData("/alalaa/PlayerStats.json", PlayerStatsThisInstance, EncryptionEnabled);
-                DataService.SaveData("/alalaa" + ReturnThisRoundInstanceWorldPath(worldSelected), ReturnWorldStateSelected(worldSelected), EncryptionEnabled);
+                DataService.SaveData("/alalaa" + ReturnThisRoundInstanceWorldPath(worldSelected), worldInstance, EncryptionEnabled);
                 DataService.SaveData("/alalaa/CassavaCastleStats.json", cassavaBossLevel, EncryptionEnabled);
                 DataService.SaveData("/alalaa/DrinkMultiplier.json", drinkMultiplier, EncryptionEnabled);
             }
@@ -292,63 +303,84 @@ public class GameManagerScript : MonoBehaviour
         Debug.LogWarning("No Files found... OHH Is this a new game?!");
     }
 
-    //BELOW BOC picks a random fruit monster to increase spawnrates of, and chooses another to decrease spawnrates of.
-    public void SetNewWorldSpawnRatesState(WorldState thisRoundWorldState){
+    //BELOW BOC picks a random fruit monster to increase spawnrates of
+    public void SetNewWorldSpawnRatesIncreased(){
 
-        int selectedFruitMonsterToIncreaseSpawn = UnityEngine.Random.Range(0,5);
-        int selectedFruitMonsterToDecreaseSpawn = UnityEngine.Random.Range(0,5);
+        int selectedSpawnToIncreaseSpawn = UnityEngine.Random.Range(0,5);
 
-        switch(selectedFruitMonsterToDecreaseSpawn){
+        switch(selectedSpawnToIncreaseSpawn){
             case 0:
-            thisRoundWorldState.chanceOfSlime -= 0.01f;
+            if(worldInstance.chanceOfSlime < 0.90f){worldInstance.chanceOfSlime +=.10f;}
+            else{SetNewWorldSpawnRatesIncreased();}
             break;
-
+            
             case 1:
-            thisRoundWorldState.chanceOfPandan -= 0.01f;
+            if(worldInstance.chanceOfPandan < 0.90f){worldInstance.chanceOfPandan +=.10f;}
+            else{SetNewWorldSpawnRatesIncreased();}
             break;
 
             case 2:
-            thisRoundWorldState.chanceOfBanana -= 0.01f;
+            if(worldInstance.chanceOfBanana < 0.90f){worldInstance.chanceOfBanana +=.10f;}
+            else{SetNewWorldSpawnRatesIncreased();}
             break;
-    
+        
             case 3:
-            thisRoundWorldState.chanceOfStrawberry -= 0.01f;
+            if(worldInstance.chanceOfStrawberry < 0.90f){worldInstance.chanceOfStrawberry +=.10f;}
+            else{SetNewWorldSpawnRatesIncreased();}
             break;
 
             case 4:
-            thisRoundWorldState.chanceOfMango -= 0.01f;
+            if(worldInstance.chanceOfMango < 0.90f){worldInstance.chanceOfMango +=.10f;}
+            else{SetNewWorldSpawnRatesIncreased();}
             break;
 
             case 5:
-            thisRoundWorldState.chanceOfUbe -= 0.01f;
+            if(worldInstance.chanceOfUbe < 0.90f){worldInstance.chanceOfUbe +=.10f;}
+            else{SetNewWorldSpawnRatesIncreased();}
             break;
-        }
+            }
+        
+    }
 
-        switch(selectedFruitMonsterToIncreaseSpawn){
+    //BELOW BOC picks and chooses another to decrease spawnrates of.
+    public void SetNewWorldSpawnRatesDecreased(){
+
+        if(worldInstance.chanceOfSlime + worldInstance.chanceOfPandan + worldInstance.chanceOfBanana + worldInstance.chanceOfStrawberry + worldInstance.chanceOfMango + worldInstance.chanceOfUbe > .99f){
+        int selectedSpawnToDecreaseSpawn = UnityEngine.Random.Range(0,5);
+
+        switch(selectedSpawnToDecreaseSpawn){
             case 0:
-            thisRoundWorldState.chanceOfSlime += 0.01f;
+            if(worldInstance.chanceOfSlime > 0.10f){worldInstance.chanceOfSlime -=.10f;
+            SetNewWorldSpawnRatesDecreased();}
             break;
-
+            
             case 1:
-            thisRoundWorldState.chanceOfPandan += 0.01f;
+            if(worldInstance.chanceOfPandan > 0.10f){worldInstance.chanceOfPandan -=.10f;
+            SetNewWorldSpawnRatesDecreased();}
             break;
 
             case 2:
-            thisRoundWorldState.chanceOfBanana += 0.01f;
+            if(worldInstance.chanceOfBanana > 0.10f){worldInstance.chanceOfBanana -=.10f;
+            SetNewWorldSpawnRatesDecreased();}
             break;
-    
+        
             case 3:
-            thisRoundWorldState.chanceOfStrawberry += 0.01f;
+            if(worldInstance.chanceOfStrawberry > 0.10f){worldInstance.chanceOfStrawberry -=.10f;
+            SetNewWorldSpawnRatesDecreased();}
             break;
 
             case 4:
-            thisRoundWorldState.chanceOfMango += 0.01f;
+            if(worldInstance.chanceOfMango > 0.10f){worldInstance.chanceOfMango -=.10f;
+            SetNewWorldSpawnRatesDecreased();}
             break;
 
             case 5:
-            thisRoundWorldState.chanceOfUbe += 0.01f;
+            if(worldInstance.chanceOfUbe > 0.10f){worldInstance.chanceOfUbe -=.10f;
+            SetNewWorldSpawnRatesDecreased();}
             break;
+            }
         }
+
     }
 
     public void SetNewDrinkDemandRates(DrinkMultiplierScripts drinkMultiplier){
@@ -436,7 +468,7 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    public WorldState ReturnWorldSelectedViaRound(){
+    public WorldState ReturnWorldSelectedViaIntRoundVal(){
         
         switch(worldOfRound){
             case 1:
@@ -499,6 +531,10 @@ public class GameManagerScript : MonoBehaviour
         worldInstance = cassavaBossLevel;
     }
 
+    public WorldState ReturnGameManagerWorldInstance(){
+        return worldInstance;
+    }
+
     public string ReturnThisRoundInstanceWorldPath(WorldState worldSelected){
         switch(worldSelected.WorldName){
             case "PandanForest":
@@ -515,8 +551,10 @@ public class GameManagerScript : MonoBehaviour
 
             case "CassavaCastle":
             return "/CassavaCastleStats.json";
+
+            default:
+            return "/World1Stats.json";
         }
-        return "/World1Stats.json";
     }
 
     public void SetBossWorldState(int EndingLevel){
@@ -568,6 +606,10 @@ public class GameManagerScript : MonoBehaviour
         thisInstanceOfPlayerShop.playerShopDrinkSellAmmount += .10f;
     }
 
+    public void setPlayerAndBossFight1Available(){
+        playerStats.unlockedBossFight = true;
+    }
+
     public ShopCostsNEarnings ReturnCurrentShopInstance(){
         return thisInstanceOfPlayerShop;
     }
@@ -588,5 +630,11 @@ public class GameManagerScript : MonoBehaviour
     }
     public int ReturnMaxAttackStasThisGameCanHandle(){
         return MaxAttackEverThisGame;
+    }
+
+    public bool CheckingIfSavesExist(){
+        string path = Application.persistentDataPath + "/alalaa";
+        if (File.Exists(path + "/PlayerStats.json")){return true;}
+        else{return false;};
     }
 }

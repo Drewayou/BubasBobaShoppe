@@ -60,6 +60,7 @@ MonoBehaviour:
   willDropLoot: 0
   gotHitEffect: {fileID: 5114082984778242958, guid: 994810e5fa00e074192a6e08a7328285, type: 3}
   thisSpriteRenderer: {fileID: 8735452324648684018}
+  thisPlayerController: {fileID: 0}
   thisBody: {fileID: 0}
   thisHitbox: {fileID: 0}
   isThisThePlayer: 1
@@ -81,9 +82,12 @@ MonoBehaviour:
   animator: {fileID: 9100000, guid: f343ed9be5b0f7442a2155659a548db8, type: 2}
   myRigidbody: {fileID: 1367891785326466373}
   myHitbox: {fileID: 0}
+  attachedHealthUni: {fileID: 0}
   moveSpeed: 8
-  sprintingSpeed: 2.5
+  playerAttackPoints: 5
+  playerMaxHealth: 15
   playerMaxStamina: 10
+  sprintingSpeed: 2.5
   meeleAttackCost: 2
   penaltyTimeStaminaOut: 5
   penaltyTimer: 0
@@ -215,6 +219,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 4b7919cf-9813-4882-9515-79b95a9f9c76
     m_ActionName: PlayerActionMap/SprintButton[/Keyboard/shift,/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4ed5b3ce-2987-4ff1-9530-59ae453df702
+    m_ActionName: PlayerActionMap/Pause[/XInputControllerWindows/start,/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerActionMap

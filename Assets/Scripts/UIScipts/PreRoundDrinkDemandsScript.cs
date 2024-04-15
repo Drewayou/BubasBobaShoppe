@@ -53,7 +53,7 @@ public class PreRoundDrinkDemandsScript : MonoBehaviour
     
         //Set the drink data to what was loaded
         oolongMultiplier =  whatDrinksArePopular.OolongMultiplier;
-        Debug.Log(oolongMultiplier);
+        //Debug.Log(oolongMultiplier);
         PandanMultiplier = whatDrinksArePopular.PandanMultiplier;
         BananaMultiplier = whatDrinksArePopular.BananaMultiplier;
         StrawberryMultiplier = whatDrinksArePopular.StrawberryMultiplier;
