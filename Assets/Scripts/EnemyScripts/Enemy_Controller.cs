@@ -17,6 +17,11 @@ public class Enemy_Controller : MonoBehaviour
     [SerializeField]
     public GameObject AgroRadius;
 
+    //Below is used for the Polygon Collider 2D for the HITBOX / Collision of the object.
+    [Header("Hitbox")]
+    [Tooltip("This is the Polygon collider of this object FOR THE HITBOX (Not a trigger) depending on what they are. Also used in Health_Universal")]
+    public PolygonCollider2D thisHitbox;
+
     [Tooltip ("What agrescript to call, in this case, in the childobject AgroRadius")]
     [SerializeField]
     public Enemy_AgroRadius thisEnemyAgroRange;
@@ -110,6 +115,9 @@ public class Enemy_Controller : MonoBehaviour
 
         //Set up health
         thisEnemyHealthManager = GetComponent<Health_Universal>();
+
+        //This Enemy Hitbix
+        thisHitbox = GetComponent<PolygonCollider2D>();
         
     }
 

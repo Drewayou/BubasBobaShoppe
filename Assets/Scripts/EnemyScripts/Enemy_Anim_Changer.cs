@@ -100,7 +100,7 @@ public class Enemy_Anim_Changer : MonoBehaviour
                     if(currentAnimationThisObject != "SlimeKnightPerpetualHunt"){
                         animatorThisObject.Play("SlimeKnightPerpetualHunt");
                         currentAnimationThisObject = "SlimeKnightPerpetualHunt";
-                        thisEnemyController.isCurrentlyAttacking = true;
+                        thisEnemyController.isCurrentlyAttacking = false;
                     }
 
                 break;
@@ -130,6 +130,26 @@ public class Enemy_Anim_Changer : MonoBehaviour
                     if(currentAnimationThisObject != "PricklyStrawberryAttacks"){
                         animatorThisObject.Play("PricklyStrawberryAttacks");
                         currentAnimationThisObject = "PricklyStrawberryAttacks";
+                        thisEnemyController.isCurrentlyAttacking = true;
+                    }
+
+                break;
+
+                case "MangoMauler(Clone)":
+
+                    if(currentAnimationThisObject != "MangoMaulerAttack"){
+                        animatorThisObject.Play("MangoMaulerAttack");
+                        currentAnimationThisObject = "MangoMaulerAttack";
+                        thisEnemyController.isCurrentlyAttacking = true;
+                    }
+
+                break;
+
+                case "UnderGroundUbe(Clone)":
+
+                    if(currentAnimationThisObject != "UnderGroundUbeAttacks"){
+                        animatorThisObject.Play("UnderGroundUbeAttacks");
+                        currentAnimationThisObject = "UnderGroundUbeAttacks";
                         thisEnemyController.isCurrentlyAttacking = true;
                     }
 
@@ -218,6 +238,38 @@ public class Enemy_Anim_Changer : MonoBehaviour
                     if(isThisMoving != true && currentAnimationThisObject != "PricklyStrawberryrIdle"){
                         animatorThisObject.Play("PricklyStrawberryrIdle");
                         currentAnimationThisObject = "PricklyStrawberryrIdle";
+                        }
+                    }
+
+                break;
+
+                case "MangoMauler(Clone)":
+
+                    if(isThisMoving && currentAnimationThisObject != "MangoMaulerAboutToMove"){
+                        animatorThisObject.Play("MangoMaulerAboutToMove");
+                        currentAnimationThisObject = "MangoMaulerAboutToMove";
+                    
+                    }else{ 
+
+                    if(isThisMoving != true && currentAnimationThisObject != "MangoMaulerIdle"){
+                        animatorThisObject.Play("MangoMaulerIdle");
+                        currentAnimationThisObject = "MangoMaulerIdle";
+                        }
+                    }
+
+                break;
+
+                case "UnderGroundUbe(Clone)":
+
+                    if(isThisMoving && currentAnimationThisObject != "UnderGroundUbeAboutToMove"){
+                        animatorThisObject.Play("UnderGroundUbeAboutToMove");
+                        currentAnimationThisObject = "UnderGroundUbeAboutToMove";
+                    
+                    }else{ 
+
+                    if(isThisMoving != true && currentAnimationThisObject != "UnderGroundUbeAboutToIdle"){
+                        animatorThisObject.Play("UnderGroundUbeAboutToIdle");
+                        currentAnimationThisObject = "UnderGroundUbeAboutToIdle";
                         }
                     }
 

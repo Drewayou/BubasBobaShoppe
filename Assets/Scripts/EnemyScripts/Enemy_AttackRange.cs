@@ -22,6 +22,8 @@ public class Enemy_AttackRange : MonoBehaviour
     Enemy_AgroRadius thisEnemyAgroRadius;
     CircleCollider2D attackRadius;
 
+    PolygonCollider2D thisHitbox;
+
     Health_Universal thisEnemyHealth;
 
     [SerializeField]
@@ -39,6 +41,10 @@ public class Enemy_AttackRange : MonoBehaviour
     {
         //Get enemy controller for this object 
         thisEnemyController = thisEnemyMainObject.GetComponent<Enemy_Controller>();
+
+        thisEnemyHealth = thisEnemyMainObject.GetComponent<Health_Universal>();
+
+        thisHitbox = thisEnemyMainObject.GetComponent<PolygonCollider2D>();
 
         //Get enemy agroRadius for this object
         //thisEnemyAgroRadius = EnemyAgroObject.GetComponent<Enemy_AgroRadius>();
@@ -171,7 +177,7 @@ public class Enemy_AttackRange : MonoBehaviour
         thisEnemyController.thisAgent.isStopped = false;
         thisEnemyController.isCurrentlyAttacking = false;
         thisEnemyController.attackBuildUp = 0;
-        thisEnemyAgroRadius.agroRadiusfloat = 50f;
+        
             break;
 
             //END OF CASSAVASLIMEKNIGHT'S CUSTOM ATTACK
@@ -296,7 +302,7 @@ public class Enemy_AttackRange : MonoBehaviour
             //StartCoroutine(PricklyStrawberryShootBuffer());
             //Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
 
-            /*FIXME: Try to make the Prickly Straberry Randomly move while shootingat the player.
+            /*FIXME: Try to make the Prickly Straberry Randomly move while shooting at the player.
             Vector3 directionAwayFromPlayer = (this.transform.position - thisEnemyController.GetPlayerLastSeenPosition()).normalized * -3;
             thisEnemyController.agent.SetDestination(directionAwayFromPlayer);
             StartCoroutine(WaitSeconds(3));
@@ -319,6 +325,89 @@ public class Enemy_AttackRange : MonoBehaviour
             break;
 
             //END OF PRICKLYSTRAWBERRY'S CUSTOM ATTACK
+            //
+            //
+            //
+
+        case "MangoMauler(Clone)":
+
+            //THIS IS THE MANGOMAULER'S CUSTOM ATTACK
+            //
+            //This Mango winds up to attack player with a heavy punch ;) (Pun intended)
+            //
+
+        if(thisEnemyController.nextAttackIn <= 0){
+            inAnAttackAnim = true;
+            }
+
+        if(isAttacking && inAnAttackAnim){
+           if(thisEnemyController.attackBuildUp <=0){
+
+            inAnAttackAnim = false;
+            thisEnemyController.attackBuildUp = tempAttackBuildupSaved;
+
+            //thisEnemyController.thisAgent.acceleration = 16f;
+            thisEnemyController.thisAgent.speed = .5f;
+
+            isAttacking = false;
+            thisEnemyController.isCurrentlyAttacking = isAttacking;
+            thisEnemyController.thisAgent.isStopped = false;
+
+            }else{
+                thisEnemyController.attackBuildUp -= Time.deltaTime;
+                //thisEnemyController.thisAgent.acceleration = 8f;
+                thisEnemyController.thisAgent.speed = 1.5f;
+                thisEnemyController.thisAgent.isStopped = false;
+            }
+            }
+            break;
+
+            //END OF MANGOMAULER'S CUSTOM ATTACK
+            //
+            //
+            //
+
+        case "UnderGroundUbe(Clone)":
+
+            //THIS IS THE UNDERGROUNDUBE'S CUSTOM ATTACK
+            //
+            //This Mango winds up to attack player with a heavy punch ;) (Pun intended)
+            //
+
+        if(thisEnemyController.nextAttackIn <= 0){
+            inAnAttackAnim = true;
+            }
+
+        if(isAttacking && inAnAttackAnim){
+           if(thisEnemyController.attackBuildUp <=0){
+
+            inAnAttackAnim = true;
+            thisEnemyController.attackBuildUp = tempAttackBuildupSaved;
+
+            //thisEnemyController.thisAgent.acceleration = 16f;
+            thisEnemyController.thisAgent.speed = 1.0f;
+            
+            isAttacking = false;
+            thisEnemyController.isCurrentlyAttacking = isAttacking;
+            thisEnemyController.thisAgent.isStopped = false;
+            
+            }else{
+                inAnAttackAnim = false;
+                thisEnemyController.attackBuildUp -= Time.deltaTime;
+                //thisEnemyController.thisAgent.acceleration = 8f;
+                thisEnemyController.thisAgent.speed = 0.25f;
+                thisEnemyController.thisAgent.isStopped = false;
+                
+            }
+            //thisEnemyHealth.isInvulnerable = false;
+            thisHitbox.isTrigger = false;
+            }else{
+                //thisEnemyHealth.isInvulnerable = true;
+                thisHitbox.isTrigger = true;
+            }
+            break;
+
+            //END OF UNDERGROUNDUBE'S CUSTOM ATTACK
             //
             //
             //

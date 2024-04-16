@@ -78,10 +78,16 @@ public class Health_Universal : MonoBehaviour, IDamageable
     [Tooltip("Is Health script for the player/Neutral OR an enemy NPC?")]
     public bool isThisThePlayer;
 
+    //NOTE: "isUnhittable is different from isInvulnerable! You can hit invulnerable stuff!"
     [Header("(bool) isInvulnerable")]
     [SerializeField]
     [Tooltip("Is this Invulnerable to death & Damage?")]
     public bool isInvulnerable;
+
+    [Header("(bool) isUnhittable")]
+    [SerializeField]
+    [Tooltip("Is this isUnhittable to Damage?")]
+    public bool isUnhittable;
 
     [Header("canAttackRanged")]
     [SerializeField]
@@ -127,6 +133,10 @@ public class Health_Universal : MonoBehaviour, IDamageable
         }else{
             health = thisGlobalGameManager.ReturnPlayerStats().playerMaxHealth;
         }
+
+        //Make sure this object can be hit and is not invulnerable.
+        isUnhittable = false;
+        isInvulnerable = false;
     }
 
     // Update is called once per frame
@@ -217,6 +227,12 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 case "PricklyStrawberry(Clone)":
                 thisRoundManagerScript.AddStrawberryMinisThisRound(1);
                 break;
+                case "MangoMauler(Clone)":
+                thisRoundManagerScript.AddMangoMinisThisRound(1);
+                break;
+                case "UnderGroundUbe(Clone)":
+                thisRoundManagerScript.AddtUbeMinisThisRound(1);
+                break;
             }
         }
     }
@@ -235,10 +251,13 @@ public class Health_Universal : MonoBehaviour, IDamageable
         //Debug.Log("Collision Started!");
 
         tempInvCountdown = tempInvTime;
-
+        
+        //NOTE: "isUnhittable is used for spawners / enemies with special conditions"
+        if(!isUnhittable){
         if(collision.gameObject.CompareTag("PlayerWeapon")){
             //If this collided with the player's weapons, trigger possible loot drop upon death.
                     willDropLoot = true;
+        }
         }
 
         if(collision.gameObject.CompareTag("Player")) {
@@ -304,7 +323,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
                     
                 }
 
-                if(!isThisThePlayer){
+                if(!isThisThePlayer && !isInvulnerable){
 
                     willDropLoot = true;
                     thisSpriteRenderer.material.color = chosenRedColor;

@@ -198,8 +198,8 @@ public class ShopManagerScript : MonoBehaviour
     }
 
     public void PlayerIsBroke(){
-        Debug.LogWarning("Player is broke!\n"
-        + "Dev has yet to put a UI to show they cannot purchase this!");
+        //Debug.LogWarning("Player is broke!\n"
+        //+ "Dev has yet to put a UI to show they cannot purchase this!");
 
         //FIXME: Instantiate the pop-up to tell the player is broke!
         Instantiate(NotEnoughMoneyAlert,CanvasMainMenu.transform);
