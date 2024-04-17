@@ -165,10 +165,11 @@ public class Enemy_Controller : MonoBehaviour
     
     //Check direction this enemy is moving
     public void directionOfMovement(){
-        
+
         if(thisAgent.velocity.x > 0){
-            if(transform.localScale.x == -1){
-                    Vector3 FlipVector = new Vector3(1, 1, 1);
+            if(transform.localScale.x < 0){
+                    Vector3 FlipVector = transform.localScale;
+                    FlipVector.x *= -1;
                     transform.localScale = FlipVector;
             }
             movementDirectionEast = true;
@@ -177,8 +178,10 @@ public class Enemy_Controller : MonoBehaviour
         }else{
 
         if(thisAgent.velocity.x < 0){
-            if(transform.localScale.x == 1){
-                    Vector3 FlipVector = new Vector3(-1, 1, 1);
+            if(transform.localScale.x > 0){
+                    Vector3 FlipVector = transform.localScale;;
+                    transform.localScale = FlipVector;
+                    FlipVector.x *= -1;
                     transform.localScale = FlipVector;
             }
         }

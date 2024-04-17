@@ -115,7 +115,7 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4608
+    m_Bits: 4800
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -125,7 +125,7 @@ PolygonCollider2D:
     m_Bits: 512
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1728
   m_ContactCaptureLayers:
     serializedVersion: 2
     m_Bits: 512

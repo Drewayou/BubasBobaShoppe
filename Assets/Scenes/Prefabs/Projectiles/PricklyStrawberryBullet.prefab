@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4686c776bd94ca548bc95b10ae47e236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 0.75
+  projectileSpeed: 1
 --- !u!212 &5126839811710500187
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -114,7 +114,7 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4608
+    m_Bits: 4800
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -124,7 +124,7 @@ PolygonCollider2D:
     m_Bits: 512
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1728
   m_ContactCaptureLayers:
     serializedVersion: 2
     m_Bits: 512

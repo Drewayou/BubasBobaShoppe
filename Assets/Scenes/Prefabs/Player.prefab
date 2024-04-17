@@ -65,6 +65,7 @@ MonoBehaviour:
   thisHitbox: {fileID: 0}
   isThisThePlayer: 1
   isInvulnerable: 0
+  isUnhittable: 0
   canAttackRanged: 0
   amIDeadYet: 0
 --- !u!114 &7022653823411009734

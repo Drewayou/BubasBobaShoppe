@@ -20,18 +20,20 @@ public class Player_Controller : MonoBehaviour
 
     public Health_Universal attachedHealthUni;
 
+    private GameManagerScript thisGameData;
+
     [Header("Movement Variables")]
     [Tooltip("The speed at which the player will move.")]
     public float moveSpeed = 1.5f;
 
     //attackPoints Taken from JSONGameScript
-    public int playerAttackPoints = 5;
+    public int playerAttackPoints;
 
     //playerMaxHealth Taken from JSONGameScript
-    public int playerMaxHealth = 15;
+    public int playerMaxHealth;
 
     //playerMaxStamina is taken from JSONGameScript
-    public float playerMaxStamina = 10f;
+    public float playerMaxStamina;
 
     public float sprintingSpeed = 2.0f;
 
@@ -64,12 +66,15 @@ public class Player_Controller : MonoBehaviour
     public bool isPlayerMoving = false;
 
 void Start(){
+
+    thisGameData = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
     attachedHealthUni = GetComponent<Health_Universal>();
     attachedHealthUni.health = playerMaxHealth;
     myRigidbody = GetComponent<Rigidbody2D>();
     myHitbox = GetComponent<PolygonCollider2D>();
     thisPlayerAnim = GetComponent<Player_AnimChanger>();
-    currentPlayerStamina = playerMaxStamina;
+    currentPlayerStamina = thisGameData.ReturnPlayerStats().playerMaxStamina;
+    playerAttackPoints = thisGameData.ReturnPlayerStats().playerAttackPoints;
 
     playerIdleStaminaRecoverBoost = 2f;
     sprintingButtonPressed = false;

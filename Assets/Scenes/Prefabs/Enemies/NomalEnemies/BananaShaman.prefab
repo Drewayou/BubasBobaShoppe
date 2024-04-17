@@ -389,6 +389,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
+      propertyPath: thisRoundEnemyProjectile
+      value: 
+      objectReference: {fileID: 1204066686827137885, guid: 9bdb5a4670423294db50ac206f2ef7c3, type: 3}
+    - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
       propertyPath: rangedAttackProjectileSpeed
       value: 1
       objectReference: {fileID: 0}

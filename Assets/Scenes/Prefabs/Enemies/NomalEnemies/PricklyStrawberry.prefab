@@ -140,6 +140,7 @@ MonoBehaviour:
   thisHitbox: {fileID: 0}
   isThisThePlayer: 0
   isInvulnerable: 0
+  isUnhittable: 0
   canAttackRanged: 0
   amIDeadYet: 0
 --- !u!114 &1479622039686433908
@@ -156,10 +157,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
   AgroRadius: {fileID: 4447996180704831342}
+  thisHitbox: {fileID: 0}
   thisEnemyAgroRange: {fileID: 555124388805837192}
   whatEnemyValIsThis: 1
   attackRadiusfloat: 0.75
-  moveSpeed: 0.75
+  moveSpeed: 1.2
   attackSpeed: 5
   attackBuildUp: 0.5
   nextAttackIn: 0
@@ -185,7 +187,7 @@ MonoBehaviour:
   thisEnemyController: {fileID: 1479622039686433908}
   thisAttackController: {fileID: 0}
   thisRigidbody: {fileID: 0}
-  moveSpeed: 0.5
+  moveSpeed: 1.5
   whatEnemyIsThis: 
   agent: {fileID: 6449258139919160243}
 --- !u!195 &6449258139919160243

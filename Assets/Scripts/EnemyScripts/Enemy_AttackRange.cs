@@ -15,6 +15,17 @@ public class Enemy_AttackRange : MonoBehaviour
     GameObject thisEnemyProjectiles;
     Enemy_Controller thisEnemyController;
     
+    [SerializeField]
+    [Header("RoundProjectileManager")]
+    [Tooltip("Drag The EnemyProjectile object here")]
+    GameObject thisRoundEnemyProjectile;
+    
+    [SerializeField]
+    [Header("SpecialAttackPrefab")]
+    [Tooltip("Drag The Special object attack here")]
+    GameObject thisEnemySpecial;
+
+    private RoundManagerScript thisRoundManager;
 
     //GetEnemyAgroRadius via object
     GameObject EnemyAgroObject;
@@ -39,6 +50,7 @@ public class Enemy_AttackRange : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        thisRoundManager = GameObject.Find("RoundManager").GetComponent<RoundManagerScript>();
         //Get enemy controller for this object 
         thisEnemyController = thisEnemyMainObject.GetComponent<Enemy_Controller>();
 
@@ -58,7 +70,8 @@ public class Enemy_AttackRange : MonoBehaviour
 
         tempAttackBuildupSaved = thisEnemyController.attackBuildUp;
 
-        
+        //Empty GameObject to contain enemy Projectiles
+        thisRoundEnemyProjectile = GameObject.Find("EnemyProjectiles");
     }
 
     // Update is called once per frame
@@ -178,9 +191,67 @@ public class Enemy_AttackRange : MonoBehaviour
         thisEnemyController.isCurrentlyAttacking = false;
         thisEnemyController.attackBuildUp = 0;
         
+        
             break;
 
             //END OF CASSAVASLIMEKNIGHT'S CUSTOM ATTACK
+            //
+            //
+            //
+
+        case "CassavaSlimeKing":
+
+            //THIS IS THE CASSAVASLIMEKING'S CUSTOM ATTACK
+            //
+            //SlimeKing spawns enemies
+            //Moreover it is perpetually aggro'd to the player
+
+        thisEnemyAgroRadius.LockedOnPlayer = true;
+
+        if(thisEnemyController.nextAttackIn <= 0){
+            inAnAttackAnim = true;
+            }
+
+        if(isAttacking && inAnAttackAnim){
+           if(thisEnemyController.attackBuildUp <=0){
+
+            inAnAttackAnim = false;
+            thisEnemyController.attackBuildUp = tempAttackBuildupSaved;
+
+            thisEnemyController.thisAgent.isStopped = false;
+
+            isAttacking = false;
+            thisEnemyController.isCurrentlyAttacking = isAttacking;
+
+            //Below BOC checks if round hit spawn cap. If not, summon slime knights.
+            if(!thisRoundManager.CheckIfSpawnCapIsReached()){
+            Vector3 rightOfSlimeKing = new Vector3(transform.position.x + .7f, transform.position.y -.1f, transform.position.z);
+            Instantiate (thisEnemyProjectiles,rightOfSlimeKing,transform.rotation,thisRoundEnemyProjectile.transform);
+
+
+            Vector3 leftOfSlimeKing = new Vector3(transform.position.x - .7f, transform.position.y -.1f, transform.position.z);
+            Instantiate (thisEnemyProjectiles,leftOfSlimeKing,transform.rotation,thisRoundEnemyProjectile.transform);
+
+            thisRoundManager.enemiesSpawned += 2 ;
+            }
+
+            //FIXME: This spawns a collider and sends the player and ALL enemies around the slime king flying. Try to
+            //Make it so that it teleports the slime king in a small radius and the player somewhere else in the said radius!
+            //Special "Repulse effect?"
+            Instantiate (thisEnemySpecial,transform.position,transform.rotation,thisRoundEnemyProjectile.transform);
+
+            //Special attack done?
+
+            }else{
+                thisEnemyController.attackBuildUp -= Time.deltaTime;
+            }
+            }
+
+            
+
+            break;
+
+            //END OF CASSAVASLIMEKING'S CUSTOM ATTACK
             //
             //
             //
@@ -202,7 +273,7 @@ public class Enemy_AttackRange : MonoBehaviour
             //Debug.LogWarning(thisEnemyProjectiles.name + "Fired");
             //Debug.LogWarning(transform.position + "Locatiion");
 
-            Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
+            Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,thisRoundEnemyProjectile.transform);
 
             /*FIXME: Try to make the pandan shooters run after attacking
             Vector3 directionAwayFromPlayer = (this.transform.position - thisEnemyController.GetPlayerLastSeenPosition()).normalized * -3;
@@ -249,7 +320,7 @@ public class Enemy_AttackRange : MonoBehaviour
             //Debug.LogWarning(thisEnemyProjectiles.name + "Fired");
             //Debug.LogWarning(transform.position + "Locatiion");
 
-            Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
+            Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,thisRoundEnemyProjectile.transform);
 
             /*FIXME: Try to make the banana shaman try kamakazi Diving at the player after attacking
             Vector3 directionAwayFromPlayer = (this.transform.position - thisEnemyController.GetPlayerLastSeenPosition()).normalized * -3;
@@ -296,7 +367,7 @@ public class Enemy_AttackRange : MonoBehaviour
             //Debug.LogWarning(thisEnemyProjectiles.name + "Fired");
             //Debug.LogWarning(transform.position + "Locatiion");
 
-            Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
+            Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,thisRoundEnemyProjectile.transform);
             //StartCoroutine(PricklyStrawberryShootBuffer());
             //Instantiate (thisEnemyProjectiles,transform.position,transform.rotation,transform);
             //StartCoroutine(PricklyStrawberryShootBuffer());
