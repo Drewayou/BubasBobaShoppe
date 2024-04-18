@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5017679973150395281}
   - component: {fileID: 2498021330340190813}
   - component: {fileID: 3240607729180317146}
+  - component: {fileID: -8725205785550615196}
   m_Layer: 0
   m_Name: JoshMree
   m_TagString: Untagged
@@ -142,3 +143,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
+--- !u!114 &-8725205785550615196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6286790642376085331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b70e6ee0587a9df45bd532c1440fba79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisNPCInteractCollider: {fileID: 0}
+  interactionAlert: {fileID: 0}
+  thisDialogeBox: {fileID: 0}
+  thisEntityTalking: {fileID: 0}
+  thisInteractionStartACutScene: 0
