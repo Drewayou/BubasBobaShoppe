@@ -14,6 +14,13 @@ public class Enemy_Anim_Changer : MonoBehaviour
     GameObject spawnInLevelEffect;
 
     [SerializeField]
+    [Tooltip("The Enemy object")]
+    [Header("This Enemy Object")]
+    GameObject enemyMainObject;
+
+    Health_Universal thisEnemyHealthManager;
+
+    [SerializeField]
     [Tooltip("The Enemy Animator for this object")]
     public Animator animatorThisObject;
 
@@ -50,7 +57,9 @@ public class Enemy_Anim_Changer : MonoBehaviour
         thisAttackController = GetComponentInChildren<Enemy_AttackRange>();
 
         whatEnemyIsThis = gameObject.name;
-        
+
+        thisEnemyHealthManager = gameObject.GetComponent<Health_Universal>();
+
         Instantiate (spawnInLevelEffect, transform.position, transform.rotation, transform);
     }
 
@@ -107,7 +116,7 @@ public class Enemy_Anim_Changer : MonoBehaviour
 
                 case "CassavaSlimeKing":
 
-                    if(currentAnimationThisObject != "CassavaSlimeKingSpawnsSlimes"){
+                    if(!thisEnemyHealthManager.bossIsDead && currentAnimationThisObject != "CassavaSlimeKingSpawnsSlimes"){
                         animatorThisObject.Play("CassavaSlimeKingSpawnsSlimes");
                         currentAnimationThisObject = "CassavaSlimeKingSpawnsSlimes";
                         thisEnemyController.isCurrentlyAttacking = false;
@@ -207,13 +216,13 @@ public class Enemy_Anim_Changer : MonoBehaviour
 
                 case "CassavaSlimeKing":
 
-                    if(isThisMoving && currentAnimationThisObject != "CassavaSlimeKingMoving"){
+                    if(isThisMoving && !thisEnemyHealthManager.bossIsDead && currentAnimationThisObject != "CassavaSlimeKingMoving"){
                         animatorThisObject.Play("CassavaSlimeKingMoving");
                         currentAnimationThisObject = "CassavaSlimeKingMoving";
                     
                     }else{ 
 
-                    if(isThisMoving != true && currentAnimationThisObject != "CassavaSlimeKingIdle"){
+                    if(isThisMoving != true && !thisEnemyHealthManager.bossIsDead && currentAnimationThisObject != "CassavaSlimeKingIdle"){
                         animatorThisObject.Play("CassavaSlimeKingIdle");
                         currentAnimationThisObject = "CassavaSlimeKingIdle";
                         }
@@ -303,6 +312,13 @@ public class Enemy_Anim_Changer : MonoBehaviour
             }
 
             
+        }
+        if(whatEnemyIsThis == "CassavaSlimeKing"){
+        //Switch for attack animations
+            if(thisEnemyHealthManager.bossIsDead){
+                animatorThisObject.Play("CassavaSlimeKingDies");
+                currentAnimationThisObject = "CassavaSlimeKingDies";
+            }
         }
     }
 }

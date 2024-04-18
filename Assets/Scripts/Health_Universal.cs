@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class Health_Universal : MonoBehaviour, IDamageable
 {
+    GameObject thisEnemy;
+
     [Header("Health Points")]
     [Tooltip("(Int) This is the health set for this object/entity and should be variable depending on what they are")]
     public int health;
@@ -78,6 +80,11 @@ public class Health_Universal : MonoBehaviour, IDamageable
     [Tooltip("Is Health script for the player/Neutral OR an enemy NPC?")]
     public bool isThisThePlayer;
 
+    [Header("(bool) isThisABoss")]
+    [SerializeField]
+    [Tooltip("Allows for the round to end/make a cool end")]
+    public bool isThisABoss;
+
     //NOTE: "isUnhittable is different from isInvulnerable! You can hit invulnerable stuff!"
     [Header("(bool) isInvulnerable")]
     [SerializeField]
@@ -113,9 +120,13 @@ public class Health_Universal : MonoBehaviour, IDamageable
     private bool playerReviving = false;
     private float timeForRevive = 5f;
 
+    public bool bossIsDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        thisEnemy = this.gameObject;
+
         thisGlobalGameManager = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
         //Set up round manager script and record this enemy instance
         thisRoundCalculatorObject = GameObject.Find("RoundManager");
@@ -184,11 +195,26 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
 
     void commitDeath(){
+        
+        //What happens when a boss dies
+        if(isThisABoss){
+
+            Time.timeScale = 0.25f;
+
+            Instantiate(deathEffect, locationUponDeath, Quaternion.identity);
+
+            bossIsDead = true;
             
+            BossKilledRoundEnd();
+
+        }
+
+        //What happens when a normal enemy dies
         if(!isThisThePlayer){
         thisAgent.enabled = false;
         }
         
+        if(!isThisABoss){
         //NOTE: You NEED to implement this codeblock for sfx!
         locationUponDeath = new Vector2(transform.position.x, transform.position.y);
 
@@ -202,6 +228,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
         DestroyNDetachChildren();
 
         Destroy(this.gameObject);
+        }
 
     }
 
@@ -216,7 +243,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 thisRoundManagerScript.AddCassavaSlimeBallsThisRound(1);
                 break;
                 case "CassavaSlimeKing":
-                thisRoundManagerScript.AddCassavaSlimeBallsThisRound(100);
+                thisRoundManagerScript.AddCassavaSlimeBallsThisRound(1);
                 break;
                 case "PandanShooter(Clone)":
                 thisRoundManagerScript.AddPandanLeavesThisRound(1);
@@ -382,5 +409,23 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
     public int ReturnThisHealth(){
         return health;
+    }
+
+    //FIXME: edit this for when the round ends due to boss kill
+    // (ADD UI)
+    public void BossKilledRoundEnd(){
+        thisRoundManagerScript.slowmoTime -= Time.unscaledDeltaTime;
+
+        //FIXME: Note - there is a bug where the loot is MASSIVELY increaing
+        //Lest you have a timer?
+        
+        DropLoot(willDropLoot);
+        if(thisRoundManagerScript.slowmoTime <= 0){
+            if(thisRoundManagerScript.slowmoTime <= 20){
+                willDropLoot = false;
+            }
+            Time.timeScale = 1;
+            thisRoundManagerScript.endTheRound();
+        }
     }
 }

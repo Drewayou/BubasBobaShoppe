@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class BobaLIvesScript : MonoBehaviour
+public class BobaLivesScript : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("Drag and drop the player Object here")]
@@ -11,9 +11,14 @@ public class BobaLIvesScript : MonoBehaviour
     GameObject BubbaPlayer;
 
     [SerializeField]
+    [Tooltip("Drag and drop the effect prefab for when you loose a life here")]
+    [Header("Lost a life UI Effect")]
+    GameObject BubbaDrinkVanishEffect;
+
+    [SerializeField]
     [Tooltip("Drag and drop the boba lives co-responding to left-> right here")]
     [Header("BobaLivesUI")]
-    GameObject BobaLives1, BobaLives2, BobaLives3;
+    GameObject BobaLivesOverall, BobaLives1, BobaLives2, BobaLives3;
 
     [SerializeField]
     [Tooltip("Drag and drop the boba lives co-responding to left-> right here")]
@@ -26,32 +31,51 @@ public class BobaLIvesScript : MonoBehaviour
 
     Health_Universal thePlayersHealth;
 
+    Animator ThisLostLifeAnim;
+
+    private float LostLifeTimerAnim = 5f;
+    
     // Start is called before the first frame update
     void Start()
     {
         thePlayersController = BubbaPlayer.GetComponent<Player_Controller>();
         thePlayersHealth = BubbaPlayer.GetComponent<Health_Universal>();
-        thisRoundManager = GameObject.Find("RoundManager").GetComponent<RoundManagerScript>();;
+        thisRoundManager = GameObject.Find("RoundManager").GetComponent<RoundManagerScript>();
+        ThisLostLifeAnim = BobaLivesOverall.GetComponent<Animator>();
+        BobaLivesOverall = this.gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
         if(thisRoundManager.ReturnPlayerLives() == 3){
-            BobaLivesMeter1.fillAmount = thePlayersHealth.health / (float)thePlayersController.getPlayerMaxHealth();
+            BobaLivesMeter1.fillAmount = thePlayersHealth.health/2 / (float)thePlayersController.getPlayerMaxHealth();
         }
 
         if(thisRoundManager.ReturnPlayerLives() == 2){
             BobaLives1.SetActive(false);
-            BobaLivesMeter2.fillAmount = thePlayersHealth.health / (float)thePlayersController.getPlayerMaxHealth();
+            BobaLivesMeter2.fillAmount = thePlayersHealth.health/2 / (float)thePlayersController.getPlayerMaxHealth();
+            if(LostLifeTimerAnim>=0){LostLifeTimerAnim-=Time.unscaledDeltaTime;}
         }
 
         if(thisRoundManager.ReturnPlayerLives() == 1){
             BobaLives2.SetActive(false);
-            BobaLivesMeter3.fillAmount = thePlayersHealth.health / (float)thePlayersController.getPlayerMaxHealth();
+            BobaLivesMeter3.fillAmount = thePlayersHealth.health/2 / (float)thePlayersController.getPlayerMaxHealth();
+            if(LostLifeTimerAnim>=0){LostLifeTimerAnim-=Time.unscaledDeltaTime;}
         }
         if(thisRoundManager.ReturnPlayerLives() == 0){
             BobaLives1.SetActive(false);
+            if(LostLifeTimerAnim>=0){LostLifeTimerAnim-=Time.unscaledDeltaTime;}
+        }
+
+        ShowLostALifeEffect();
+    }
+
+    public void ShowLostALifeEffect(){
+        if(thePlayersHealth.health <=0){
+            ThisLostLifeAnim.Play("LostLifeAnim");
+            LostLifeTimerAnim = 1f;
+            Instantiate(BubbaDrinkVanishEffect,BubbaPlayer.transform);
         }
     }
 }

@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy_AttackRange : MonoBehaviour
 {
@@ -43,7 +42,7 @@ public class Enemy_AttackRange : MonoBehaviour
     public float rangedAttackProjectileSpeed;
     public float attackRadiusfloat, tempAttackBuildupSaved;
 
-    public bool isAttacking, inAnAttackAnim;
+    public bool isAttacking, inAnAttackAnim, continuosAttackWhenInRange = false, HasCutscenceHappened = false;
 
     public string whichEnemyAttackIsThis;
 
@@ -125,6 +124,23 @@ public class Enemy_AttackRange : MonoBehaviour
         
     }
 
+    private void OnTriggerStay2D(UnityEngine.Collider2D collision)
+    {
+        //Debug.Log("PlayerLeftAttackRangeOfSlime!");
+
+        if(continuosAttackWhenInRange){
+        if(collision.CompareTag("Player")){
+            if(thisEnemyController.thisAgent.enabled){
+            thisEnemyController.thisAgent.isStopped = true;
+
+            isAttacking = true;
+            thisEnemyController.isCurrentlyAttacking = isAttacking;
+            }
+        }
+        }
+        
+    }
+
     public bool CheckIfAttacking(){
         return isAttacking;
     }
@@ -133,12 +149,6 @@ public class Enemy_AttackRange : MonoBehaviour
         return inAnAttackAnim;
     }
     
-    public IEnumerator WaitSeconds(float num)
-    {
-        yield return new WaitForSecondsRealtime(num);
-        thisEnemyController.thisAgent.isStopped = false;
-    }
-
     public void DoCustomAttack(string enemySelected){
 
         switch(enemySelected){
@@ -205,17 +215,20 @@ public class Enemy_AttackRange : MonoBehaviour
             //
             //SlimeKing spawns enemies
             //Moreover it is perpetually aggro'd to the player
+        if(HasCutscenceHappened){
+        continuosAttackWhenInRange = true;
+        
 
         thisEnemyAgroRadius.LockedOnPlayer = true;
-
+    
         if(thisEnemyController.nextAttackIn <= 0){
-            inAnAttackAnim = true;
+            //inAnAttackAnim = true;
             }
 
-        if(isAttacking && inAnAttackAnim){
+        if(isAttacking){
            if(thisEnemyController.attackBuildUp <=0){
 
-            inAnAttackAnim = false;
+            inAnAttackAnim = true;
             thisEnemyController.attackBuildUp = tempAttackBuildupSaved;
 
             thisEnemyController.thisAgent.isStopped = false;
@@ -232,19 +245,43 @@ public class Enemy_AttackRange : MonoBehaviour
             Vector3 leftOfSlimeKing = new Vector3(transform.position.x - .7f, transform.position.y -.1f, transform.position.z);
             Instantiate (thisEnemyProjectiles,leftOfSlimeKing,transform.rotation,thisRoundEnemyProjectile.transform);
 
-            thisRoundManager.enemiesSpawned += 2 ;
+            thisRoundManager.enemiesSpawned += 5 ;
             }
 
             //FIXME: This spawns a collider and sends the player and ALL enemies around the slime king flying. Try to
             //Make it so that it teleports the slime king in a small radius and the player somewhere else in the said radius!
             //Special "Repulse effect?"
-            Instantiate (thisEnemySpecial,transform.position,transform.rotation,thisRoundEnemyProjectile.transform);
+        
+            //Teleport CassavaSlimeKingHere here
+            Vector2 TeleportPointEnemeyHere = (Vector2)transform.position + (Random.insideUnitCircle * thisEnemyAgroRadius.agroRadiusfloat);
+
+            if(checkIfPointOnNavMesh(TeleportPointEnemeyHere,thisEnemyAgroRadius.agroRadiusfloat)){
+                
+            thisEnemyMainObject.transform.position = TeleportPointEnemeyHere;
+            
+            };
+
+            //Teleport Player here, with a possible distance of *3 the radius
+            Vector2 TeleportPointPlayerHere = (Vector2)transform.position + (Random.insideUnitCircle * thisEnemyAgroRadius.agroRadiusfloat * 4f);
+
+            if(checkIfPointOnNavMesh(TeleportPointPlayerHere,thisEnemyAgroRadius.agroRadiusfloat)){
+                
+            thisEnemyController.Target.transform.position = TeleportPointPlayerHere;
+            
+            };
+
+            //Instantiate (thisEnemySpecial,transform.position,transform.rotation,thisRoundEnemyProjectile.transform);
 
             //Special attack done?
 
             }else{
                 thisEnemyController.attackBuildUp -= Time.deltaTime;
-            }
+                    }
+                }
+            }else{
+                
+                thisEnemyController.thisAgent.isStopped = true;
+                
             }
 
             
@@ -262,6 +299,8 @@ public class Enemy_AttackRange : MonoBehaviour
             //
             //PandanShoots a prefab at the character
             //
+
+        continuosAttackWhenInRange = true;
 
         if(thisEnemyController.nextAttackIn <= 0){
             inAnAttackAnim = true;
@@ -310,6 +349,8 @@ public class Enemy_AttackRange : MonoBehaviour
             //Banana Shaman shoots a long-lasting, but slow Orb prefab at the character
             //
 
+        continuosAttackWhenInRange = true;
+
         if(thisEnemyController.nextAttackIn <= 0){
             inAnAttackAnim = true;
             }
@@ -356,6 +397,8 @@ public class Enemy_AttackRange : MonoBehaviour
             //
             //Prickly Strawberry quckly shoots a prickly seeds prefab at the character
             //
+
+        continuosAttackWhenInRange = true;
 
         if(thisEnemyController.nextAttackIn <= 0){
             inAnAttackAnim = true;
@@ -445,6 +488,8 @@ public class Enemy_AttackRange : MonoBehaviour
             //This Mango winds up to attack player with a heavy punch ;) (Pun intended)
             //
 
+        //continuosAttackWhenInRange = true;
+
         if(thisEnemyController.nextAttackIn <= 0){
             inAnAttackAnim = true;
             }
@@ -491,5 +536,17 @@ public class Enemy_AttackRange : MonoBehaviour
 
     IEnumerator PricklyStrawberryShootBuffer(){
         yield return new WaitForSeconds(.2f);
+    }
+
+    //Below code was pulled & edited from unity documentation "AI.NavMesh.SamplePosition.html"
+    //This supposedly checks if a point is on the navmesh within a range and returns a bool.
+    bool checkIfPointOnNavMesh(Vector3 randomPointSelected, float DesiredRadius)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPointSelected, out hit, DesiredRadius, NavMesh.AllAreas))
+        {
+            return true;
+        }
+        return false;
     }
 }

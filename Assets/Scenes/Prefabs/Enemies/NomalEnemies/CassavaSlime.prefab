@@ -363,6 +363,10 @@ PrefabInstance:
       value: CassavaSlime
       objectReference: {fileID: 0}
     - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
+      propertyPath: attackRadiusfloat
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987586540378038490, guid: f1e8eda1350290c4780ebbe19c9b52ab, type: 3}
       propertyPath: thisEnemyAgroRadius
       value: 
       objectReference: {fileID: 555124388805837192}

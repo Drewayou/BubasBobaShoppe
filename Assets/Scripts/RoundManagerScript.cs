@@ -88,6 +88,9 @@ public class RoundManagerScript : MonoBehaviour
     //The chance for enemies to seek out the player no matter if in range or not
     public float playerPerpetualAgroChance;
 
+    //SlowmoTime
+    public float slowmoTime = 2f;
+
     //Possible spawned spawners 
     public float chanceOfSlime, chanceOfPandan, chanceOfBanana, chanceOfStrawberry, chanceOfMango, chanceOfUbe;
 
@@ -417,7 +420,7 @@ public class RoundManagerScript : MonoBehaviour
     //This method is used by the "Continue" button at the end of the round and updates
     //the overall gold the player has, and saves new data (Produces this levels states
     //into the save as well).
-    private void endTheRound(){
+    public void endTheRound(){
 
         //Enable end of game UI
         EndOfRoundUIObject.SetActive(true);
@@ -537,5 +540,4 @@ public class RoundManagerScript : MonoBehaviour
         yield return new WaitForSecondsRealtime(num);
     
     }
-
 }
