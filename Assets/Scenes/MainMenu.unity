@@ -1971,7 +1971,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MacOS Version -  Pre-Alpha 2.12
+  m_text: MacOS Version -  Pre-Alpha 2.13
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2487,7 +2487,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Windows Version -  Pre-Alpha 2.12
+  m_text: Windows Version -  Pre-Alpha 2.13
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2752,7 +2752,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WEBGL Version - Pre-Alpha 2.12
+  m_text: WEBGL Version - Pre-Alpha 2.13
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3408,11 +3408,11 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'NOTICE:
 
-
-    This in-browser version of the game has some quirks due
-    to the dev''s knowledge in WEBGL''s technical limits. Thus, saves reset upon
-    browser refresh, along with coins as well. Please download the full game on Windows
-    / MacOS to have permanent, local saves. Thank you!'
+    This in-browser version of the game has some quirks due to
+    the dev''s knowledge in WEBGL''s technical limits. Thus, saves may reset upon
+    browser refresh along with coins, and visual graphical bugs may occur. Please
+    download the full game on Windows / MacOS to have permanent, local saves and
+    stable gameplay. Thank you!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3439,8 +3439,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4.49
-  m_fontSizeBase: 4.49
+  m_fontSize: 4.34
+  m_fontSizeBase: 4.34
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
