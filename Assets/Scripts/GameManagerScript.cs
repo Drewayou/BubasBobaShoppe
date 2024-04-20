@@ -110,7 +110,7 @@ public class GameManagerScript : MonoBehaviour
         Debug.LogWarning("Setting Default World Settings...");
 
         //Player default settings
-        playerStats.onDayNumber = 1;
+        playerStats.onDayNumber = 0;
         playerStats.playerMaxHealth = 15;
         playerStats.playerMaxStamina = 10f;
         playerStats.playerAttackPoints = 5;
@@ -249,7 +249,7 @@ public class GameManagerScript : MonoBehaviour
             {
                 SetNewWorldSpawnRatesIncreased();
                 SetNewWorldSpawnRatesDecreased();
-                playerStats.onDayNumber =+ 1;
+                
 
                 //thisTestState.chanceOfSlime = 1000f;
                 DataService.SaveData("/alalaa/PlayerStats.json", PlayerStatsThisInstance, EncryptionEnabled);

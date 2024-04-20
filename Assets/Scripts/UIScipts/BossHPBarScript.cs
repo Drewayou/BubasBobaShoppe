@@ -57,7 +57,7 @@ public class BossHPValAndUIScript : MonoBehaviour
         thisUIHealthText.text = Boss.name + " | " + bossCurrentHealth + "/" + bossMaxHealth;
         thisUIImage.fillAmount = bossCurrentHealth / bossMaxHealth;
         }else{
-            Destroy(TextObject);
+            //Destroy the boss health bar object
             Destroy(UIHealthObject);
         }
     }

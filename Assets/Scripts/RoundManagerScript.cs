@@ -53,7 +53,7 @@ public class RoundManagerScript : MonoBehaviour
     [SerializeField]
     [Header("Endof-RoundUITextObjects")]
     [Tooltip("Put the game's End-Of-RoundUI TextObjects to update at the end")]
-    TMP_Text OolongDemandTxt, OolongSoldTxt, PandanDemandTxt, PandanSoldTxt, BananaDemandTxt, BananaSoldTxt,
+    TMP_Text EndOfRoundToastText, OolongDemandTxt, OolongSoldTxt, PandanDemandTxt, PandanSoldTxt, BananaDemandTxt, BananaSoldTxt,
     StrawberryDemandTxt, StrawberrySoldTxt, MangoDemandTxt, MangoSoldTxt, UbeDemandTxt, UbeSoldTxt, ShopLevelNMultiplier, TotalNewGoldTxt;
 
     //FIXME private bool roundIsOver = false;
@@ -414,7 +414,7 @@ public class RoundManagerScript : MonoBehaviour
         UbeSoldTxt.text = "x" +UbeSold.ToString();
         ShopLevelNMultiplier.text = "Lvl" +thisGamesOverallInstance.ReturnCurrentShopInstance().shopLevelAt.ToString() 
         + " x " +thisGamesOverallInstance.ReturnCurrentShopInstance().playerShopDrinkSellAmmount.ToString("F2");
-        TotalNewGoldTxt.text = playerEarnedCoins.ToString();
+        TotalNewGoldTxt.text = playerEarnedCoins.ToString("F2");
     }
 
     //This method is used by the "Continue" button at the end of the round and updates
@@ -440,6 +440,8 @@ public class RoundManagerScript : MonoBehaviour
 
         //Use RNG and other values from the round start pulled via "getRoundSettingData()";
         CalculateEndOfRoundScoreYields();
+
+        EndOfRoundToastText.text = "The Day Has Ended!";
 
         //Update End of Round UI
         UpdateEndRoundUI();
@@ -467,7 +469,7 @@ public class RoundManagerScript : MonoBehaviour
         //Use RNG and other values from the round start pulled via "getRoundSettingData()";
         CalculateEndOfRoundScoreYields();
 
-        playerEarnedCoins /= 2;
+        //playerEarnedCoins /= 2;
 
         //Update End of Round UI
         UpdateEndRoundUI();
@@ -495,6 +497,8 @@ public class RoundManagerScript : MonoBehaviour
         //Use RNG and other values from the round start pulled via "getRoundSettingData()";
         CalculateEndOfRoundScoreYields();
 
+        EndOfRoundToastText.text = "You have died!";
+
         ///
         ///NOTE: MAKE AN IN-GAME UI THT SHOWS THIS /2 PENALTY OF COINS EARNED DUE TO PLAYER DEATH
         ///
@@ -516,6 +520,8 @@ public class RoundManagerScript : MonoBehaviour
 
     //This will be connected to the button for the "Continue" at the end of game UI.
     public void saveBeforeContinuingBackToMainMenuButton(){
+
+        thisGamesOverallInstance.ReturnPlayerStats().onDayNumber += 1;
 
         //Update overall coin stats
         thisGamesOverallInstance.UpdatePlayerCoinStats((int)playerEarnedCoins);

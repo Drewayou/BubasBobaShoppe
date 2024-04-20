@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisProjectileHealth: 1
-  thisProjectileDamagePoints: 1
+  thisProjectileDamagePoints: 4
   thisHitbox: {fileID: 0}
   playersProjectile: 0
 --- !u!50 &1174603921966293186

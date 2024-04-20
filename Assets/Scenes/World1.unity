@@ -116886,6 +116886,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 619929561}
     - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
+      propertyPath: EndOfRoundToastText
+      value: 
+      objectReference: {fileID: 8601989799458841780}
+    - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: StrawberryDemandTxt
       value: 
       objectReference: {fileID: 2040449682}
@@ -117306,6 +117310,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f21755339877d1a41a65297721c5287c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8601989799458841780 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6772263998464911454, guid: a90b872e7ccbd6248b670cd56220ea7d, type: 3}
+  m_PrefabInstance: {fileID: 8601989799458841778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8601989799458841781 stripped

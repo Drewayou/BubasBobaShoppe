@@ -262,7 +262,7 @@ public class Enemy_AttackRange : MonoBehaviour
             };
 
             //Teleport Player here, with a possible distance of *3 the radius
-            Vector2 TeleportPointPlayerHere = (Vector2)transform.position + (Random.insideUnitCircle * thisEnemyAgroRadius.agroRadiusfloat * 4f);
+            Vector2 TeleportPointPlayerHere = (Vector2)transform.position + (Random.insideUnitCircle * thisEnemyAgroRadius.agroRadiusfloat);
 
             if(checkIfPointOnNavMesh(TeleportPointPlayerHere,thisEnemyAgroRadius.agroRadiusfloat)){
                 
