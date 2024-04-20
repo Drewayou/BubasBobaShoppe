@@ -26,5 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CassavaCastle.unity
     guid: 995bae259596d914081647e775aa943e
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: dea44301e8201274f802b87ee3370ba3
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 35182c0b90b270f41b476d0ba562297c, type: 2}

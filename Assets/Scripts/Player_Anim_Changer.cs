@@ -32,6 +32,11 @@ public class Player_AnimChanger : MonoBehaviour
     playerLookingNW = false, playerLookingNE = false, playerLookingSW = false,
     playerLookingSE = false;
 
+    //Moon walking easter egg
+    public bool isMoonwalking = false, moonWalkingButtonPressed = false;
+
+    public float moonWalkingTimer = 5f, moonwalkingMaxTimer = 5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +49,8 @@ public class Player_AnimChanger : MonoBehaviour
     {
         changeAnimation();
         playDownSequencialAnimTimer();
+        isMoonWalking();
+        moonWalkingTimer -= Time.deltaTime;
     }
 
     public void changeAnimation(){
@@ -100,7 +107,7 @@ public class Player_AnimChanger : MonoBehaviour
             }
 
             //Walking facing EAST player animation
-            if (playerLookingE && currentAnimationThisObject != "BubbaDiagWalkSouthEast" && currentAnimationThisObject != "BubbaDiagWalkSouthEast" && currentAnimationThisObject != "BubbaDiagWalkNorthEast"){
+            if (!isMoonwalking && playerLookingE && currentAnimationThisObject != "BubbaDiagWalkSouthEast" && currentAnimationThisObject != "BubbaDiagWalkSouthEast" && currentAnimationThisObject != "BubbaDiagWalkNorthEast"){
                     currentAnimationThisObject = "BubbaDiagWalkSouthEast";
                     animatorThisObject.Play("BubbaDiagWalkSouthEast",0,0);
 
@@ -111,14 +118,38 @@ public class Player_AnimChanger : MonoBehaviour
                 }
             }
 
+            //Walking facing EAST MOONWALK player animation
+            if (isMoonwalking && playerLookingE && currentAnimationThisObject != "BubbaDiagWalkSouthEast" && currentAnimationThisObject != "BubbaDiagWalkSouthEast" && currentAnimationThisObject != "BubbaDiagWalkNorthEast"){
+                    currentAnimationThisObject = "BubbaDiagWalkSouthEast";
+                    animatorThisObject.Play("BubbaDiagWalkSouthEast",0,0);
+
+                    //FlipVectorCharacterWEST
+                    if(transform.localScale.x == 1){
+                    Vector3 FlipVector = new Vector3(-1, 1, 1);
+                    transform.localScale = FlipVector;
+                }
+            }
+
             //Walking facing WEST player animation
-            if (playerLookingW && currentAnimationThisObject != "BubbaDiagWalkSouthWest" && currentAnimationThisObject != "BubbaDiagWalkSouthWest" && currentAnimationThisObject != "BubbaDiagWalkNorthWest"){
+            if (!isMoonwalking && playerLookingW && currentAnimationThisObject != "BubbaDiagWalkSouthWest" && currentAnimationThisObject != "BubbaDiagWalkSouthWest" && currentAnimationThisObject != "BubbaDiagWalkNorthWest"){
                     currentAnimationThisObject = "BubbaDiagWalkSouthWest";
                     animatorThisObject.Play("BubbaDiagWalkSouthWest",0,0);
 
                     //FlipVectorCharacterWEST
                     if(transform.localScale.x == 1){
                     Vector3 FlipVector = new Vector3(-1, 1, 1);
+                    transform.localScale = FlipVector;
+                }
+            }
+
+            //Walking facing WEST MOONWALK player animation
+            if (isMoonwalking && playerLookingW && currentAnimationThisObject != "BubbaDiagWalkSouthWest" && currentAnimationThisObject != "BubbaDiagWalkSouthWest" && currentAnimationThisObject != "BubbaDiagWalkNorthWest"){
+                    currentAnimationThisObject = "BubbaDiagWalkSouthWest";
+                    animatorThisObject.Play("BubbaDiagWalkSouthWest",0,0);
+
+                    //FlipVectorCharacter
+                    if(transform.localScale.x == -1){
+                    Vector3 FlipVector = new Vector3(1, 1, 1);
                     transform.localScale = FlipVector;
                 }
             }
@@ -489,5 +520,23 @@ public class Player_AnimChanger : MonoBehaviour
         controllerThisObject.currentPlayerStamina -= controllerThisObject.meeleAttackCost;
         didAttackCostStamina = true;
         }
+    }
+
+    public void isMoonWalking(){
+        if(moonWalkingButtonPressed){
+            isMoonwalking = true;
+            moonWalkingTimer -= Time.deltaTime;
+            if(moonWalkingTimer <=0){
+                moonWalkingButtonPressed = false;
+                isMoonwalking = false;
+            } 
+        }
+    }
+
+    public void isMoonwalkingMPressed(){
+        
+        moonWalkingButtonPressed = true;
+            moonWalkingTimer = moonwalkingMaxTimer;
+        
     }
 }

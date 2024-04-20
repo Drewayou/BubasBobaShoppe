@@ -10,14 +10,17 @@ public class DontDestroy : MonoBehaviour
     [Header("MainMenuMusicPrefab")]
     [Tooltip("Put the MainMenuMusicPrefab to play here")]
     GameObject MainMenuMusicPrefab;
+
+    [SerializeField]
+    [Header("IntroMusicPrefab")]
+    [Tooltip("Put the IntroMusicPrefab to play here")]
+    GameObject IntroMusicPrefab;
     
     void Awake()
     {
-        if (GameObject.FindGameObjectWithTag("MainMenuMusic") == null){
-            Instantiate(MainMenuMusicPrefab);
-            
-        }else{
-            DontDestroyOnLoad(GameObject.FindGameObjectWithTag("MainMenuMusic"));
-        }
+ 
+    }
+    void Update(){
+        
     }
 }

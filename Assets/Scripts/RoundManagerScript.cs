@@ -447,6 +447,34 @@ public class RoundManagerScript : MonoBehaviour
         UpdateEndRoundUI();
     }
 
+    public void endTheRoundViaBossKill(string bossName){
+
+        //Enable end of game UI
+        EndOfRoundUIObject.SetActive(true);
+        
+        //Morescript to pull end of game UI
+        inGameUIAnimator.Play("EndOfGameMoveOutOfTheWay");
+        EndOfRoundUIAnimator.Play("MoveInEndOfRoundUI");
+
+        //Used to freeze game and MOSTLY everything
+        Time.timeScale = 0;
+
+        //FIXME: use this second variable incase of other scripts still running after Time.timescale = 0
+        //FIXME: roundIsOver = true;
+
+        //Turn off other UI after these many seconds
+        StartCoroutine(TurnOffInGameUIAfterNSeconds(5f));
+
+        //Use RNG and other values from the round start pulled via "getRoundSettingData()";
+        CalculateEndOfRoundScoreYields();
+
+        EndOfRoundToastText.fontSize = 100;
+        EndOfRoundToastText.text = "You have killed the " + bossName +"!";
+
+        //Update End of Round UI
+        UpdateEndRoundUI();
+    }
+
     //FIXME: Will be called if the round is ended via the pause menu - you have yet to connect this to the main menu
     public void endTheRoundEarly(){
 

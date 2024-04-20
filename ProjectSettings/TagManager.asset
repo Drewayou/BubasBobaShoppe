@@ -9,6 +9,8 @@ TagManager:
   - Objectives
   - GameManager
   - MainMenuMusic
+  - IntroMusic
+  - Undefined
   layers:
   - Default
   - TransparentFX

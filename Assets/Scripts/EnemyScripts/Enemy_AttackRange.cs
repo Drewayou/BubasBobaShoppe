@@ -267,6 +267,8 @@ public class Enemy_AttackRange : MonoBehaviour
             if(checkIfPointOnNavMesh(TeleportPointPlayerHere,thisEnemyAgroRadius.agroRadiusfloat)){
                 
             thisEnemyController.Target.transform.position = TeleportPointPlayerHere;
+
+            Instantiate(thisEnemySpecial,thisEnemyController.Target.transform);
             
             };
 

@@ -3401,6 +3401,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4745418181268901340, guid: 5bc72b19c2f133244a9df3fb2b3242e5, type: 3}
+      propertyPath: mainMenuMusic
+      value: 
+      objectReference: {fileID: 4103942276593403869, guid: 7f7f4bc836536f9489b26664e82aec05, type: 3}
+    - target: {fileID: 4745418181268901340, guid: 5bc72b19c2f133244a9df3fb2b3242e5, type: 3}
       propertyPath: attackMaxThisGame
       value: 20
       objectReference: {fileID: 0}
@@ -3484,6 +3488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainMenuMusicPrefab: {fileID: 4103942276593403869, guid: 7f7f4bc836536f9489b26664e82aec05, type: 3}
+  IntroMusicPrefab: {fileID: 4103942276593403869, guid: f1d474f39dcc5e649b106c125ab9cbe8, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

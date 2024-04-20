@@ -64,10 +64,12 @@ MonoBehaviour:
   thisBody: {fileID: 0}
   thisHitbox: {fileID: 0}
   isThisThePlayer: 1
+  isThisABoss: 0
   isInvulnerable: 0
   isUnhittable: 0
   canAttackRanged: 0
   amIDeadYet: 0
+  bossIsDead: 0
 --- !u!114 &7022653823411009734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +118,8 @@ MonoBehaviour:
   playerWantsToMove: 1
   playerIsAttackingAnim: 0
   didAttackCostStamina: 0
+  isMoonwalking: 0
+  moonWalkingButtonPressed: 0
 --- !u!50 &1367891785326466373
 Rigidbody2D:
   serializedVersion: 4
@@ -236,6 +240,26 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 4ed5b3ce-2987-4ff1-9530-59ae453df702
     m_ActionName: PlayerActionMap/Pause[/XInputControllerWindows/start,/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ecd4084b-ecc8-4eda-a90c-acbbd9d1dbaa
+    m_ActionName: PlayerActionMap/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3429090588397925845}
+        m_TargetAssemblyTypeName: Player_AnimChanger, Assembly-CSharp
+        m_MethodName: isMoonwalkingMPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d0e47888-2803-43b0-af41-0cc0094365f1
+    m_ActionName: PlayerActionMap/MoonWalk[/Keyboard/m]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerActionMap

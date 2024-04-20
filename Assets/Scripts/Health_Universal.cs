@@ -205,7 +205,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
             bossIsDead = true;
             
-            BossKilledRoundEnd();
+            BossKilledRoundEnd(thisEnemy.name);
 
         }
 
@@ -413,7 +413,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
 
     //FIXME: edit this for when the round ends due to boss kill
     // (ADD UI)
-    public void BossKilledRoundEnd(){
+    public void BossKilledRoundEnd(string thisEnemyName){
         thisRoundManagerScript.slowmoTime -= Time.unscaledDeltaTime;
 
         //FIXME: Note - there is a bug where the loot is MASSIVELY increaing
@@ -425,7 +425,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 willDropLoot = false;
             }
             Time.timeScale = 1;
-            thisRoundManagerScript.endTheRound();
+            thisRoundManagerScript.endTheRoundViaBossKill(thisEnemyName);
         }
     }
 }

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 [Serializable]
 public class PlayerDataJson 
 {
+    public bool newGame { get; set; }
     public float playerCoins { get; set; }
     public int onDayNumber { get; set; }
     public int playerMaxHealth { get; set; }

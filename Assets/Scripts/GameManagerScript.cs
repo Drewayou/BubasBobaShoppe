@@ -11,6 +11,25 @@ using JetBrains.Annotations;
 
 public class GameManagerScript : MonoBehaviour
 {
+
+    [SerializeField]
+    [Header("Intro Video Object")]
+    [Tooltip("The Intro video if this is a new game")]
+    //Drag the intro video object here
+    GameObject introContainer;
+
+    [SerializeField]
+    [Header("Intro Music Prefab Object")]
+    [Tooltip("The Intro music if this is a new game")]
+    //Drag the intro video object here
+    GameObject introMusic;
+
+    [SerializeField]
+    [Header("Main Menu Music")]
+    [Tooltip("Place Main Menu Music Here ")]
+    //Drag the intro video object here
+    GameObject mainMenuMusic;
+
     //FIXME: Public Temp var for each world.
     [SerializeField]
     [Header("Which world is this?")]
@@ -49,11 +68,31 @@ public class GameManagerScript : MonoBehaviour
     //Set which world is this from current instance and saves
     void Start(){
 
+        //Load the game save from files
         ContinueGame();
+
+        if(mainMenuMusic !=null){
+        if(GameObject.Find("MainMenuMusic") == null && GameObject.Find("IntroMusic") == null){
+                Instantiate(mainMenuMusic);
+            }
+        }
+
+        //Start playing the intro if this is a new game save, else make sure it's off
+        if(introContainer != null){
+            if(PlayerStatsThisInstance.newGame){
+                introContainer.SetActive(true);
+                if(GameObject.FindWithTag("IntroMusic") == null){
+                    Instantiate(introMusic);
+                    Destroy(GameObject.Find("MainMenuMusic(Clone)"));
+                }
+            }else{
+                introContainer.SetActive(false);
+            }
+        }
+
     }
 
     void Update(){
-        
     }
     
     /// <summary>
@@ -110,6 +149,7 @@ public class GameManagerScript : MonoBehaviour
         Debug.LogWarning("Setting Default World Settings...");
 
         //Player default settings
+        playerStats.newGame = true;
         playerStats.onDayNumber = 0;
         playerStats.playerMaxHealth = 15;
         playerStats.playerMaxStamina = 10f;
@@ -636,5 +676,13 @@ public class GameManagerScript : MonoBehaviour
         string path = Application.persistentDataPath + "/alalaa";
         if (File.Exists(path + "/PlayerStats.json")){return true;}
         else{return false;};
+    }
+
+    public void doneWithNewGameIntro(){
+        introContainer.SetActive(false);
+        PlayerStatsThisInstance.newGame = false;
+        Destroy(GameObject.Find("IntroMusic(Clone)"));
+        Instantiate(mainMenuMusic);
+        SaveShopAndPlayerDataAfterPurchase(thisInstanceOfPlayerShop,PlayerStatsThisInstance);
     }
 }
