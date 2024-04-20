@@ -18,6 +18,11 @@ public class Enemy_AttackRange : MonoBehaviour
     [Header("RoundProjectileManager")]
     [Tooltip("Drag The EnemyProjectile object here")]
     GameObject thisRoundEnemyProjectile;
+
+    [SerializeField]
+    [Header("AttackSfx")]
+    [Tooltip("Drag The EnemyAttackSfx object here")]
+    GameObject thisRoundEnemyAttackSfx;
     
     [SerializeField]
     [Header("SpecialAttackPrefab")]
@@ -271,6 +276,8 @@ public class Enemy_AttackRange : MonoBehaviour
             Instantiate(thisEnemySpecial,thisEnemyController.Target.transform);
             
             };
+            
+            Instantiate(thisRoundEnemyAttackSfx);
 
             //Instantiate (thisEnemySpecial,transform.position,transform.rotation,thisRoundEnemyProjectile.transform);
 
@@ -469,6 +476,8 @@ public class Enemy_AttackRange : MonoBehaviour
             thisEnemyController.isCurrentlyAttacking = isAttacking;
             thisEnemyController.thisAgent.isStopped = false;
 
+            Instantiate(thisRoundEnemyAttackSfx);
+
             }else{
                 thisEnemyController.attackBuildUp -= Time.deltaTime;
                 //thisEnemyController.thisAgent.acceleration = 8f;
@@ -508,6 +517,9 @@ public class Enemy_AttackRange : MonoBehaviour
             isAttacking = false;
             thisEnemyController.isCurrentlyAttacking = isAttacking;
             thisEnemyController.thisAgent.isStopped = false;
+
+            //FIXME: have an underground bury dig sfx
+            //Instantiate(thisRoundEnemyAttackSfx);
             
             }else{
                 inAnAttackAnim = false;

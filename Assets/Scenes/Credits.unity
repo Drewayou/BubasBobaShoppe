@@ -381,6 +381,7 @@ GameObject:
   - component: {fileID: 659362385}
   - component: {fileID: 659362384}
   - component: {fileID: 659362388}
+  - component: {fileID: 659362389}
   m_Layer: 5
   m_Name: QuitIntro
   m_TagString: Untagged
@@ -493,6 +494,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 659362389}
+        m_TargetAssemblyTypeName: SfxPlay, Assembly-CSharp
+        m_MethodName: PlaySfx
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 659362388}
         m_TargetAssemblyTypeName: LevelLoadButton, Assembly-CSharp
         m_MethodName: LoadLevelByName
@@ -555,6 +568,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e71e73cf9ff154e498d7489203734bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &659362389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659362382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83361e1bc47c42341a85526de0b015a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxPrefabToPlay: {fileID: 3568806420035336839, guid: daf7fd0a63321de4682cbb5e8618f055, type: 3}
 --- !u!1 &1431768111
 GameObject:
   m_ObjectHideFlags: 0

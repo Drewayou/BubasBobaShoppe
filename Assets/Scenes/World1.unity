@@ -116844,7 +116844,7 @@ PrefabInstance:
     - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: BananaSoldTxt
       value: 
-      objectReference: {fileID: 907657204}
+      objectReference: {fileID: 33751823}
     - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: OolongSoldTxt
       value: 
@@ -116864,7 +116864,7 @@ PrefabInstance:
     - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: BananaDemandTxt
       value: 
-      objectReference: {fileID: 656674478}
+      objectReference: {fileID: 2040449682}
     - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: OolongDemandTxt
       value: 
@@ -116880,7 +116880,7 @@ PrefabInstance:
     - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: StrawberrySoldTxt
       value: 
-      objectReference: {fileID: 33751823}
+      objectReference: {fileID: 907657204}
     - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: EndOfRoundUIObject
       value: 
@@ -116892,11 +116892,15 @@ PrefabInstance:
     - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: StrawberryDemandTxt
       value: 
-      objectReference: {fileID: 2040449682}
+      objectReference: {fileID: 656674478}
     - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: ShopLevelNMultiplier
       value: 
       objectReference: {fileID: 1910317387}
+    - target: {fileID: 5959095722549224970, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
+      propertyPath: NeedSlimeForBobaNotif
+      value: 
+      objectReference: {fileID: 8601989799458841782}
     - target: {fileID: 6028830736502783036, guid: d1b8ee952168a004e9fe55a7a8d5a266, type: 3}
       propertyPath: m_Name
       value: RoundManager
@@ -116957,6 +116961,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1946414078}
+    - target: {fileID: 2615147426818105613, guid: a90b872e7ccbd6248b670cd56220ea7d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2686615338774819170, guid: a90b872e7ccbd6248b670cd56220ea7d, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 0
@@ -117096,6 +117104,10 @@ PrefabInstance:
     - target: {fileID: 3578600818523788891, guid: a90b872e7ccbd6248b670cd56220ea7d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821013501072570205, guid: a90b872e7ccbd6248b670cd56220ea7d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4823474901024997980, guid: a90b872e7ccbd6248b670cd56220ea7d, type: 3}
       propertyPath: m_BlockingMask.m_Bits
@@ -117334,6 +117346,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d7dc8953829c3543bac554c96eb79a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8601989799458841782 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 274339513433070762, guid: a90b872e7ccbd6248b670cd56220ea7d, type: 3}
+  m_PrefabInstance: {fileID: 8601989799458841778}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -10,6 +10,11 @@ public class Enemy_Despawn : MonoBehaviour
     GameObject parentEnemyObject;
 
     [SerializeField]
+    [Header("Enemy Despawn Sfx")]
+    [Tooltip("The game object prefab sfx to despawn")]
+    GameObject DespawnSfx;
+
+    [SerializeField]
     [Header("Enemy AgroObject")]
     [Tooltip("The Agro Radius of this enemy prefab")]
     GameObject enemyAgroObject;
@@ -45,5 +50,6 @@ public class Enemy_Despawn : MonoBehaviour
     public void Despawn(){
         Destroy(parentEnemyObject);
         gamesRoundManager.EnemyKilled();
+        Instantiate(DespawnSfx);
     }
 }

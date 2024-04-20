@@ -43,6 +43,16 @@ public class Health_Universal : MonoBehaviour, IDamageable
     [Tooltip("This is the taken damage effect of this object /entity depending on what they are")]
     public GameObject gotHitEffect;
 
+    [SerializeField]
+    [Header("")]
+    [Tooltip("")]
+    public GameObject playerRevivesSfx;
+
+    [SerializeField]
+    [Header("")]
+    [Tooltip("")]
+    public GameObject playerReallyDiesSfx;
+
     [Header("Got Hit Sprite Flash")]
     [SerializeField]
     [Tooltip("This is for the 'flash' of dmg effect of this object /entity depending on what they are")]
@@ -173,6 +183,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
         
         //Player death condition no more lives
         if(!playerReviving && isThisThePlayer && thisRoundManagerScript.ReturnPlayerLives() == 0){
+            health = -100;
             thisRoundManagerScript.endTheRoundDueToDeath();
         }
     }
@@ -187,6 +198,7 @@ public class Health_Universal : MonoBehaviour, IDamageable
                 health = thisGlobalGameManager.ReturnPlayerStats().playerMaxHealth;
             }else{
                 thisRoundManagerScript.TakePlayerLives();
+                if(GameObject.Find("playerRevivesSfx(Clone)")==null){Instantiate(playerRevivesSfx);}
                 isInvulnerable = false;
                 playerReviving = false;
             }

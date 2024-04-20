@@ -56,6 +56,12 @@ public class RoundManagerScript : MonoBehaviour
     TMP_Text EndOfRoundToastText, OolongDemandTxt, OolongSoldTxt, PandanDemandTxt, PandanSoldTxt, BananaDemandTxt, BananaSoldTxt,
     StrawberryDemandTxt, StrawberrySoldTxt, MangoDemandTxt, MangoSoldTxt, UbeDemandTxt, UbeSoldTxt, ShopLevelNMultiplier, TotalNewGoldTxt;
 
+    //A notif if the player did not hunt cassava slimes this round
+    [SerializeField]
+    [Header("No Cassava for boba!")]
+    [Tooltip("Drag the notif object in the end-of round UI")]
+    GameObject NeedSlimeForBobaNotif;
+
     //FIXME private bool roundIsOver = false;
 
     //FIXME: Temp PUBLIC value to see the time in game. SET TO PRIVATE AFTER DEBUGGING.
@@ -75,7 +81,7 @@ public class RoundManagerScript : MonoBehaviour
     StrawberrySold = 0, MangoSold = 0, UbeSold = 0;
 
     //ValuesOfEachDrinkSetPre-round by Overall Game Manager in pre-round UI and RNG.
-    private float oolongMultiplier = 1.0f, PandanMultiplier = 1.0f, BananaMultiplier = 1.0f,
+    public float oolongMultiplier = 1.0f, PandanMultiplier = 1.0f, BananaMultiplier = 1.0f,
     StrawberryMultiplier = 1.0f, MangoMultiplier = 1.0f, UbeMultiplier = 1.0f;
 
     //Player Increased coind value by how much this round?
@@ -158,7 +164,7 @@ public class RoundManagerScript : MonoBehaviour
         }
 
         //Get the drink demand from this game's manager and apply them to this round
-        whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();
+        //whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();
         UpdateThisRoundDrinksDemand();
 
         //Setworld difficulty settings 
@@ -391,12 +397,12 @@ public class RoundManagerScript : MonoBehaviour
     }
 
     private void UpdateThisRoundDrinksDemand(){
-        oolongMultiplier = whatDrinksArePopular.OolongMultiplier;
-        PandanMultiplier = whatDrinksArePopular.PandanMultiplier;
-        BananaMultiplier = whatDrinksArePopular.BananaMultiplier;
-        StrawberryMultiplier = whatDrinksArePopular.StrawberryMultiplier;
-        MangoMultiplier = whatDrinksArePopular.MangoMultiplier;
-        UbeMultiplier = whatDrinksArePopular.UbeMultiplier;
+        oolongMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().OolongMultiplier;
+        PandanMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().PandanMultiplier;
+        BananaMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().BananaMultiplier;
+        StrawberryMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().StrawberryMultiplier;
+        MangoMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().MangoMultiplier;
+        UbeMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().UbeMultiplier;
     }
 
     private void UpdateEndRoundUI(){
@@ -415,6 +421,11 @@ public class RoundManagerScript : MonoBehaviour
         ShopLevelNMultiplier.text = "Lvl" +thisGamesOverallInstance.ReturnCurrentShopInstance().shopLevelAt.ToString() 
         + " x " +thisGamesOverallInstance.ReturnCurrentShopInstance().playerShopDrinkSellAmmount.ToString("F2");
         TotalNewGoldTxt.text = playerEarnedCoins.ToString("F2");
+
+    //Notify the player if they forgot to hunt cassava slimes for this round!
+        if(oolongSold == 0){
+            NeedSlimeForBobaNotif.SetActive(true);
+        }else{NeedSlimeForBobaNotif.SetActive(false);}
     }
 
     //This method is used by the "Continue" button at the end of the round and updates
@@ -558,7 +569,7 @@ public class RoundManagerScript : MonoBehaviour
         //FIXME:thisGamesOverallInstance.SetNewWorldSpawnRatesState(whichWorldWasSelected);
 
         //Call GameManager to change drink demand rates for next round
-        thisGamesOverallInstance.SetNewDrinkDemandRates(whatDrinksArePopular);
+        thisGamesOverallInstance.SetNewDrinkDemandRates(thisGamesOverallInstance.ReturnDrinkRatesThisRound());
 
         //Save new states
         thisGamesOverallInstance.SaveGameAfterRound(whichWorldWasSelected);

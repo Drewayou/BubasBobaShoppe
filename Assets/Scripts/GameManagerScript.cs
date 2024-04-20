@@ -47,6 +47,8 @@ public class GameManagerScript : MonoBehaviour
 
     private DrinkMultiplierScripts drinkMultiplier = new DrinkMultiplierScripts();
 
+     private DrinkMultiplierScripts drinkMultiplierInstance;
+
     private WorldState cassavaBossLevel = new WorldState();
     private Inter_Dataservice DataService = new JsonDataService();
 
@@ -236,7 +238,7 @@ public class GameManagerScript : MonoBehaviour
                 world4 = DataService.LoadData<WorldState>("/alalaa/World4Stats.json", EncryptionEnabled);
                 cassavaBossLevel = DataService.LoadData<WorldState>("/alalaa/CassavaCastleStats.json", EncryptionEnabled);
                 
-                drinkMultiplier = DataService.LoadData<DrinkMultiplierScripts>("/alalaa/DrinkMultiplier.json", EncryptionEnabled);
+                drinkMultiplierInstance = DataService.LoadData<DrinkMultiplierScripts>("/alalaa/DrinkMultiplier.json", EncryptionEnabled);
             }
             catch (Exception e)
             {
@@ -295,7 +297,7 @@ public class GameManagerScript : MonoBehaviour
                 DataService.SaveData("/alalaa/PlayerStats.json", PlayerStatsThisInstance, EncryptionEnabled);
                 DataService.SaveData("/alalaa" + ReturnThisRoundInstanceWorldPath(worldSelected), worldInstance, EncryptionEnabled);
                 DataService.SaveData("/alalaa/CassavaCastleStats.json", cassavaBossLevel, EncryptionEnabled);
-                DataService.SaveData("/alalaa/DrinkMultiplier.json", drinkMultiplier, EncryptionEnabled);
+                DataService.SaveData("/alalaa/DrinkMultiplier.json", drinkMultiplierInstance, EncryptionEnabled);
             }
             catch (Exception e)
             {
@@ -430,53 +432,53 @@ public class GameManagerScript : MonoBehaviour
 
         switch(selectedDrinkDemandToIncreaseSpawn){
             case 0:
-            drinkMultiplier.OolongMultiplier -= 0.10f;
+            drinkMultiplierInstance.OolongMultiplier -= 0.10f;
             break;
 
             case 1:
-            drinkMultiplier.PandanMultiplier -= 0.10f;
+            drinkMultiplierInstance.PandanMultiplier -= 0.10f;
             break;
 
             case 2:
-            drinkMultiplier.BananaMultiplier -= 0.10f;
+            drinkMultiplierInstance.BananaMultiplier -= 0.10f;
             break;
     
             case 3:
-            drinkMultiplier.StrawberryMultiplier -= 0.10f;
+            drinkMultiplierInstance.StrawberryMultiplier -= 0.10f;
             break;
 
             case 4:
-            drinkMultiplier.MangoMultiplier -= 0.10f;
+            drinkMultiplierInstance.MangoMultiplier -= 0.10f;
             break;
 
             case 5:
-            drinkMultiplier.UbeMultiplier -= 0.10f;
+            drinkMultiplierInstance.UbeMultiplier -= 0.10f;
             break;
         }
 
         switch(selectedDrinkDemandToDecreaseSpawn){
             case 0:
-            drinkMultiplier.OolongMultiplier += 0.10f;
+            drinkMultiplierInstance.OolongMultiplier += 0.10f;
             break;
 
             case 1:
-            drinkMultiplier.PandanMultiplier += 0.10f;
+            drinkMultiplierInstance.PandanMultiplier += 0.10f;
             break;
 
             case 2:
-            drinkMultiplier.BananaMultiplier += 0.10f;
+            drinkMultiplierInstance.BananaMultiplier += 0.10f;
             break;
     
             case 3:
-            drinkMultiplier.StrawberryMultiplier += 0.10f;
+            drinkMultiplierInstance.StrawberryMultiplier += 0.10f;
             break;
 
             case 4:
-            drinkMultiplier.MangoMultiplier += 0.10f;
+            drinkMultiplierInstance.MangoMultiplier += 0.10f;
             break;
 
             case 5:
-            drinkMultiplier.UbeMultiplier += 0.10f;
+            drinkMultiplierInstance.UbeMultiplier += 0.10f;
             break;
         }
     }
@@ -655,7 +657,7 @@ public class GameManagerScript : MonoBehaviour
     }
     
     public DrinkMultiplierScripts ReturnDrinkRatesThisRound(){
-        return drinkMultiplier;
+        return drinkMultiplierInstance;
     }
 
     public PlayerDataJson ReturnPlayerStats(){

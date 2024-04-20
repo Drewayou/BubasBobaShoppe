@@ -8,6 +8,10 @@ public class ShopManagerScript : MonoBehaviour
     ShopCostsNEarnings thisGamesCurrentShopDataInstance;
     PlayerDataJson thisPlayersCurrentData;
 
+    [SerializeField]
+    //FIXME: add desc
+    GameObject playShopBuySfx, playShopfailedSfx;
+
     //Sprite renderers to display the progress of the player from the maxed out settings.
     [SerializeField]
     [Header("Add the Image object of the meters")]
@@ -193,11 +197,13 @@ public class ShopManagerScript : MonoBehaviour
 
     //BOC to make code cleaner to call the save shop from GameManagerScript after each buy.
     public void UpdateNSaveShop(){
+        Instantiate(playShopBuySfx);
         thisGamesCurrentManagerScript.SaveShopAndPlayerDataAfterPurchase(thisGamesCurrentShopDataInstance, thisPlayersCurrentData);
         UpdateShopDisplay();
     }
 
     public void PlayerIsBroke(){
+        Instantiate(playShopfailedSfx);
         //Debug.LogWarning("Player is broke!\n"
         //+ "Dev has yet to put a UI to show they cannot purchase this!");
 

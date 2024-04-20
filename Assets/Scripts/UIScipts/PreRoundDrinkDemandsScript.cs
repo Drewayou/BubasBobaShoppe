@@ -61,11 +61,11 @@ public class PreRoundDrinkDemandsScript : MonoBehaviour
         UbeMultiplier = whatDrinksArePopular.UbeMultiplier;
 
         //Show the drink data to what was loaded to the TXT's in UI
-        OolongDemandTxt.text = "x"+oolongMultiplier.ToString();
-        PandanDemandTxt.text = "x"+PandanMultiplier.ToString();
-        BananaDemandTxt.text = "x"+BananaMultiplier.ToString();
-        StrawberryDemandTxt.text = "x"+StrawberryMultiplier.ToString();
-        MangoDemandTxt.text = "x"+MangoMultiplier.ToString();
-        UbeDemandTxt.text = "x"+UbeMultiplier.ToString();
+        OolongDemandTxt.text = "x"+oolongMultiplier.ToString("F2");
+        PandanDemandTxt.text = "x"+PandanMultiplier.ToString("F2");
+        BananaDemandTxt.text = "x"+BananaMultiplier.ToString("F2");
+        StrawberryDemandTxt.text = "x"+StrawberryMultiplier.ToString("F2");
+        MangoDemandTxt.text = "x"+MangoMultiplier.ToString("F2");
+        UbeDemandTxt.text = "x"+UbeMultiplier.ToString("F2");
     }
 }
