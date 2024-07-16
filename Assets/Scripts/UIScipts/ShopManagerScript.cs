@@ -126,7 +126,7 @@ public class ShopManagerScript : MonoBehaviour
         //If true, does action. Player hp icreases by 1 each buy but +100 cost (10th buy = 1000 coins but +1attck)
         if(thisPlayersCurrentData.playerCoins > thisGamesCurrentShopDataInstance.shopPlayerAttackUpCost){
             thisPlayersCurrentData.playerCoins -= thisGamesCurrentShopDataInstance.shopPlayerAttackUpCost;
-            thisGamesCurrentShopDataInstance.shopPlayerAttackUpCost += 100;
+            thisGamesCurrentShopDataInstance.shopPlayerAttackUpCost += 10;
             thisPlayersCurrentData.playerAttackPoints += 1;
             UpdateNSaveShop();
         }else{
@@ -139,7 +139,7 @@ public class ShopManagerScript : MonoBehaviour
         //If true, does action. Player hp icreases by 1 each buy but +100 cost (10th buy = 1000 coins but +1Stamina)
         if(thisPlayersCurrentData.playerCoins > thisGamesCurrentShopDataInstance.shopPlayerStaminaUpCost){
             thisPlayersCurrentData.playerCoins -= thisGamesCurrentShopDataInstance.shopPlayerStaminaUpCost;
-            thisGamesCurrentShopDataInstance.shopPlayerStaminaUpCost += 100;
+            thisGamesCurrentShopDataInstance.shopPlayerStaminaUpCost += 10;
             thisPlayersCurrentData.playerMaxStamina += 1;
             UpdateNSaveShop();
         }else{

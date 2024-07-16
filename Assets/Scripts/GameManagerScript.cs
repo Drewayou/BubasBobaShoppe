@@ -162,11 +162,11 @@ public class GameManagerScript : MonoBehaviour
         ShopData.playerShopDrinkSellAmmount = 1.0f;
         ShopData.shopLevelUpCost = 10;
         ShopData.shopPlayerHPUpCost = 10;
-        ShopData.shopPlayerAttackUpCost = 100;
-        ShopData.shopPlayerStaminaUpCost = 100;
-        ShopData.world2Cost = 200;
-        ShopData.world3Cost = 300;
-        ShopData.world4Cost = 400;
+        ShopData.shopPlayerAttackUpCost = 10;
+        ShopData.shopPlayerStaminaUpCost = 10;
+        ShopData.world2Cost = 25;
+        ShopData.world3Cost = 50;
+        ShopData.world4Cost = 75;
 
         //Basic world settings
         world1.WorldName = "PandanForest";
