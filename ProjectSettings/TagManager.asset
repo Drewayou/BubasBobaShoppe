@@ -11,6 +11,7 @@ TagManager:
   - MainMenuMusic
   - IntroMusic
   - Undefined
+  - BobaDrink
   layers:
   - Default
   - TransparentFX
