@@ -36,9 +36,8 @@ public class GameManagerScript : MonoBehaviour
     [Tooltip("Set this to the number of what world this manager is attached to!")]
     public int worldOfRound;
 
-    //Set all JSON to the default base.
+    //Set all JSON data to the default base.
     private PlayerDataJson playerStats = new PlayerDataJson();
-
     private ShopCostsNEarnings ShopData = new ShopCostsNEarnings();
     private WorldState world1 = new WorldState();
     private WorldState world2 = new WorldState();
@@ -47,7 +46,7 @@ public class GameManagerScript : MonoBehaviour
 
     private DrinkMultiplierScripts drinkMultiplier = new DrinkMultiplierScripts();
 
-     private DrinkMultiplierScripts drinkMultiplierInstance;
+    private DrinkMultiplierScripts drinkMultiplierInstance;
 
     private WorldState cassavaBossLevel = new WorldState();
     private Inter_Dataservice DataService = new JsonDataService();
@@ -156,6 +155,12 @@ public class GameManagerScript : MonoBehaviour
         playerStats.playerMaxHealth = 15;
         playerStats.playerMaxStamina = 10f;
         playerStats.playerAttackPoints = 5;
+        playerStats.casavaBalls = 0;
+        playerStats.pandanLeaves = 0;
+        playerStats.bananas = 0;
+        playerStats.strawberries = 0;
+        playerStats.mangos = 0;
+        playerStats.ube = 0;
 
         //Shop default settings
         ShopData.shopLevelAt = 1;
@@ -291,7 +296,6 @@ public class GameManagerScript : MonoBehaviour
             {
                 SetNewWorldSpawnRatesIncreased();
                 SetNewWorldSpawnRatesDecreased();
-                
 
                 //thisTestState.chanceOfSlime = 1000f;
                 DataService.SaveData("/alalaa/PlayerStats.json", PlayerStatsThisInstance, EncryptionEnabled);
@@ -686,5 +690,14 @@ public class GameManagerScript : MonoBehaviour
         Destroy(GameObject.Find("IntroMusic(Clone)"));
         Instantiate(mainMenuMusic);
         SaveShopAndPlayerDataAfterPurchase(thisInstanceOfPlayerShop,PlayerStatsThisInstance);
+    }
+
+    public void UpdatePlayerHuntInventoryGain(int cassava,int pandan,int banana,int strawberry,int mango,int ube){
+        PlayerStatsThisInstance.casavaBalls += cassava;
+        PlayerStatsThisInstance.pandanLeaves += pandan;
+        PlayerStatsThisInstance.bananas += banana;
+        PlayerStatsThisInstance.strawberries += strawberry;
+        PlayerStatsThisInstance.mangos += mango;
+        PlayerStatsThisInstance.ube += ube;
     }
 }

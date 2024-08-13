@@ -15,4 +15,10 @@ public class PlayerDataJson
     public bool unlockedLeve3 { get; set; }
     public bool unlockedLeve4 { get; set; }
     public bool unlockedBossFight { get; set; }
+    public int casavaBalls { get; set; }
+    public int pandanLeaves { get; set; }
+    public int bananas { get; set; }
+    public int strawberries { get; set; }
+    public int mangos { get; set; }
+    public int ube { get; set; }
 }

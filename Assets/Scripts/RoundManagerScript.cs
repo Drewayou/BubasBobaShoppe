@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 public class RoundManagerScript : MonoBehaviour
 {
-    //FIXME:
+    //FIXME: You need to change this round manager depending if it's a hunt, sell, or city round!
     
     //The Game's OverallManager Object to pull/put scripts from.
     [Header("GameManager")]
@@ -52,9 +52,9 @@ public class RoundManagerScript : MonoBehaviour
     //The Game's End-Of-RoundUI Text Objects to update
     [SerializeField]
     [Header("Endof-RoundUITextObjects")]
-    [Tooltip("Put the game's End-Of-RoundUI TextObjects to update at the end")]
-    TMP_Text EndOfRoundToastText, OolongDemandTxt, OolongSoldTxt, PandanDemandTxt, PandanSoldTxt, BananaDemandTxt, BananaSoldTxt,
-    StrawberryDemandTxt, StrawberrySoldTxt, MangoDemandTxt, MangoSoldTxt, UbeDemandTxt, UbeSoldTxt, ShopLevelNMultiplier, TotalNewGoldTxt;
+    [Tooltip("Put the game's End-Of-RoundUI TextObjects to update at the end, depending on what round this manages.")]
+    TMP_Text EndOfRoundToastText, BaseTeaORCassavaFlexTxt, BaseTeaSoldTxt, PandanFlexTxt, PandanSoldTxt, BananaFlexTxt, BananaSoldTxt,
+    StrawberryFlexTxt, StrawberrySoldTxt, MangoFlexTxt, MangoSoldTxt, UbeFlexTxt, UbeSoldTxt, ShopLevelNMultiplier, TotalNewGoldTxt;
 
     //A notif if the player did not hunt cassava slimes this round
     [SerializeField]
@@ -62,7 +62,11 @@ public class RoundManagerScript : MonoBehaviour
     [Tooltip("Drag the notif object in the end-of round UI")]
     GameObject NeedSlimeForBobaNotif;
 
-    //FIXME private bool roundIsOver = false;
+    //FIXME: Below is to set what kind of round this is. Via a switch, will dictate what kind of round handlers are active.
+    [SerializeField]
+    public int roundType;
+
+    //FIXME: private bool roundIsOver = false;
 
     //FIXME: Temp PUBLIC value to see the time in game. SET TO PRIVATE AFTER DEBUGGING.
     //Timer for this round.
@@ -75,6 +79,7 @@ public class RoundManagerScript : MonoBehaviour
     private int CassavaSlimeBalls = 0, PandanLeaves = 0, BananaMinis = 0,
     StrawberryMinis = 0, MangoMinis = 0, UbeMinis = 0;
 
+    //FIXME: This prior logic was used for the alpha! Edit this for the beta!
     //Values to show how many of each drink were sold. Made via RNG at the end of the game, and each drink requires ONE CassavaSlimeBalls resource. 
     //Oolong is default if there are no other resources left. Excess resources are thrown away sadly.
     private int oolongSold = 0, PandanSold = 0, BananaSold = 0,
@@ -183,7 +188,9 @@ public class RoundManagerScript : MonoBehaviour
         if(roundTimer<=180){
             roundTimer += Time.deltaTime;
         }else{
-            endTheRound();
+            if(roundType == 0){
+                endTheHUNTRound();
+            }
         }
     }
 
@@ -292,8 +299,11 @@ public class RoundManagerScript : MonoBehaviour
     /// </summary>
     private void CalculateEndOfRoundScoreYields(){
 
-        //For however how many cassavaslimeball resources the player has earned, make a drink randomly and decrement until there are no more cassavaslimeballs left.
+        //NOTE: This was the old logic newer logic beow: For however how many cassavaslimeball resources the player has earned, make a drink randomly and decrement until there are no more cassavaslimeballs left.
         //Use these values for the next step below.
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~OLD LOGIC USED THAT MAY BE RECYCLED!~~~~~~~~~~~~~~~~~~~~~~~~~~
+        /*EXPAND BELOW
         
         for (int drinksToMakeLeft = CassavaSlimeBalls; drinksToMakeLeft > 0; drinksToMakeLeft =-1){
             
@@ -304,7 +314,6 @@ public class RoundManagerScript : MonoBehaviour
             string selectedDrinkToMake = possibleDrinksList[UnityEngine.Random.Range(0,possibleDrinksList.Count)];
 
             //FIXME:
-            //Debug.LogWarning(selectedDrinkToMake);
 
             switch(selectedDrinkToMake){
 
@@ -349,17 +358,10 @@ public class RoundManagerScript : MonoBehaviour
                 oolongSold += 1;
                 CassavaSlimeBalls -= 1;
                 break;
-            }
-        }
-
-        //Actually calculate the ammount of coin the user gained this round.
-        //Math goes like this = Player shop multiplier * (Total drinks sold * Their Multipliers)
-        playerEarnedCoins = thisGamesOverallInstance.ReturnPlayerShopCoinMultiplier() * ((oolongSold * oolongMultiplier) + (PandanSold * PandanMultiplier) + 
-        (BananaSold * BananaMultiplier) + (StrawberrySold * StrawberryMultiplier) + (MangoSold * MangoMultiplier) + (UbeSold * UbeMultiplier));
-
-        //Debug.Log(playerEarnedCoins);
-    }
-
+            } 
+        } 
+        
+        //FIXME: Use this to make rng drink orders?
     private void makePossibleDrinkList(){
 
         //Reset the possible drinks
@@ -396,6 +398,23 @@ public class RoundManagerScript : MonoBehaviour
         }
     }
 
+
+        //Actually calculate the ammount of coin the user gained this round.
+        //Math goes like this = Player shop multiplier * (Total drinks sold * Their Multipliers)
+        playerEarnedCoins = thisGamesOverallInstance.ReturnPlayerShopCoinMultiplier() * ((oolongSold * oolongMultiplier) + (PandanSold * PandanMultiplier) + 
+        (BananaSold * BananaMultiplier) + (StrawberrySold * StrawberryMultiplier) + (MangoSold * MangoMultiplier) + (UbeSold * UbeMultiplier));
+
+        //Debug.Log(playerEarnedCoins);
+
+        */
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~NEW LOGIC : Simply save the items gained to playerdata!~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
+    }
+
+    private void UpdateAndSaveHuntInventory(){
+        thisGamesOverallInstance.UpdatePlayerHuntInventoryGain(CassavaSlimeBalls, PandanLeaves, BananaMinis, StrawberryMinis, MangoMinis, UbeMinis);
+    }
+
     private void UpdateThisRoundDrinksDemand(){
         oolongMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().OolongMultiplier;
         PandanMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().PandanMultiplier;
@@ -406,17 +425,17 @@ public class RoundManagerScript : MonoBehaviour
     }
 
     private void UpdateEndRoundUI(){
-        OolongDemandTxt.text = oolongMultiplier.ToString("F2");
-        OolongSoldTxt.text = "x" +oolongSold.ToString(); 
-        PandanDemandTxt.text = PandanMultiplier.ToString("F2");
+        BaseTeaORCassavaFlexTxt.text = oolongMultiplier.ToString("F2");
+        BaseTeaSoldTxt.text = "x" +oolongSold.ToString(); 
+        PandanFlexTxt.text = PandanMultiplier.ToString("F2");
         PandanSoldTxt.text = "x" +PandanSold.ToString(); 
-        BananaDemandTxt.text = BananaMultiplier.ToString("F2"); 
+        BananaFlexTxt.text = BananaMultiplier.ToString("F2"); 
         BananaSoldTxt.text = "x" +BananaSold.ToString(); 
-        StrawberryDemandTxt.text = StrawberryMultiplier.ToString("F2"); 
+        StrawberryFlexTxt.text = StrawberryMultiplier.ToString("F2"); 
         StrawberrySoldTxt.text = "x" +StrawberrySold.ToString(); 
-        MangoDemandTxt.text = MangoMultiplier.ToString("F2"); 
+        MangoFlexTxt.text = MangoMultiplier.ToString("F2"); 
         MangoSoldTxt.text = "x" +MangoSold.ToString(); 
-        UbeDemandTxt.text = UbeMultiplier.ToString("F2"); 
+        UbeFlexTxt.text = UbeMultiplier.ToString("F2"); 
         UbeSoldTxt.text = "x" +UbeSold.ToString();
         ShopLevelNMultiplier.text = "Lvl" +thisGamesOverallInstance.ReturnCurrentShopInstance().shopLevelAt.ToString() 
         + " x " +thisGamesOverallInstance.ReturnCurrentShopInstance().playerShopDrinkSellAmmount.ToString("F2");
@@ -428,10 +447,19 @@ public class RoundManagerScript : MonoBehaviour
         }else{NeedSlimeForBobaNotif.SetActive(false);}
     }
 
-    //This method is used by the "Continue" button at the end of the round and updates
-    //the overall gold the player has, and saves new data (Produces this levels states
+    private void UpdateEndOfHUNTRoundUI(){
+        BaseTeaORCassavaFlexTxt.text = CassavaSlimeBalls.ToString("F2");
+        PandanFlexTxt.text = PandanLeaves.ToString("F2");
+        BananaFlexTxt.text = BananaMinis.ToString("F2"); 
+        StrawberryFlexTxt.text = StrawberryMinis.ToString("F2"); 
+        MangoFlexTxt.text = MangoMinis.ToString("F2"); 
+        UbeFlexTxt.text = UbeMinis.ToString("F2"); 
+    }
+
+    //This method is used by the "Continue" button at the end of the "HUNT" round and updates
+    //the overall inventory the player has, and saves new data! (Produces this levels states
     //into the save as well).
-    public void endTheRound(){
+    public void endTheHUNTRound(){
 
         //Enable end of game UI
         EndOfRoundUIObject.SetActive(true);
@@ -455,7 +483,7 @@ public class RoundManagerScript : MonoBehaviour
         EndOfRoundToastText.text = "The Day Has Ended!";
 
         //Update End of Round UI
-        UpdateEndRoundUI();
+        UpdateEndOfHUNTRoundUI();
     }
 
     public void endTheRoundViaBossKill(string bossName){
@@ -561,6 +589,8 @@ public class RoundManagerScript : MonoBehaviour
     public void saveBeforeContinuingBackToMainMenuButton(){
 
         thisGamesOverallInstance.ReturnPlayerStats().onDayNumber += 1;
+
+        UpdateAndSaveHuntInventory();
 
         //Update overall coin stats
         thisGamesOverallInstance.UpdatePlayerCoinStats((int)playerEarnedCoins);
