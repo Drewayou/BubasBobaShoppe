@@ -103,7 +103,7 @@ public class GameManagerScript : MonoBehaviour
 
         Debug.LogWarning("WARNING : Any player save will be overwritten!");
         ClearData();
-        PrepareDefaultWorldSettings();
+        PrepareDefaultWorldSettingsAndGameSave();
         Debug.LogWarning("Saving Default World Settings...");
 
         string path = Application.persistentDataPath + "/alalaa";
@@ -145,7 +145,7 @@ public class GameManagerScript : MonoBehaviour
         yield return new WaitForSeconds(waitSeconds);
     }
 
-    public void PrepareDefaultWorldSettings(){
+    public void PrepareDefaultWorldSettingsAndGameSave(){
 
         Debug.LogWarning("Setting Default World Settings...");
 
@@ -161,6 +161,15 @@ public class GameManagerScript : MonoBehaviour
         playerStats.strawberries = 0;
         playerStats.mangos = 0;
         playerStats.ube = 0;
+
+        //Note-this may need ot be moved to shopdata in the future!
+        playerStats.shopTraysAvailable = 3;
+        playerStats.shopCupHoldersAvailable = 3;
+        playerStats.shopPopularity = 0.0f;
+        playerStats.mixerAvailable = 1;
+
+        //FIXME: list array for items in shop? Idk if this works since C#v9 doesn't have resizable arrays.
+        playerStats.shopTraysItemListArray = new List<int>();
 
         //Shop default settings
         ShopData.shopLevelAt = 1;
@@ -335,7 +344,27 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    
+    //Call this save update after the player sucessfully picks items they want to sell pre-shop round!
+    public void SavePlayerDataAfterSelectingIngredientsForShopRound(PlayerDataJson anInstanceOfPlayer){
+        string path = Application.persistentDataPath + "/alalaa";
+        if (File.Exists(path + "/PlayerShopData.json"))
+        {
+            try
+            {
+                //FIXME: This may become the shop data if you (the dev) decides to move this data!
+                DataService.SaveData("/alalaa/PlayerStats.json", anInstanceOfPlayer, EncryptionEnabled);
+                Debug.Log("Saved the player's ingredient choices!");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Couldn't find files! Game Dev has yet to understand why! (Sorry :<) \n Error:" + e);
+            }
+        }
+        else
+        {
+            Debug.LogError("Could not save game! Files cannot be found! Game Dev has yet to understand why! (Sorry :<)");
+        }
+    }
 
     public void ClearData()
     {
@@ -676,6 +705,10 @@ public class GameManagerScript : MonoBehaviour
     }
     public int ReturnMaxAttackStasThisGameCanHandle(){
         return MaxAttackEverThisGame;
+    }
+
+    public List<int> AddItemToShopTrayArrayList(){
+        return playerStats.shopTraysItemListArray;
     }
 
     public bool CheckingIfSavesExist(){

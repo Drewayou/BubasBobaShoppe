@@ -15,10 +15,23 @@ public class PlayerDataJson
     public bool unlockedLeve3 { get; set; }
     public bool unlockedLeve4 { get; set; }
     public bool unlockedBossFight { get; set; }
+
+    //Player dropable items data
     public int casavaBalls { get; set; }
     public int pandanLeaves { get; set; }
     public int bananas { get; set; }
     public int strawberries { get; set; }
     public int mangos { get; set; }
     public int ube { get; set; }
+
+    //Player shop save data. May need to move to Shop JSON in the future?
+    public int shopTraysAvailable { get; set; }
+    public int shopCupHoldersAvailable { get; set; }
+    public int mixerAvailable { get; set; }
+    public float shopPopularity { get; set; }
+
+    public List<int> shopTraysItemListArray { get; set; }
+   
+
+
 }
