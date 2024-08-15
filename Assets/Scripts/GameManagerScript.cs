@@ -162,7 +162,7 @@ public class GameManagerScript : MonoBehaviour
         playerStats.mangos = 0;
         playerStats.ube = 0;
 
-        //Note-this may need ot be moved to shopdata in the future!
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Note-this may need ot be moved to shopdata in the future!
         playerStats.shopTraysAvailable = 3;
         playerStats.shopCupHoldersAvailable = 3;
         playerStats.shopPopularity = 0.0f;
@@ -170,6 +170,9 @@ public class GameManagerScript : MonoBehaviour
 
         //FIXME: list array for items in shop? Idk if this works since C#v9 doesn't have resizable arrays.
         playerStats.shopTraysItemListArray = new List<int>();
+        playerStats.bobaShopBobaPotCookingSpeed = 0.20f;
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         //Shop default settings
         ShopData.shopLevelAt = 1;
