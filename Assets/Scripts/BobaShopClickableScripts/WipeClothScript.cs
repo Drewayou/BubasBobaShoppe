@@ -9,13 +9,14 @@ public class WipeClothScript : MonoBehaviour
     //Gets game Object to check what the player is currently holding
     [SerializeField]
     GameObject itemInHandInventory;
+    Animator itemInHandInventoryAnimator;
     [SerializeField]
     GameObject wipeCloth;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -42,7 +43,14 @@ public class WipeClothScript : MonoBehaviour
                 break;
 
                 case "WipeClothDirty(Clone)": 
+                //Play wrong interaction hand animation.
+                itemInHandInventoryAnimator.Play("IncorrectInteraction");
                 print("Cannot Return Dirty Cloth!");
+                break;
+
+                default:
+                //Play wrong interaction hand animation.
+                itemInHandInventoryAnimator.Play("IncorrectInteraction");
                 break;
             }
         }

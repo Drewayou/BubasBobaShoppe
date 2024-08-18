@@ -30,6 +30,10 @@ public class SpillCleanScript : MonoBehaviour
             Vector3 clothHeldPosition = new Vector3(0f,-.75f,0f);
             Instantiate(wipeClothDirty,clothHeldPosition,Quaternion.identity,itemInHandInventory.transform);
             Destroy(gameObject);
+        }else{
+            //Play wrong interaction hand animation.
+            Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
         }
     }
 }

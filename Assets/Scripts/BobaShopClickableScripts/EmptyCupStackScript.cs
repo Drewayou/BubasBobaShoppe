@@ -33,6 +33,10 @@ public class EmptyCupStackScript : MonoBehaviour
             
         }else if(itemInHandInventory.transform.GetChild(0).gameObject.name == "EmptyCup(Clone)"){
             Destroy(itemInHandInventory.transform.GetChild(0).gameObject);
+        }else{
+            //Play wrong interaction hand animation.
+            Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
         }
     }
 }

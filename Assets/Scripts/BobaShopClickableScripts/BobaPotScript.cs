@@ -38,7 +38,7 @@ public class BobaPotScript : MonoBehaviour
     public void placedToppingRelatedItemIntoPot(){
 
         //Check if the hand inventory has an item.
-        if(itemInHandInventory.transform.childCount != 0){
+        if(itemInHandInventory.transform.childCount >= 2){
 
             //Check if Tongs are holding something.
             if(itemInHandInventory.transform.GetChild(1)!=null){
@@ -56,7 +56,7 @@ public class BobaPotScript : MonoBehaviour
                     break;
                 }
             }
-        }
+        }else{itemInHandInventoryAnimator.Play("IncorrectInteraction");}
     }
 
     //This block of code simply does the boba pot animation and removes the item from the Tongs!

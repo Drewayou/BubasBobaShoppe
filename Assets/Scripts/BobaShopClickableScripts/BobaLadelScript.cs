@@ -33,6 +33,10 @@ public class BobaLadelScript : MonoBehaviour
         }else if(itemInHandInventory.transform.GetChild(0).gameObject.name == "BobaLadel(Clone)"){
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
             Destroy(itemInHandInventory.transform.GetChild(0).gameObject);
+        }else{
+            //Play wrong interaction hand animation.
+            Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
         }
     }
 }

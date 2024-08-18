@@ -40,6 +40,9 @@ public class BobaDrinkHolderScript : MonoBehaviour
         
         //Player interaction if they choose to place something other than a boba drink into the cup holder.
         if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag != "BobaDrink"){
+            //Play wrong interaction hand animation.
+            Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
             print("You can't place other items into the cup holder!");
         }
 

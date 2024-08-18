@@ -43,6 +43,10 @@ public class SinkCleanScript : MonoBehaviour
                 Instantiate(wipeCloth,clothHeldPosition,Quaternion.identity,itemInHandInventory.transform);
                 break;
             }
+        }else{
+            //Play wrong interaction hand animation.
+            Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
         }
     }
 }

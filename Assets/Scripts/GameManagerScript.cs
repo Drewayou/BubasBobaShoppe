@@ -155,12 +155,12 @@ public class GameManagerScript : MonoBehaviour
         playerStats.playerMaxHealth = 15;
         playerStats.playerMaxStamina = 10f;
         playerStats.playerAttackPoints = 5;
-        playerStats.casavaBalls = 0;
-        playerStats.pandanLeaves = 0;
-        playerStats.bananas = 0;
-        playerStats.strawberries = 0;
-        playerStats.mangos = 0;
-        playerStats.ube = 0;
+        playerStats.casavaBalls = 10;
+        playerStats.pandanLeaves = 10;
+        playerStats.bananas = 10;
+        playerStats.strawberries = 10;
+        playerStats.mangos = 5;
+        playerStats.ube = 5;
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Note-this may need ot be moved to shopdata in the future!
         playerStats.shopTraysAvailable = 3;

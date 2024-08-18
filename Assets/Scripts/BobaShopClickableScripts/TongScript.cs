@@ -32,8 +32,8 @@ public class TongScript : MonoBehaviour
             Instantiate(tongHeldF,clothHeld,Quaternion.identity,itemInHandInventory.transform);
             Instantiate(tongHeldB,clothHeld,Quaternion.identity,itemInHandInventory.transform);
 
-            //A switch case to resolve and return wipe cloth if possible and not dirty.
-        }else if(itemInHandInventory.transform.GetChild(0).gameObject != null){
+            //A switch case to resolve and return tong if possible doesn't hold an ingredient item.
+        }else if(itemInHandInventory.transform.GetChild(0).gameObject != null && itemInHandInventory.transform.childCount == 2){
         
         switch(itemInHandInventory.transform.GetChild(0).gameObject.name){
 
@@ -43,6 +43,10 @@ public class TongScript : MonoBehaviour
                 Destroy(itemInHandInventory.transform.GetChild(1).gameObject);
                 break;
             }
+        }else{
+            //Play wrong interaction hand animation.
+            Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
         }
     }
 }

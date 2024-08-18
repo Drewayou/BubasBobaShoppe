@@ -9,6 +9,7 @@ public class MixerCupAreaScript : MonoBehaviour
     //Gets game Object to check what the player is currently holding.
     [SerializeField]
     GameObject itemInHandInventory;
+    Animator itemInHandInventoryAnimator;
 
     //Set the empty cup prefab to analyze if it can go in the mixer or not.
     [SerializeField]
@@ -33,12 +34,14 @@ public class MixerCupAreaScript : MonoBehaviour
     public void InteractWithMixerCupArea(){
 
         GameObject handInventory = GameObject.Find("ItemInHand");
-
+        Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
+        
         //Check if this mixer has a spill!
         bool mixerSpill;
         if(gameObject.transform.parent.Find("MixerSpill") == null){
             mixerSpill = false;
         }else{
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
             print("You have to clean up this mess first!");
             mixerSpill = true;}
         
@@ -74,7 +77,8 @@ public class MixerCupAreaScript : MonoBehaviour
         //Interaction if a different object than an empty cup is held while clicked on mixer.
         }else if(handInventory.transform.childCount != 0 && handInventory.transform.GetChild(0).gameObject.name != "EmptyCup(Clone)" && !mixerSpill){
             print("You can only place empty cups (or empty cups with toppings and/or basedrink) into the boba mixer!");
-            
+            //Play wrong interaction hand animation.
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
         }
     }
 

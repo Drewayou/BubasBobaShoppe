@@ -154,10 +154,10 @@ public class ItemTrayObjectScript : MonoBehaviour
                 GameObject newIngredientSpawned = Instantiate(selectedIngredientItemPrefab,gameObject.transform);
                 normalizeTheLookOfIngredientsInTray(newIngredientSpawned);
             }
-            
-            //Get item in hand inventory, and "drop" it back into the tray by spawning one in.
-            
-
+        }else{
+            //Play wrong interaction hand animation.
+            Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
         }
     }
 }
