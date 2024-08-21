@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class BobaPotScript : MonoBehaviour
 {
     //The Game manager instance of this round (Will automatically be pulled in Start() method.
     private GameManagerScript currentGameManagerInstance;
+
+    //The Game manager instance of this round (Will automatically be pulled in Start() method.
+    private BobaShopRoundManagerScript currentRoundManagerInstance;
 
     //The itemInHandInventory object of this round will automatically be pulled in Start() method.
     private GameObject itemInHandInventory;
@@ -19,6 +21,7 @@ public class BobaPotScript : MonoBehaviour
     {
         //Finds the Game Manager in this instance.
         currentGameManagerInstance = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
+        currentRoundManagerInstance = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
 
         //Finds the Inventory object in this instance & it's animator.
         itemInHandInventory = GameObject.Find("ItemInHand");

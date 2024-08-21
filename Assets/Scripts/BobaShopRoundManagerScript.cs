@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Android;
 using System;
 using TMPro;
-using JetBrains.Annotations;
 
 public class BobaShopRoundManagerScript : MonoBehaviour
 {
@@ -19,11 +17,6 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [Header("GameManagerSCRIPT")]
     [Tooltip("Pull Values from this script")]
     GameManagerScript thisGamesOverallInstance;
-    
-    //Spawnrates and spawners pulled from WorldState, which in turn is pulled from the GameManager.
-    private WorldState whichWorldWasSelected;
-
-    private string nameOfThisWorldSelected;
 
     //Drink rate demands DrinkMultiplierScripts, which in turn is pulled from the GameManager.
     private DrinkMultiplierScripts whatDrinksArePopular;
@@ -322,7 +315,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         
     }
 
-    private void UpdateAndSaveHuntInventory(){
+    private void UpdateAndSaveBobaShopInventory(){
         thisGamesOverallInstance.UpdatePlayerHuntInventoryGain(CassavaSlimeBalls, PandanLeaves, BananaMinis, StrawberryMinis, MangoMinis, UbeMinis);
     }
 
@@ -501,7 +494,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
         thisGamesOverallInstance.ReturnPlayerStats().onDayNumber += 1;
 
-        UpdateAndSaveHuntInventory();
+        UpdateAndSaveBobaShopInventory();
 
         //Update overall coin stats
         thisGamesOverallInstance.UpdatePlayerCoinStats((int)playerEarnedCoins);
@@ -511,9 +504,6 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
         //Call GameManager to change drink demand rates for next round
         thisGamesOverallInstance.SetNewDrinkDemandRates(thisGamesOverallInstance.ReturnDrinkRatesThisRound());
-
-        //Save new states
-        thisGamesOverallInstance.SaveGameAfterRound(whichWorldWasSelected);
     }
 
     //FIXME: Make the method to pull scripts / data rom JSON serialized object? This is for the current round level, spawner settings / availability, etc.
