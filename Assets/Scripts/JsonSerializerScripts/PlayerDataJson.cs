@@ -33,6 +33,8 @@ public class PlayerDataJson
     public List<int> shopTraysItemListArray { get; set; }
 
     public float bobaShopBobaPotCookingSpeed { get; set; }
+
+    public int maxCapacityOfBobaPot { get; set; }
    
 
 

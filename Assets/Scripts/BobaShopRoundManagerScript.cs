@@ -135,7 +135,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
             roundTimer += Time.deltaTime;
         }else{
             if(roundType == 0){
-                endTheHUNTRound();
+                endTheBOBASHOPRound();
             }
         }
     }
@@ -363,7 +363,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //This method is used by the "Continue" button at the end of the "HUNT" round and updates
     //the overall inventory the player has, and saves new data! (Produces this levels states
     //into the save as well).
-    public void endTheHUNTRound(){
+    public void endTheBOBASHOPRound(){
 
         //Enable end of game UI
         EndOfRoundUIObject.SetActive(true);

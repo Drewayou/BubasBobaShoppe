@@ -44,7 +44,7 @@ public class GameClockTimeScriptBobaShop : MonoBehaviour
         
         // If round timer is NOT greater than 3min (180s) update the time for other scripts use. Otherwise, don't increase the timer.
 
-        Debug.Log(currentInRoundTime);
+        //Debug.Log(currentInRoundTime);
 
         if(currentInRoundTime < 180f){
             if(15f<currentInRoundTime && currentInRoundTime<30f){
