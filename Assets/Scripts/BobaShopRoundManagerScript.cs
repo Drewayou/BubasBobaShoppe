@@ -115,7 +115,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
         //Make Sure the ENDOFGAME UI isn't on and the INGAME UI is.
         EndOfRoundUIObject.SetActive(false);
-        inGameUIObject.SetActive(true);
+        //FIXME:inGameUIObject.SetActive(true);
 
         //Get the drink demand from this game's manager and apply them to this round
         //whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();

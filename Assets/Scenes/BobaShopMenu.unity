@@ -5389,7 +5389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5155585792595435796, guid: f5150ced689bfe64aad0e0fee4d1cd02, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: placedToppingRelatedItemIntoPot
+      value: PlacedToppingRelatedItemIntoPot
       objectReference: {fileID: 0}
     - target: {fileID: 5155585792595435796, guid: f5150ced689bfe64aad0e0fee4d1cd02, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

@@ -22,7 +22,7 @@ public class BobaPotScript : MonoBehaviour
     private int bobaPotCookingTimer;
 
     //A public int to dictate maximum items in pot & how many items are in the pot currently.
-    private int bobaToppingsIngredientsInPot, bobaToppingMaximumInPot;
+    public int bobaToppingsIngredientsInPot, bobaToppingMaximumInPot;
 
     //The ammount of time (in seconds) to dictate how fast the boba pot cooks topings. Called from player game stats.
     public float bobaPotCookingSpeed;
@@ -68,7 +68,8 @@ public class BobaPotScript : MonoBehaviour
         //The player has nothing in their hand!
 
         //Else if the pot already has ingredients in it, interact depending on what the player has in their hand if the pot isn't filled.
-        }else if(bobaToppingsIngredientsInPot < bobaToppingMaximumInPot && gameObject.transform.childCount != 0 && itemInHandInventory.transform.childCount>2){
+        }else if(bobaToppingsIngredientsInPot < bobaToppingMaximumInPot && gameObject.transform.childCount != 0 && itemInHandInventory.transform.childCount>=2){
+            
             switch(bobaIngredientInPot){
                 case "Boba":
 
@@ -78,10 +79,9 @@ public class BobaPotScript : MonoBehaviour
                         itemInHandInventory.transform.GetChild(1).transform.SetParent(gameObject.transform);
                         bobaToppingsIngredientsInPot += 1;
                         
-                    }else if(itemInHandInventory.transform.GetChild(1).name=="BTongHolding(Clone)"){
-
+                }else if(itemInHandInventory.transform.GetChild(1).name=="BTongHolding(Clone)"){
                         //Move the item in the boba pot into the hand parent object.
-                        itemInHandInventory.transform.GetChild(1).transform.SetParent(itemInHandInventory.transform);
+                        gameObject.transform.GetChild(0).transform.SetParent(itemInHandInventory.transform);
                         //Get item in hand inventory, and move the newly placed item in index 2 -> 1 for the tong object to render correctly.
                         itemInHandInventory.transform.GetChild(2).SetSiblingIndex(1);
                         bobaToppingsIngredientsInPot -= 1;
