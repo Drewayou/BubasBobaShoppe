@@ -170,7 +170,7 @@ public class GameManagerScript : MonoBehaviour
 
         //FIXME: list array for items in shop? Idk if this works since C#v9 doesn't have resizable arrays.
         playerStats.shopTraysItemListArray = new List<int>();
-        playerStats.bobaShopBobaPotCookingSpeed = 0.20f;
+        playerStats.bobaShopBobaPotCookingSpeed = 20f;
         playerStats.maxCapacityOfBobaPot = 10;
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

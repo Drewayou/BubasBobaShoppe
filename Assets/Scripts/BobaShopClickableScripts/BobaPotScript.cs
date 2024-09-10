@@ -30,17 +30,24 @@ public class BobaPotScript : MonoBehaviour
     //The Animator Controllor of the boba pot object & itemInHandInventory of this round will automatically be pulled in Start() method.
     private Animator animationController, itemInHandInventoryAnimator;
 
-    //A private int to dictate what stage the cooking pot is at.
-    private int bobaPotCookingTimer;
+    //The name of ingredient placed inside the boba pot.
+    public string bobaIngredientInPotStringType;
 
     //A public int to dictate maximum items in pot & how many items are in the pot currently.
-    public int bobaToppingsIngredientsInPot, bobaToppingMaximumInPot;
+    public int bobaToppingsIngredientsInPotCurrentAmount, bobaToppingMaximumInPot;
 
     //The ammount of time (in seconds) to dictate how fast the boba pot cooks topings. Called from player game stats.
     public float bobaPotCookingSpeed;
 
-    //The name of ingredient placed inside the boba pot.
-    public string bobaIngredientInPot;
+    //The variables to judge the ammount of time currently held by the boba pot if it's done cooking or not.
+    public float bobaPotCookingEndTime;
+    public float bobaPotRoundTimerDifference;
+
+    //The phase times and phase time divisable for each animation loading for the boba pot.
+    public float phase1Time, phase2Time, phase3Time, phase4Time, phase5Time, calculatedPhaseDivide;
+
+    //The boba pot bool if it's cooking/donecooking/dirty.
+    public bool isPotCooking = false, isPotDoneCooking = false, isPotDirty = false;
 
     //The Pre-fabs for all the possible Ingredient Items.
     [SerializeField]
@@ -64,6 +71,9 @@ public class BobaPotScript : MonoBehaviour
         //Pulls the game stats to program the pot's cooking speed.
         bobaPotCookingSpeed = currentGameManagerInstance.ReturnPlayerStats().bobaShopBobaPotCookingSpeed;
 
+        //Sets cooking timer difference to 0.
+        bobaPotRoundTimerDifference = 0;
+
         //Pulls the game stats to program the pot's maximum capacity.
         bobaToppingMaximumInPot = currentGameManagerInstance.ReturnPlayerStats().maxCapacityOfBobaPot;
 
@@ -75,53 +85,91 @@ public class BobaPotScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //Set PotTimerDifference to sync with the round timer.
+        bobaPotRoundTimerDifference = currentRoundManagerInstance.roundTimer;
+
+        if(isPotCooking){
+        //Check if the round timer is greater than the time required to finish cooking boba once activated.
+        if(bobaPotRoundTimerDifference<=bobaPotCookingEndTime){
+            if(phase1Time > bobaPotRoundTimerDifference && !animationController.GetCurrentAnimatorStateInfo(0).IsName("BobaPotCookingPhase1_5")){
+                animationController.Play("BobaPotCookingPhase1");
+            }else if(phase2Time > bobaPotRoundTimerDifference){
+                animationController.Play("BobaPotCookingPhase2");
+            }else if(phase3Time > bobaPotRoundTimerDifference){
+                animationController.Play("BobaPotCookingPhase3");
+            }else if(phase4Time > bobaPotRoundTimerDifference){
+                animationController.Play("BobaPotCookingPhase4");
+            }else if(phase5Time > bobaPotRoundTimerDifference){
+                animationController.Play("BobaPotCookingPhase5");
+            }
+        }
+        //When boba pot hits the timer, toppings are cooked.
+            if(bobaPotCookingEndTime < bobaPotRoundTimerDifference){
+                isPotDoneCooking = true;
+            }
+        }
     }
 
     //This block of code handles what comes into the Boba Pot and updating the player's data.
     public void PlacedToppingRelatedItemIntoPot(){
 
+        //Check if the pot is dirty or cooking. Stop interactions if it is.
+        if(!isPotDirty && !isPotCooking){
+
         //Check if the pot has an item in it.
-        if(bobaToppingsIngredientsInPot == 0){
+        if(bobaToppingsIngredientsInPotCurrentAmount == 0){
 
         InteractWithEmptyBobaPot();
         //If there is an item in the pot, only allow said item in pot to be placed/pulled out... Or activate pot if
         //The player has nothing in their hand!
 
         //Else if the pot already has ingredients in it, interact depending on what the player has in their hand if the pot isn't filled.
-        }else if(bobaToppingsIngredientsInPot < bobaToppingMaximumInPot && gameObject.transform.childCount != 0 && itemInHandInventory.transform.childCount>=2){
+        }else if(bobaToppingsIngredientsInPotCurrentAmount < bobaToppingMaximumInPot && gameObject.transform.childCount != 0 && itemInHandInventory.transform.childCount >= 2){
             
             //Play the "Item Placed In" animation
             DropCookingItemInBobaPotAnimationAndExtras();
 
-            switch(bobaIngredientInPot){
+            switch(bobaIngredientInPotStringType){
                 case "Boba":
 
                 if(itemInHandInventory.transform.GetChild(1).name=="ShopCassavaBall(Clone)"){
 
                         //Move the item in hand into the boba pot parent.
                         itemInHandInventory.transform.GetChild(1).transform.SetParent(gameObject.transform);
-                        bobaToppingsIngredientsInPot += 1;
+                        bobaToppingsIngredientsInPotCurrentAmount += 1;
                         
                 }else if(itemInHandInventory.transform.GetChild(1).name=="BTongHolding(Clone)"){
                         //Move the item in the boba pot into the hand parent object.
                         gameObject.transform.GetChild(0).transform.SetParent(itemInHandInventory.transform);
                         //Get item in hand inventory, and move the newly placed item in index 2 -> 1 for the tong object to render correctly.
                         itemInHandInventory.transform.GetChild(2).SetSiblingIndex(1);
-                        bobaToppingsIngredientsInPot -= 1;
+                        bobaToppingsIngredientsInPotCurrentAmount -= 1;
 
                         //Play the animation of taking out the boba and resize the item. Moreover, check if the pot is empty & do actions if it is.
                         TakeCookingItemFromBobaPotAnimationAndExtras();
                 }
-
                 break;
+            }
+        //If the player clicks the boba pot without anything in their hand, and if it has items in it, set the pot timers to start cooking!
+        }else if(gameObject.transform.childCount != 0 && itemInHandInventory.transform.childCount == 0){
+            bobaPotCookingEndTime = currentRoundManagerInstance.roundTimer + bobaPotCookingSpeed;
+
+            calculatedPhaseDivide = bobaPotCookingSpeed / 5;
+
+            phase5Time = bobaPotRoundTimerDifference + calculatedPhaseDivide * 5;
+            phase4Time = bobaPotRoundTimerDifference + calculatedPhaseDivide * 4;
+            phase3Time = bobaPotRoundTimerDifference + calculatedPhaseDivide * 3;
+            phase2Time = bobaPotRoundTimerDifference + calculatedPhaseDivide * 2;
+            phase1Time = bobaPotRoundTimerDifference + calculatedPhaseDivide * 1;
+
+            isPotCooking = true;
+            CookedIngredientsToBeRemoveFromPlayer();
             }
         }
     }
 
     //FIXME: This block of code simply does the boba pot animation and removes the item from the Tongs!
     public void StartBobaPotCookingItemAnimationAndExtras(){
-        animationController.Play("BobaPotCooking");
         animationController.keepAnimatorStateOnDisable = true;
         Destroy(itemInHandInventory.transform.GetChild(1).gameObject);
     }
@@ -156,8 +204,8 @@ public class BobaPotScript : MonoBehaviour
         }
 
         //Checks if the boba pot now has become empty, and resets it's stringtag, and hide item in pot ingredient popup.
-        if(bobaToppingsIngredientsInPot == 0){
-            bobaIngredientInPot = "";
+        if(bobaToppingsIngredientsInPotCurrentAmount == 0){
+            bobaIngredientInPotStringType = "";
             IngredientInPotPopupUI.SetActive(false);
 
             //Iterate through all the possible boba pot ingredients UI and turn them off.
@@ -169,7 +217,7 @@ public class BobaPotScript : MonoBehaviour
 
     //This block of code simply does the boba action, and ONLY ACTIVATES when the pot is empty!.
     public void InteractWithEmptyBobaPot(){
-        //Check if the hand inventory has an item.
+        //Check if the hand inventory has an item, and if pot is clean/not cookling.
             if(itemInHandInventory.transform.childCount >= 2){
 
                 //Check if Tongs are holding something to put into the pot.
@@ -177,8 +225,8 @@ public class BobaPotScript : MonoBehaviour
 
                     switch(itemInHandInventory.transform.GetChild(1).name){
                         case "ShopCassavaBall(Clone)":
-                        bobaToppingsIngredientsInPot += 1;
-                        bobaIngredientInPot = "Boba";
+                        bobaToppingsIngredientsInPotCurrentAmount += 1;
+                        bobaIngredientInPotStringType = "Boba";
                         IngredientsInPotCassavaBall.SetActive(true);
                         IngredientInPotPopupUI.SetActive(true);
 
@@ -198,17 +246,36 @@ public class BobaPotScript : MonoBehaviour
             }else{itemInHandInventoryAnimator.Play("IncorrectInteraction");}
     }
 
+    //FIXME: add the other toppings here in the future when boba pot is done cooking.
+    public void CookedIngredientsToBeRemoveFromPlayer(){
+        switch(bobaIngredientInPotStringType){
+            case "Boba": 
+            currentGameManagerInstance.ReturnPlayerStats().casavaBalls -= bobaToppingsIngredientsInPotCurrentAmount;
+            break;
+        }
+    }
+
     public void OnMouseEnter(){
         bobaPotItemsAmmountObject.SetActive(true);
         print("HoveringOverTheBobaPot");
     }
 
     public void OnMouseOver(){
-        bobaPotItemsAmmountText.text = bobaToppingsIngredientsInPot.ToString() + "/" + bobaToppingMaximumInPot.ToString();
+        bobaPotItemsAmmountText.text = bobaToppingsIngredientsInPotCurrentAmount.ToString() + "/" + bobaToppingMaximumInPot.ToString();
     }
 
     public void OnMouseExit(){
         bobaPotItemsAmmountObject.SetActive(false);
         print("NOT-HoveringOverTheBobaPot");
+    }
+
+    //Getter to obtain how many items are in the pot.
+    public string GetBobaPotIngredientType(){
+        return bobaIngredientInPotStringType;
+    }
+
+    //Getter to obtain what string of item the pot has.
+    public string GetBobaPotIngredientsInPot(){
+        return bobaIngredientInPotStringType;
     }
 }
