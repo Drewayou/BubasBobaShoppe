@@ -35,7 +35,11 @@ public class PlayerDataJson
     public float bobaShopBobaPotCookingSpeed { get; set; }
 
     public int maxCapacityOfBobaPot { get; set; }
-   
 
+    public int maxCapacityOfToppingJars { get; set; }
+
+    public int maxCleanCountOfLadle { get; set; }
+
+    public int maxCarrySizeOfLadle { get; set; }
 
 }

@@ -173,6 +173,15 @@ public class GameManagerScript : MonoBehaviour
         playerStats.bobaShopBobaPotCookingSpeed = 20f;
         playerStats.maxCapacityOfBobaPot = 10;
 
+        //Max capacity of topping jars.
+        playerStats.maxCapacityOfToppingJars = 10;
+
+        //Max items you can clean with ladle till it gets dirty.
+        playerStats.maxCleanCountOfLadle = 10;
+
+        //Max items you can with ladle when directly carrying from the pot.
+        playerStats.maxCarrySizeOfLadle = 5;
+
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         //Shop default settings

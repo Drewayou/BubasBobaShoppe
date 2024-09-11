@@ -16,6 +16,11 @@ public class BobaPotScript : MonoBehaviour
     //The itemInHandInventory object of this round will automatically be pulled in Start() method.
     private GameObject itemInHandInventory;
 
+    [SerializeField]
+    [Tooltip("Drag the boba ladle object prefab in here.")]   
+    //Drag the boba ladle object PREFAB in here.
+    private GameObject bobaLadle;
+
     //The object that contains the UI Object to update the user on how many items the boba pot holds.
     [SerializeField]
     [Tooltip("Input the \"BobaPotAmmountUI\" item in here to allow the user to see how many ingredients are in the pot")]    
@@ -110,8 +115,9 @@ public class BobaPotScript : MonoBehaviour
         }
     }
 
+    //NOTE: MAIN INTERACTION METHOD. -----------------------------------------------------------------------------------
     //This block of code handles what comes into the Boba Pot and updating the player's data.
-    public void PlacedToppingRelatedItemIntoPot(){
+    public void InteractOrPlaceToppingRelatedItemIntoPot(){
 
         //Check if the pot is dirty or cooking. Stop interactions if it is.
         if(!isPotDirty && !isPotCooking){
@@ -163,8 +169,56 @@ public class BobaPotScript : MonoBehaviour
             phase1Time = bobaPotRoundTimerDifference + calculatedPhaseDivide * 1;
 
             isPotCooking = true;
-            CookedIngredientsToBeRemoveFromPlayer();
+            CookingIngredientsToBeRemoveFromPlayerOverallTotalInventory();
             }
+        }
+
+    //If the boba pot is done cooking, allow interactions with the boba ladle.
+    if(isPotDoneCooking){
+        //Check if the player is holding an empty ladle, if they are, do action according to what item is in the pot.
+        GameObject ladleInInventory = itemInHandInventory.transform.GetChild(0).gameObject;
+        
+        if(ladleInInventory.transform.GetChild(0).gameObject.activeSelf){
+            switch(bobaIngredientInPotStringType){
+                case "Boba":
+                
+                ladleInInventory.transform.Find("BobaLadelEmpty").gameObject.SetActive(false);
+                ladleInInventory.transform.Find("BobaLadelBobaHeld").gameObject.SetActive(true);
+                break;
+
+                case "Lychee":
+                ladleInInventory.transform.Find("BobaLadelEmpty").gameObject.SetActive(false);
+                ladleInInventory.transform.Find("BobaLadelLycheeHeld").gameObject.SetActive(true);
+                break;
+
+                case "RedBean":
+                ladleInInventory.transform.Find("BobaLadelEmpty").gameObject.SetActive(false);
+                ladleInInventory.transform.Find("BobaLadelRedBeanHeld").gameObject.SetActive(true);
+                break;
+            }
+            //Transfer the topping ammounts to the ladle accordingly.
+            TransferAmmountReadjustment(ladleInInventory);
+            }
+        }
+    }
+
+    //A method to make sure that the ladle gets at much from the pot as possible.
+    public void TransferAmmountReadjustment(GameObject ladleInInventoryObjectPassthrough ){
+        //If the boba ladle has a greater capacity than the pot, transfer the rest of the pot to the ladle.
+        if(ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().GetMaxCarryLadleAmmount()>bobaToppingsIngredientsInPotCurrentAmount){
+            ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(bobaToppingsIngredientsInPotCurrentAmount);
+            ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SubtractLadleUsesByInput(bobaToppingsIngredientsInPotCurrentAmount);
+            bobaToppingsIngredientsInPotCurrentAmount = 0; 
+            isPotCooking = false;
+            isPotDoneCooking = false;
+            //FIXME: Eventually have a way for the pot to be dirty as well after each use.
+            //isPotDirty = false;
+
+        //Else, max out the ladle and take as much from the pot as possible.
+        }else{
+            ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsToLadleMax();
+            ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SubtractLadleUsesByMaxCarrySize();
+            bobaToppingsIngredientsInPotCurrentAmount -= ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().GetMaxCarryLadleAmmount();
         }
     }
 
@@ -247,7 +301,7 @@ public class BobaPotScript : MonoBehaviour
     }
 
     //FIXME: add the other toppings here in the future when boba pot is done cooking.
-    public void CookedIngredientsToBeRemoveFromPlayer(){
+    public void CookingIngredientsToBeRemoveFromPlayerOverallTotalInventory(){
         switch(bobaIngredientInPotStringType){
             case "Boba": 
             currentGameManagerInstance.ReturnPlayerStats().casavaBalls -= bobaToppingsIngredientsInPotCurrentAmount;

@@ -8,6 +8,7 @@ public class EmptyCupStackScript : MonoBehaviour
     //Gets game Object to check what the player is currently holding
     [SerializeField]
     GameObject itemInHandInventory;
+    
     [SerializeField]
     GameObject emptyCup;
 

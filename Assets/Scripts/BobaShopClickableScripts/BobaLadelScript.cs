@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BobaLadelScript : MonoBehaviour
 {
+    //NOTE: This script both works for the ladle and the ladle hanger!
+    //The Game manager instance of this round (Will automatically be pulled in Start() method.
+    private GameManagerScript currentGameManagerInstance;
 
     //Gets game Object to check what the player is currently holding
     [SerializeField]
@@ -11,10 +14,26 @@ public class BobaLadelScript : MonoBehaviour
     [SerializeField]
     GameObject bobaLadel;
 
+    //How many items the ladle can transport before it gets dirty.
+    private int maxcleanCountOfLadle;
+    public int cleanCountOfLadle;
+
+    //The max size the ladle can carry directly from the pot.
+    private int maxLadleCarrySize;
+
+    //The size the ladle is carrying if it has ingredients.
+    private int currentLadleCarrySize = 0;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentGameManagerInstance = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
+        //Set to how "non-stick" the ladle is, and how many items it can transport before becoming dirty.
+        maxcleanCountOfLadle = currentGameManagerInstance.ReturnPlayerStats().maxCleanCountOfLadle;
+        cleanCountOfLadle = maxcleanCountOfLadle;
+
+        //Set the max carry size the ladle has when taking directly from the boba pot.
+        maxLadleCarrySize = currentGameManagerInstance.ReturnPlayerStats().maxCarrySizeOfLadle;
     }
 
     // Update is called once per frame
@@ -29,7 +48,7 @@ public class BobaLadelScript : MonoBehaviour
             gameObject.transform.GetChild(0).gameObject.SetActive(false);
             Vector3 ladelHeld = new Vector3(0f,-.6f,0f);
             Instantiate(bobaLadel,ladelHeld,Quaternion.identity,itemInHandInventory.transform);
-        }else if(itemInHandInventory.transform.GetChild(0).gameObject.name == "BobaLadel(Clone)"){
+        }else if(itemInHandInventory.transform.GetChild(0).gameObject.name == bobaLadel.name + "(Clone)"){
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
             Destroy(itemInHandInventory.transform.GetChild(0).gameObject);
         }else{
@@ -37,5 +56,43 @@ public class BobaLadelScript : MonoBehaviour
             Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
             itemInHandInventoryAnimator.Play("IncorrectInteraction");
         }
+    }
+
+    //Getters, setters, and other methods that other scripts use for the ladle.
+    public bool IsLadleDirty(){
+        if(cleanCountOfLadle<=0){
+            return true;
+        }else return false;
+    }
+
+    public void SubtractLadleUses(){
+        cleanCountOfLadle -= 1;
+    }
+
+    public void SubtractLadleUsesByInput(int ingredientsToMove){
+        cleanCountOfLadle -= ingredientsToMove;
+    }
+
+    public void SubtractLadleUsesByMaxCarrySize(){
+        cleanCountOfLadle -= maxLadleCarrySize;
+    }
+
+    public void WashLadleAndResetCleanCount(){
+        cleanCountOfLadle = maxcleanCountOfLadle;
+    }
+
+    public int GetAmmountOfIngredientsInLadle(){
+        return currentLadleCarrySize;
+    }
+    public int GetMaxCarryLadleAmmount(){
+        return maxLadleCarrySize;
+    }
+
+    public void SetAmmountOfIngredientsInLadle(int newAmmountToPutOnLadle){
+        currentLadleCarrySize = newAmmountToPutOnLadle;
+    }
+
+    public void SetAmmountOfIngredientsToLadleMax(){
+        currentLadleCarrySize = maxLadleCarrySize;
     }
 }
