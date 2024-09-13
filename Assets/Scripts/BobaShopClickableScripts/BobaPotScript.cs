@@ -113,6 +113,16 @@ public class BobaPotScript : MonoBehaviour
                 isPotDoneCooking = true;
             }
         }
+
+        //If Boba pot is done cooking, but all the ingredients are taken out, reset back to default state.
+        if(isPotDoneCooking && bobaToppingsIngredientsInPotCurrentAmount <= 0){
+            isPotCooking = false;
+            isPotDoneCooking = false;
+            animationController.Play("BobaPotIdle");
+            ResetBobaPotItemUI();
+
+            //FIXME: also add a dirty usage counter to eventually need to wash the boba pot as well!?
+        }
     }
 
     //NOTE: MAIN INTERACTION METHOD. -----------------------------------------------------------------------------------
@@ -204,15 +214,11 @@ public class BobaPotScript : MonoBehaviour
 
     //A method to make sure that the ladle gets at much from the pot as possible.
     public void TransferAmmountReadjustment(GameObject ladleInInventoryObjectPassthrough ){
-        //If the boba ladle has a greater capacity than the pot, transfer the rest of the pot to the ladle.
+        //If the boba ladle is picking up toppings from the pot but has a higher ammount than the pot, transfer as much to the ladle.
         if(ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().GetMaxCarryLadleAmmount()>bobaToppingsIngredientsInPotCurrentAmount){
             ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(bobaToppingsIngredientsInPotCurrentAmount);
             ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SubtractLadleUsesByInput(bobaToppingsIngredientsInPotCurrentAmount);
-            bobaToppingsIngredientsInPotCurrentAmount = 0; 
-            isPotCooking = false;
-            isPotDoneCooking = false;
-            //FIXME: Eventually have a way for the pot to be dirty as well after each use.
-            //isPotDirty = false;
+            bobaToppingsIngredientsInPotCurrentAmount = 0;
 
         //Else, max out the ladle and take as much from the pot as possible.
         }else{
@@ -276,7 +282,7 @@ public class BobaPotScript : MonoBehaviour
 
                 //Check if Tongs are holding something to put into the pot.
                 if(itemInHandInventory.transform.GetChild(1)!=null){
-
+                    //FIXME: Change the boba pot item UI stuff when more toppings are added.
                     switch(itemInHandInventory.transform.GetChild(1).name){
                         case "ShopCassavaBall(Clone)":
                         bobaToppingsIngredientsInPotCurrentAmount += 1;
@@ -298,6 +304,13 @@ public class BobaPotScript : MonoBehaviour
                     }
                 }
             }else{itemInHandInventoryAnimator.Play("IncorrectInteraction");}
+    }
+
+    //FIXME: Change the boba pot item UI stuff when more toppings are added.
+    //Resets the boba pot UI to empty.
+    public void ResetBobaPotItemUI(){
+        IngredientsInPotCassavaBall.SetActive(false);
+        IngredientInPotPopupUI.SetActive(false);
     }
 
     //FIXME: add the other toppings here in the future when boba pot is done cooking.

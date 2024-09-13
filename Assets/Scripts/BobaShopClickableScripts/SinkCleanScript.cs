@@ -41,6 +41,11 @@ public class SinkCleanScript : MonoBehaviour
                 Vector3 clothHeldPosition = new Vector3(0f,-.75f,0f);
                 Instantiate(wipeCloth,clothHeldPosition,Quaternion.identity,itemInHandInventory.transform);
                 break;
+
+                case "BobaLadleObject":
+                sinkAnimation.Play("SinkUsed");
+                itemInHandInventory.transform.GetChild(0).GetComponent<BobaLadelScript>().SetLadleToClean();
+                break;
             }
         }else{
             //Play wrong interaction hand animation.

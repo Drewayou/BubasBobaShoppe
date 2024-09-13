@@ -168,10 +168,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3238e5bfa7d698b4b91622ff3aa7b7f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bobaToppingsIngredientsInPot: 0
+  bobaLadle: {fileID: 0}
+  bobaPotItemsAmmountObject: {fileID: 0}
+  IngredientInPotPopupUI: {fileID: 0}
+  bobaIngredientInPotStringType: 
+  bobaToppingsIngredientsInPotCurrentAmount: 0
   bobaToppingMaximumInPot: 0
   bobaPotCookingSpeed: 0
-  bobaIngredientInPot: 
+  bobaPotCookingEndTime: 0
+  bobaPotRoundTimerDifference: 0
+  phase1Time: 0
+  phase2Time: 0
+  phase3Time: 0
+  phase4Time: 0
+  phase5Time: 0
+  calculatedPhaseDivide: 0
+  isPotCooking: 0
+  isPotDoneCooking: 0
+  isPotDirty: 0
+  IngredientsInPotCassavaBall: {fileID: 0}
+  IngredientsInPotMango: {fileID: 0}
+  IngredientsInPotRedBean: {fileID: 0}
 --- !u!61 &5485113910427954123
 BoxCollider2D:
   m_ObjectHideFlags: 0

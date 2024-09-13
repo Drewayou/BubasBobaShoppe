@@ -324,6 +324,76 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "BobaShopActionMap",
+            "id": "57b16a46-4821-4fd9-b9fa-5134c40c5034",
+            "actions": [
+                {
+                    "name": "ChangeSceneLeft",
+                    "type": "Button",
+                    "id": "4f9fc215-0df2-4a00-8b13-05713d5cffa9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "ChangeSceneRight",
+                    "type": "Button",
+                    "id": "a451c1a8-db42-4c05-af73-77bfc4a5f6ad",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b24a1c41-9e5f-44af-a33a-246c5a5609ab",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeSceneLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92e51835-c3a8-43ec-a4e3-b770f1977d73",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeSceneLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1263bf76-b615-4396-8f5d-d4aaeccc5445",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeSceneRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfa1a365-d121-4d95-8c5a-9b239264ef15",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeSceneRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

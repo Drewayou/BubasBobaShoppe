@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ToppingsJarScript : MonoBehaviour
@@ -18,12 +19,23 @@ public class ToppingsJarScript : MonoBehaviour
     //What toppings are in the jar? Set this when you put something inside the jar, and re-set when you wash the jar.
     GameObject jarsCurrentStateOrTopping;
 
+    //The object that shows the GUI of how many more toppings are left in the jar.
+    GameObject inJarAmmountofToppingsObject;
+
+    [SerializeField]
+    [Tooltip("Input your dirty wipe cloth prefab in here.")]
+    //Input the dirfty wipe cloth prefab in here.
+    GameObject wipeClothDirty;
+
     //A public int to dictate maximum items in jars & how many items are in the pot currently. Another one for any transfers of ingredients.
     public int toppingsIngredientsInJarCurrentAmount, bobaToppingMaximumInJar, ammountOfNewToppingsToAddToTheJar;
 
     [SerializeField]
     [Tooltip("Drag the possible boba ladel's prefab here.")]
-    GameObject bobaLadle;
+    GameObject bobaLadlePrefab;
+
+    [Tooltip("Is this jar dirty? (Hit 0 toppings in jar)")]
+    bool isTheJarDirty;
 
     // Start is called before the first frame update
     void Start()
@@ -40,35 +52,54 @@ public class ToppingsJarScript : MonoBehaviour
 
         jarsCurrentStateOrTopping = null;
 
+        inJarAmmountofToppingsObject = gameObject.transform.GetChild(4).gameObject;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //Instantly change the jar state to dirty.
+        if(isTheJarDirty){
+            gameObject.transform.GetChild(3).gameObject.SetActive(true);
+        }
+
+        Debug.Log(inJarAmmountofToppingsObject.name);
     }
 
-    public void InteractWithLadle(){
+    public void InteractWithLadleOrPlayer(){
         //If the player is holding a ladle, reguardless of what state, do something.
-        //FIXME: if(itemInHandInventory.name == bobaLadle.name + "(Clone)"){
-
+            //Test if the user has a ladle in their hands & the jar is CLEAN.
+            if(itemInHandInventory.gameObject.transform.childCount >= 0 && itemInHandInventory.transform.GetChild(0).name == bobaLadlePrefab.name && !isTheJarDirty){
             //Note, to get the children objects inside the ladle, this must be done.
             GameObject ladleInInventoryObject = itemInHandInventory.transform.GetChild(0).gameObject;
-            TryToGetJarToppings(ladleInInventoryObject);
-            TryToPourStuffBackInJar(ladleInInventoryObject);
-        //}
+                if(TryToGetJarToppings(ladleInInventoryObject)){
+                    Debug.Log("We got jar toppings!");
+                }else{
+                    TryToPourStuffBackInJar(ladleInInventoryObject);
+                    Debug.Log("We Poured jar toppings!");
+                }
+            }
+
+            //If the player has a CLEAN cloth, they can clean the dirty jar.
+            if(isTheJarDirty && itemInHandInventory.gameObject.transform.childCount == 1 && itemInHandInventory.gameObject.transform.GetChild(0).gameObject.name == "WipeCloth(Clone)"){
+                TryToClearJar();
+            }
     }
 
     //Method to pull stuff from the topping jar using the ladle.
-    public void TryToGetJarToppings(GameObject ladleInInventoryObjectPassthrough){
+    public bool TryToGetJarToppings(GameObject ladleInInventoryObjectPassthrough){
 
-        Debug.Log("Testing if Jar has topings.");
         //If the jar has toppings & the user holds an empty-CLEAN ladle, and the jar isn't out of the selected ingredient, do actions.
-        if(jarsCurrentStateOrTopping != null && ladleInInventoryObjectPassthrough.transform.GetChild(0).gameObject.activeSelf && !ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().IsLadleDirty() && toppingsIngredientsInJarCurrentAmount != 0){
+        if(itemInHandInventory.transform.childCount > 0 && ladleInInventoryObjectPassthrough.transform.GetChild(0).gameObject.activeSelf && !ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().IsLadleDirty() && toppingsIngredientsInJarCurrentAmount != 0){
             Debug.Log("Jar has topings!");
             toppingsIngredientsInJarCurrentAmount -= 1;
-            bobaLadle.GetComponent<BobaLadelScript>().SubtractLadleUses();
-            bobaLadle.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(1);
+            //If this action makes the jar hit 0 items, make the jar dirty.
+            if(toppingsIngredientsInJarCurrentAmount == 0){
+                isTheJarDirty = true;
+            }
+            itemInHandInventory.transform.GetChild(0).GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(1);
+            Debug.Log("Ladle has" + itemInHandInventory.transform.GetChild(0).GetComponent<BobaLadelScript>().GetAmmountOfIngredientsInLadle() +"topings!");
 
             //Since we are sure the player is holding the ladle, turn off the empty version and enable the co-responging ingredient in it's hierarchy.
             switch(jarsCurrentStateOrTopping.name){
@@ -84,30 +115,38 @@ public class ToppingsJarScript : MonoBehaviour
                 itemInHandInventoryAnimator.Play("IncorrectInteraction");
             break;
             }
+            return true;
+        }else{
+            return false;
         }
     }
 
     //Method to put stuff into the topping jar using the ladle, IF it has the correct ingedient.
     public void TryToPourStuffBackInJar(GameObject ladleInInventoryObjectPassthrough){
-        Debug.Log("Testing if Jar Isn't Empty.");
+        ammountOfNewToppingsToAddToTheJar = 0;
         //Get hand animator for playing interaction feedback if it's wrong.
         Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
         
-        if(itemInHandInventory.transform.GetChild(0).name == bobaLadle.name + "(Clone)" && !ladleInInventoryObjectPassthrough.transform.GetChild(0).gameObject.activeSelf && toppingsIngredientsInJarCurrentAmount < bobaToppingMaximumInJar){
-            Debug.Log("Jar has topings x2.");
+        if(itemInHandInventory.transform.GetChild(0).name == bobaLadlePrefab.name && ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().GetAmmountOfIngredientsInLadle() != 0 && toppingsIngredientsInJarCurrentAmount < bobaToppingMaximumInJar){
+            Debug.Log("Jar can have toppings dumped into it.");
             //First check if there would be an overflow of toppings and how many are being transfered to the jar..
-            if(toppingsIngredientsInJarCurrentAmount + bobaLadle.GetComponent<BobaLadelScript>().GetAmmountOfIngredientsInLadle() > bobaToppingMaximumInJar){
-                ammountOfNewToppingsToAddToTheJar = bobaToppingMaximumInJar;
+            if(toppingsIngredientsInJarCurrentAmount + bobaLadlePrefab.GetComponent<BobaLadelScript>().GetAmmountOfIngredientsInLadle() > bobaToppingMaximumInJar){
+                toppingsIngredientsInJarCurrentAmount = bobaToppingMaximumInJar;
                 //FIXME: If there's an overflow, have it actually cause a mess as well!
             }else{
-                ammountOfNewToppingsToAddToTheJar = bobaLadle.GetComponent<BobaLadelScript>().GetAmmountOfIngredientsInLadle();
+                ammountOfNewToppingsToAddToTheJar += itemInHandInventory.transform.GetChild(0).gameObject.GetComponent<BobaLadelScript>().GetAmmountOfIngredientsInLadle();
+                itemInHandInventory.transform.GetChild(0).gameObject.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(0);
+                Debug.Log("Ammount of toppings to be transfered: " + itemInHandInventory.transform.GetChild(0).gameObject.GetComponent<BobaLadelScript>().GetAmmountOfIngredientsInLadle());
             }
-            //If jar isn't empty, try to pour ladle items into the jar.
-            if(jarsCurrentStateOrTopping != null){Debug.Log("Jar isn't empty");
+            //If jar isn't empty, try to pour ladle item back into the jar.
+            if(jarsCurrentStateOrTopping != null){
             switch(jarsCurrentStateOrTopping.name){
                 case"ToppingBobaInJar":
                     if(ladleInInventoryObjectPassthrough.transform.GetChild(1).gameObject.activeSelf){
                         toppingsIngredientsInJarCurrentAmount += ammountOfNewToppingsToAddToTheJar;
+                        ladleInInventoryObjectPassthrough.gameObject.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(0);
+                        ladleInInventoryObjectPassthrough.transform.GetChild(1).gameObject.SetActive(false);
+                        ladleInInventoryObjectPassthrough.transform.GetChild(0).gameObject.SetActive(true);
                     }else{
                         //Play wrong interaction hand animation.
                         itemInHandInventoryAnimator.Play("IncorrectInteraction");
@@ -138,28 +177,39 @@ public class ToppingsJarScript : MonoBehaviour
                 break;
             }
             //If the jar is actually empty, but the ladle has items, then set the jar to a specific topping via the ladle.
-            }else{Debug.Log("Jar isn't empty");
+            }else{Debug.Log("Jar IS empty");
                 //Check using if statements what ladle state is active.
+
                 //Ladle in Boba state
-                if(ladleInInventoryObjectPassthrough.transform.GetChild(1)){
+                if(ladleInInventoryObjectPassthrough.transform.GetChild(1).gameObject.activeSelf){
                     jarsCurrentStateOrTopping = this.gameObject.transform.GetChild(0).gameObject;
                     jarsCurrentStateOrTopping.SetActive(true);
                     toppingsIngredientsInJarCurrentAmount += ammountOfNewToppingsToAddToTheJar;
-                    bobaLadle.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(0);
+
+                    //Reset the active ladle to use the empty ladle object.
+                    ladleInInventoryObjectPassthrough.transform.GetChild(1).gameObject.SetActive(false);
+                    ladleInInventoryObjectPassthrough.transform.GetChild(0).gameObject.SetActive(true);
+                    bobaLadlePrefab.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(0);
                 }
                 //Ladle in Lychee state
-                if(ladleInInventoryObjectPassthrough.transform.GetChild(2)){
+                if(ladleInInventoryObjectPassthrough.transform.GetChild(2).gameObject.activeSelf){
                     jarsCurrentStateOrTopping = this.gameObject.transform.GetChild(1).gameObject;
                     jarsCurrentStateOrTopping.SetActive(true);
                     toppingsIngredientsInJarCurrentAmount += ammountOfNewToppingsToAddToTheJar;
-                    bobaLadle.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(0);
+                    //Reset the active ladle to use the empty ladle object.
+                    ladleInInventoryObjectPassthrough.transform.GetChild(2).gameObject.SetActive(false);
+                    ladleInInventoryObjectPassthrough.transform.GetChild(0).gameObject.SetActive(true);
+                    bobaLadlePrefab.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(0);
                 }
                 //Ladle in RedBean state
-                if(ladleInInventoryObjectPassthrough.transform.GetChild(3)){
+                if(ladleInInventoryObjectPassthrough.transform.GetChild(3).gameObject.activeSelf){
                     jarsCurrentStateOrTopping = this.gameObject.transform.GetChild(2).gameObject;
                     jarsCurrentStateOrTopping.SetActive(true);
                     toppingsIngredientsInJarCurrentAmount += ammountOfNewToppingsToAddToTheJar;
-                    bobaLadle.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(0);
+                    //Reset the active ladle to use the empty ladle object.
+                    ladleInInventoryObjectPassthrough.transform.GetChild(3).gameObject.SetActive(false);
+                    ladleInInventoryObjectPassthrough.transform.GetChild(0).gameObject.SetActive(true);
+                    bobaLadlePrefab.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(0);
                 }
             }
         }
@@ -170,7 +220,39 @@ public class ToppingsJarScript : MonoBehaviour
             ladleInInventoryObjectPassthrough.transform.GetChild(0).gameObject.SetActive(false);
             ladleInInventoryObjectPassthrough.transform.GetChild(4).gameObject.SetActive(true);
         }
+        //Reset the ammount to add into the jar to 0 for next interaction.
+        ammountOfNewToppingsToAddToTheJar = 0;
     }
 
-    //Method to put stuff into an EMPTY topping jar using the ladle. Sets the ingredients of the jar.
+    //Method to CLEAN a jar EMPTY.
+    public void TryToClearJar(){
+        if(isTheJarDirty){
+            jarsCurrentStateOrTopping = null;
+            toppingsIngredientsInJarCurrentAmount = 0;
+            gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            gameObject.transform.GetChild(1).gameObject.SetActive(false);
+            gameObject.transform.GetChild(2).gameObject.SetActive(false);
+            gameObject.transform.GetChild(3).gameObject.SetActive(false);
+            isTheJarDirty = false;
+
+            //Replace the cloth in yout hand with a dirty cloth.
+            Destroy(itemInHandInventory.transform.GetChild(0).gameObject);
+            Vector3 clothHeldPosition = new Vector3(0f,-.75f,0f);
+            Instantiate(wipeClothDirty,clothHeldPosition,Quaternion.identity,itemInHandInventory.transform);
+        }
+    }
+
+    //These scripts all are connected to teh ToppingsJarGUI scripts.
+    //Hover scripts to show the value of the jars in text format as well.
+    public void OnMouseEnter(){
+        inJarAmmountofToppingsObject.SetActive(true);
+    }
+
+    public void OnMouseOver(){
+        inJarAmmountofToppingsObject.GetComponent<TMP_Text>().text = toppingsIngredientsInJarCurrentAmount.ToString() + "/" + bobaToppingMaximumInJar.ToString();
+    }
+
+    public void OnMouseExit(){
+        inJarAmmountofToppingsObject.SetActive(false);
+    }
 }

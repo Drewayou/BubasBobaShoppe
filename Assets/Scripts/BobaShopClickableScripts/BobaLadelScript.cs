@@ -22,7 +22,7 @@ public class BobaLadelScript : MonoBehaviour
     private int maxLadleCarrySize;
 
     //The size the ladle is carrying if it has ingredients.
-    private int currentLadleCarrySize = 0;
+    public int currentLadleCarrySize = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -39,18 +39,20 @@ public class BobaLadelScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+    
     }
 
     public void TakeBobaLadel(){
 
         if(itemInHandInventory.transform.childCount == 0){
-            gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            gameObject.transform.GetChild(0).transform.localScale = new Vector3(.5f, .5f, .5f);
             Vector3 ladelHeld = new Vector3(0f,-.6f,0f);
-            Instantiate(bobaLadel,ladelHeld,Quaternion.identity,itemInHandInventory.transform);
-        }else if(itemInHandInventory.transform.GetChild(0).gameObject.name == bobaLadel.name + "(Clone)"){
-            gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            Destroy(itemInHandInventory.transform.GetChild(0).gameObject);
+            gameObject.transform.GetChild(0).transform.position = ladelHeld;
+            gameObject.transform.GetChild(0).transform.SetParent(itemInHandInventory.transform);
+        }else if(itemInHandInventory.transform.childCount > 0 && itemInHandInventory.transform.GetChild(0).gameObject.name == bobaLadel.name){
+            itemInHandInventory.transform.GetChild(0).transform.SetParent(gameObject.transform);
+            gameObject.transform.GetChild(0).transform.localScale = new Vector3(0.19f, 0.19f, 0.19f);
+            gameObject.transform.GetChild(0).transform.localPosition = new Vector3(0, 0, 0);
         }else{
             //Play wrong interaction hand animation.
             Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
@@ -94,5 +96,15 @@ public class BobaLadelScript : MonoBehaviour
 
     public void SetAmmountOfIngredientsToLadleMax(){
         currentLadleCarrySize = maxLadleCarrySize;
+    }
+
+    public void SetLadleToClean(){
+        WashLadleAndResetCleanCount();
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        gameObject.transform.GetChild(1).gameObject.SetActive(false);
+        gameObject.transform.GetChild(2).gameObject.SetActive(false);
+        gameObject.transform.GetChild(3).gameObject.SetActive(false);
+        gameObject.transform.GetChild(4).gameObject.SetActive(false);
+        SetAmmountOfIngredientsInLadle(0);
     }
 }
