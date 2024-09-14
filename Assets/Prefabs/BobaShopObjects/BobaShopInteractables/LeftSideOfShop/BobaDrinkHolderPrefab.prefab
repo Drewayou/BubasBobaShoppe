@@ -90,6 +90,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemInHandInventory: {fileID: 0}
+  bobaToppingsInCupPrefab: {fileID: 9049446726010935594, guid: 27b92e89a262f144e9dab42d4f22312d, type: 3}
+  emptyCup: {fileID: 222731893582085095, guid: cf485439d6c3b194b8aac11431e96a26, type: 3}
+  bobaladle: {fileID: 222731893582085095, guid: 2d891f56f77916d47ae73eedc7c749bd, type: 3}
 --- !u!114 &1336375337174953287
 MonoBehaviour:
   m_ObjectHideFlags: 0
