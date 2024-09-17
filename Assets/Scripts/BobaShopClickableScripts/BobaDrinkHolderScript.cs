@@ -25,6 +25,9 @@ public class BobaDrinkHolderScript : MonoBehaviour
     [Tooltip("Drag the \"bobaLadle prefab\" here!")]
     GameObject bobaladle;
 
+    //A bool to determine if the interaction was sucessfull and play the animation if not.
+    bool interactedCorrectly;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,21 +42,25 @@ public class BobaDrinkHolderScript : MonoBehaviour
 
     public void InteractWithCupHolder(){
 
+        interactedCorrectly = false;
+
         //Check if hand inventory has a boba drink, and the holder is empty, move it to the cup holder.
         if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" && gameObject.transform.childCount == 0){
             itemInHandInventory.transform.GetChild(0).gameObject.transform.SetParent(gameObject.transform,false);
             gameObject.transform.GetChild(0).transform.localScale = new Vector3(.7f,.7f,.7f);
             gameObject.transform.GetChild(0).transform.localPosition = new Vector3(1f,10f,0f);
+            interactedCorrectly = true;
 
         //Check if hand inventory is empty, and the holder has a boba drink, then grab it (move to the hand inventory).
         }else if(itemInHandInventory.transform.childCount == 0 && gameObject.transform.childCount != 0){
             gameObject.transform.GetChild(0).gameObject.transform.SetParent(itemInHandInventory.transform,false);
             itemInHandInventory.transform.GetChild(0).transform.position = new Vector3(0f,-.75f,0f);
             itemInHandInventory.transform.GetChild(0).transform.localScale = new Vector3(3f,3f,3f);
+            interactedCorrectly = true;
         }
 
         //Check if hand inventory has a ladle with toppings, and if the cup holder has an EMPTY cup, then move the correct toppings to the cup inside the cup holder.
-        if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.name == bobaladle.name && gameObject.transform.childCount != 0 && gameObject.transform.GetChild(0).name == emptyCup.name + "(Clone)"){
+        if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.name == bobaladle.name && gameObject.transform.childCount != 0 && gameObject.transform.GetChild(0).name == emptyCup.name + "(Clone)" && gameObject.transform.GetChild(0).transform.childCount == 0){
             //Check what topping the ladle holds to change it's settings.
 
             //FIXME: Check if ladle has only 1 TOPPING (If more, cause a spill).
@@ -88,15 +95,7 @@ public class BobaDrinkHolderScript : MonoBehaviour
             }else{
                 //FIXME: Cause an overflow spill if there is more than 1 topping in the ladle (You loose the cup and all the toppings!).
             }
-        }
-                
-        
-        //Player interaction if they choose to place something other than a boba drink into the cup holder.
-        if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag != "BobaDrink"){
-            //Play wrong interaction hand animation.
-            Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
-            itemInHandInventoryAnimator.Play("IncorrectInteraction");
-            print("You can't place other items into the cup holder!");
+            interactedCorrectly = true;
         }
 
         //Player interaction to swap boba drinks from mixer and hand inventory.
@@ -110,7 +109,16 @@ public class BobaDrinkHolderScript : MonoBehaviour
             gameObject.transform.GetChild(0).transform.localScale = new Vector3(.7f,.7f,.7f);
             gameObject.transform.GetChild(0).transform.localPosition = new Vector3(1f,10f,0f);
 
-            print("Swapping possible boba drinks!");
+            //print("Swapping possible boba drinks!");
+            interactedCorrectly = true;
+        }
+
+        //Player interaction if they interacted wrongly with the cup holder.
+        if(!interactedCorrectly){
+            //Play wrong interaction hand animation.
+            Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
+            itemInHandInventoryAnimator.Play("IncorrectInteraction");
+            print("You can't place other items into the cup holder!");
         }
     }
 }
