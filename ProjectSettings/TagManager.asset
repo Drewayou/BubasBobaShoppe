@@ -12,6 +12,7 @@ TagManager:
   - IntroMusic
   - Undefined
   - BobaDrink
+  - Ingredient
   layers:
   - Default
   - TransparentFX
