@@ -28,7 +28,18 @@ public class MixerCupAreaScript : MonoBehaviour
     // Update is called once per frame.
     void Update()
     {
+        if(gameObject.transform.childCount != 0 && gameObject.transform.GetChild(0).tag == "BobaDrink" && mixerFlavorLevelIcon.transform.childCount == 0){
+            //Add flavor level done Icon. Else, Destroy it if the drink isn't done.
+            Instantiate(mixerFlavorLevelIconDonePrefab, mixerFlavorLevelIcon.transform);
+            Instantiate(mixerFlavorLevelOutlinePrefab, mixerFlavorLevelIcon.transform);
+        }
         
+        if(gameObject.transform.childCount == 0 && mixerFlavorLevelIcon.transform.childCount != 0){
+            if(mixerFlavorLevelIcon.transform.Find("FlavorLevelOutline(Clone)") != null && mixerFlavorLevelIcon.transform.Find("FlavorLevelDone(Clone)") != null){
+                Destroy(mixerFlavorLevelIcon.transform.Find("FlavorLevelDone(Clone)").gameObject);
+                Destroy(mixerFlavorLevelIcon.transform.Find("FlavorLevelOutline(Clone)").gameObject);
+            }
+        }
     }
 
     public void InteractWithMixerCupArea(){
@@ -73,6 +84,10 @@ public class MixerCupAreaScript : MonoBehaviour
         //Interaction if swapping an empty cup with a current drink in the mixer.
         }else if(handInventory.transform.childCount != 0 && handInventory.transform.GetChild(0).gameObject.name == "EmptyCup(Clone)" && gameObject.transform.childCount != 0 && !mixerSpill){
             swapDoneDrinkWithCup(handInventory);
+            //Add flavor level cup indicator outline if it's not already added.
+            if(mixerFlavorLevelIcon.transform.Find("FlavorLevelOutline(Clone)") == null){
+                Instantiate(mixerFlavorLevelOutlinePrefab, mixerFlavorLevelIcon.transform);
+            }
 
         //Interaction if a different object than an empty cup is held while clicked on mixer.
         }else if(handInventory.transform.childCount != 0 && handInventory.transform.GetChild(0).gameObject.name != "EmptyCup(Clone)" && !mixerSpill){
@@ -91,9 +106,15 @@ public class MixerCupAreaScript : MonoBehaviour
             gameObject.transform.GetChild(0).transform.localPosition = new Vector3(0f,0f,0f);
 
             //Delete flavor level indicators beside cup outline.
-            if(mixerFlavorLevelIcon.transform.Find("FlavorLevelLoaded(Clone)")||mixerFlavorLevelIcon.transform.Find("FlavorLevelDone(Clone)")){
-            Destroy(mixerFlavorLevelIcon.transform.Find("FlavorLevelLoaded(Clone)").gameObject);
-            Destroy(mixerFlavorLevelIcon.transform.Find("FlavorLevelDone(Clone)").gameObject);
+            if(mixerFlavorLevelIcon.transform.Find("FlavorLevelLoaded(Clone)")){
+                Destroy(mixerFlavorLevelIcon.transform.Find("FlavorLevelLoaded(Clone)").gameObject);
             }
+
+            if(mixerFlavorLevelIcon.transform.Find("FlavorLevelDone(Clone)")){
+                Destroy(mixerFlavorLevelIcon.transform.Find("FlavorLevelDone(Clone)").gameObject);
+            }
+
+            //Test if flavor mixer needs to have a level set.
+            //FIXME:
     }
 }
