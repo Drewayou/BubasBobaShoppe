@@ -13,6 +13,9 @@ TagManager:
   - Undefined
   - BobaDrink
   - Ingredient
+  - BobaToppings
+  - LiquidBaseAddition
+  - LiquidBase
   layers:
   - Default
   - TransparentFX

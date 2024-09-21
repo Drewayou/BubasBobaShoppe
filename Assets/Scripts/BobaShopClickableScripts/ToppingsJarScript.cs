@@ -63,8 +63,6 @@ public class ToppingsJarScript : MonoBehaviour
         if(isTheJarDirty){
             gameObject.transform.GetChild(3).gameObject.SetActive(true);
         }
-
-        Debug.Log(inJarAmmountofToppingsObject.name);
     }
 
     public void InteractWithLadleOrPlayer(){
