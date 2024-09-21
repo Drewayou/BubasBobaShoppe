@@ -418,6 +418,10 @@ PrefabInstance:
       propertyPath: itemInHandInventory
       value: 
       objectReference: {fileID: 146500739}
+    - target: {fileID: 7011059159377324914, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+      propertyPath: ingredientInputToMixer
+      value: 
+      objectReference: {fileID: 460357225}
     - target: {fileID: 7587464092868748538, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
       propertyPath: ShopUbeMini
       value: 
@@ -462,6 +466,10 @@ PrefabInstance:
       propertyPath: itemInHandInventory
       value: 
       objectReference: {fileID: 146500739}
+    - target: {fileID: 7587464092868748538, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+      propertyPath: mixerFlavorLevelIcon
+      value: 
+      objectReference: {fileID: 1443850061}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2976,6 +2984,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3989634456040578333, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3989634456040578333, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5910045295569542518, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
       propertyPath: m_Maskable
       value: 0
@@ -2992,6 +3008,10 @@ PrefabInstance:
       propertyPath: itemInHandInventory
       value: 
       objectReference: {fileID: 146500739}
+    - target: {fileID: 7011059159377324914, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+      propertyPath: ingredientInputToMixer
+      value: 
+      objectReference: {fileID: 1660949497}
     - target: {fileID: 7587464092868748538, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
       propertyPath: ShopUbeMini
       value: 
@@ -3028,7 +3048,16 @@ PrefabInstance:
       propertyPath: itemInHandInventory
       value: 
       objectReference: {fileID: 146500739}
-    m_RemovedComponents: []
+    - target: {fileID: 7587464092868748538, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+      propertyPath: mixerFlavorLevelIcon
+      value: 
+      objectReference: {fileID: 1570052969}
+    - target: {fileID: 8259684386346604760, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7240199316627234447, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3186179740008058624, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
@@ -4641,6 +4670,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1138281369}
   m_CullTransparentMesh: 1
+--- !u!1 &1168480560 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1436455972896777504, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+  m_PrefabInstance: {fileID: 1169190838}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1169190838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4741,6 +4775,10 @@ PrefabInstance:
       propertyPath: itemInHandInventory
       value: 
       objectReference: {fileID: 146500739}
+    - target: {fileID: 7011059159377324914, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+      propertyPath: ingredientInputToMixer
+      value: 
+      objectReference: {fileID: 1234528670}
     - target: {fileID: 7587464092868748538, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
       propertyPath: ShopUbeMini
       value: 
@@ -4777,6 +4815,10 @@ PrefabInstance:
       propertyPath: itemInHandInventory
       value: 
       objectReference: {fileID: 146500739}
+    - target: {fileID: 7587464092868748538, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+      propertyPath: mixerFlavorLevelIcon
+      value: 
+      objectReference: {fileID: 1168480560}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -5127,6 +5169,11 @@ MonoBehaviour:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4572508428018357584, guid: bcda4ae44ddc0b64c9e09925a906473b, type: 3}
   m_PrefabInstance: {fileID: 1464827500}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1234528670 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6309678420819104852, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+  m_PrefabInstance: {fileID: 1169190838}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &1283758519 stripped
 RectTransform:
@@ -5699,6 +5746,11 @@ RectTransform:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1566845704015839696, guid: 776f29ab9d0dc144cb869aa132c55940, type: 3}
   m_PrefabInstance: {fileID: 918456551}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1443850061 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1436455972896777504, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+  m_PrefabInstance: {fileID: 91180619}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1464827500
 PrefabInstance:
@@ -6546,6 +6598,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5150ced689bfe64aad0e0fee4d1cd02, type: 3}
+--- !u!1 &1570052969 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1436455972896777504, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+  m_PrefabInstance: {fileID: 795602155}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1615031184
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6762,6 +6819,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd8a24b142d006c4aab4802de26c593a, type: 3}
+--- !u!1 &1660949497 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6309678420819104852, guid: 493cc01fea6b45d4f9e8a6a36fb71bbf, type: 3}
+  m_PrefabInstance: {fileID: 795602155}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1675181591
 GameObject:
   m_ObjectHideFlags: 0

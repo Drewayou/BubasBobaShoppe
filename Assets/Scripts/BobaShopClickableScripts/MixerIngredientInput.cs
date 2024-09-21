@@ -23,16 +23,29 @@ public class MixerIngredientInput : MonoBehaviour
 
     //Gets game Object to check what the player is currently holding.
     [SerializeField]
-    [Tooltip("Input the \"itemInHandInventory\" object in here.")]
+    [Tooltip("Drag the \"itemInHandInventory\" object in here.")]
     GameObject itemInHandInventory;
 
     //Drag the shop gameobjects items into the co-responding items.
     [SerializeField]
-    [Tooltip("Input the \"Ingredient Item\" objects in each of their gameobjects.")]
+    [Tooltip("Drag the \"Ingredient Item\" objects in each of their gameobjects.")]
     GameObject ShopCassavaBall,ShopPandanLeaf,ShopStrawberryMini,ShopBananaMini,ShopMangoMini,ShopUbeMini;
+
+    //Gets the game object to get the RenderFlavorLevelCorrectly() script.
+    [SerializeField]
+    [Tooltip("Drag the \"mixerClickableDrinkArea\" object from the mixer into here.")]
+    GameObject mixerClickableDrinkAreaObject;
+
+    //Gets game Object that renders the flavor levels.
+    [SerializeField]
+    [Tooltip("Drag the \"mixerFlavorLevel\" object from the mixer into here.")]
+    GameObject mixerFlavorLevelIcon;
 
     //Get the animator for the boba mixer.
     Animator bobaMixerAnimator;
+
+    //Makes a bool to check if an item has already been placed in the mixer.
+    bool itemPlacedInMixer = false;
 
     // Start is called before the first frame update.
     void Start()
@@ -55,27 +68,35 @@ public class MixerIngredientInput : MonoBehaviour
     //The method that activated if an ingredient is added to this mixer.
     public void PutIngredientInMixer(){
         //If the user is holding a tong and an ingredient, and mixer doesn't have an ingredient, determine what the tong is holding and add it to the mixer.
-        if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(1).tag == "Ingredient" && !gameObject.transform.parent.gameObject.transform.Find("MixerSpill")){
+        if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(1).tag == "Ingredient" && !gameObject.transform.parent.gameObject.transform.Find("MixerSpill") && !itemPlacedInMixer){
         GameObject itemToPutInMixer = itemInHandInventory.transform.GetChild(1).gameObject;
-        bool itemPlacedInMixer = false;
         switch(itemToPutInMixer.name){
             case "ShopCassavaBall(Clone)":
                 WrongInteraction();
             break;
             case "ShopPandanLeaf(Clone)":
-                itemInHandInventory.transform.GetChild(1).transform.parent =  gameObject.transform.parent;
+                itemInHandInventory.transform.GetChild(1).transform.SetParent(mixerFlavorLevelIcon.transform);
+                mixerClickableDrinkAreaObject.GetComponent<MixerCupAreaScript>().RerenderIngredientFromTop();
                 itemPlacedInMixer = true;
             break;
             case "ShopStrawberryMini(Clone)":
+                itemInHandInventory.transform.GetChild(1).transform.SetParent(mixerFlavorLevelIcon.transform);
+                mixerClickableDrinkAreaObject.GetComponent<MixerCupAreaScript>().RerenderIngredientFromTop();
                 itemPlacedInMixer = true;
             break;
             case "ShopBananaMini(Clone)":
+                itemInHandInventory.transform.GetChild(1).transform.SetParent(mixerFlavorLevelIcon.transform);
+                mixerClickableDrinkAreaObject.GetComponent<MixerCupAreaScript>().RerenderIngredientFromTop();
                 itemPlacedInMixer = true;
             break;
             case "ShopMangoMini(Clone)":
+                itemInHandInventory.transform.GetChild(1).transform.SetParent(mixerFlavorLevelIcon.transform);
+                mixerClickableDrinkAreaObject.GetComponent<MixerCupAreaScript>().RerenderIngredientFromTop();
                 itemPlacedInMixer = true;
             break;
             case "ShopUbeMini(Clone)":
+                itemInHandInventory.transform.GetChild(1).transform.SetParent(mixerFlavorLevelIcon.transform);
+                mixerClickableDrinkAreaObject.GetComponent<MixerCupAreaScript>().RerenderIngredientFromTop();
                 itemPlacedInMixer = true;
             break;
             }
