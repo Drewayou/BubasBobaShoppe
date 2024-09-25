@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4443141691374687700}
   - component: {fileID: 3169497777537176901}
   m_Layer: 8
-  m_Name: World4Music
+  m_Name: BobaShoppeMusic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2c7dbd7373aa1ae498e83aeeed092045, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 302debbe26c8813408939c13922d3fd1, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
