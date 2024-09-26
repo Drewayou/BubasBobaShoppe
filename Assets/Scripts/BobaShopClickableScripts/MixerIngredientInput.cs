@@ -111,4 +111,16 @@ public class MixerIngredientInput : MonoBehaviour
             Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
             itemInHandInventoryAnimator.Play("IncorrectInteraction");
     }
+
+    
+    //Used to reset the mixer ingredient in mixer bool when the mixer blends.
+    public void UseIngredientInMixerInput(){
+        itemPlacedInMixer = false;
+    }
+
+    //Getter to get the bool if an ingredient has been placed in the mixer top.
+    public bool HasAnIngredientBeenPLacedInMixerTop(){
+        return itemPlacedInMixer;
+    }
+
 }

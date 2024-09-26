@@ -168,5 +168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemInHandInventory: {fileID: 0}
-  sink: {fileID: 0}
-  wipeCloth: {fileID: 0}
+  sink: {fileID: 3498019895850085826}
+  wipeCloth: {fileID: 222731893582085095, guid: 1a8b64f702e56814f909ba5d2a413ad5, type: 3}
+  usedCupPrefab: {fileID: 222731893582085095, guid: c1d74533ef3082b43ad663e6b145ee2f, type: 3}

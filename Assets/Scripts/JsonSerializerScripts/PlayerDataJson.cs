@@ -42,4 +42,8 @@ public class PlayerDataJson
 
     public int maxCarrySizeOfLadle { get; set; }
 
+    public float speedOfMixer { get; set; }
+
+    public int mixerFailureRate { get; set; }
+
 }

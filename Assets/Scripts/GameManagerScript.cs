@@ -182,6 +182,12 @@ public class GameManagerScript : MonoBehaviour
         //Max items you can with ladle when directly carrying from the pot.
         playerStats.maxCarrySizeOfLadle = 5;
 
+        //Speed of mixer in seconds.
+        playerStats.speedOfMixer = 10f;
+
+        //How often the mixer has a failure rate (1/failurevalue).
+        playerStats.mixerFailureRate = 5;
+
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         //Shop default settings

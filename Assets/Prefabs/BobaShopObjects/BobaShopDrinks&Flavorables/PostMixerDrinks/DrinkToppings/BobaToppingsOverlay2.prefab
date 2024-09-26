@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4124222354900185844}
   - component: {fileID: 8280618669725678327}
   m_Layer: 0
-  m_Name: FailedDrink
-  m_TagString: Trash
+  m_Name: BobaToppingsOverlay2
+  m_TagString: BobaToppings
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d11ac4590e4193a45b3546dc08aa438c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3dd956ef350df0d4b9070b7925deb02e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

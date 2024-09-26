@@ -31,7 +31,7 @@ public class MixerCupAreaScript : MonoBehaviour
     GameObject mixerButtonInactiveCover;
 
     //The Bools to check if the mixer is ready to mix.
-    public bool mixerHasCupInIt, mixerCupHasBaseInIt, mixerCupHasAddOnInIt;
+    public bool mixerHasCupInIt, mixerCupHasBaseInIt, mixerCupHasAddOnInIt, mixerHasIngredientPlacedInMixer;
 
     //Bool to check if the mixer is even on.
     bool mixerIsMixing = false;
@@ -187,6 +187,7 @@ public class MixerCupAreaScript : MonoBehaviour
             mixerCupHasAddOnInIt = false;
             mixerCupHasBaseInIt = false;
             mixerHasCupInIt = false;
+            mixerHasIngredientPlacedInMixer = false;
     }
 
     public void RerenderIngredientFromTop(){
@@ -196,7 +197,12 @@ public class MixerCupAreaScript : MonoBehaviour
                     flavorLevelTransform.transform.localPosition = new Vector3(0,25,0);
                     flavorLevelTransform.transform.localScale = new Vector3(.7f,.7f,.7f);
                     flavorLevelTransform.transform.SetAsLastSibling();
+                    mixerHasIngredientPlacedInMixer = true;
                 }
             }
+    }
+
+    public GameObject GetItemInHandInventory(){
+        return itemInHandInventory;
     }
 }

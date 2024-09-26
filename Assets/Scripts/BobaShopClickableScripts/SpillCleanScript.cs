@@ -12,7 +12,7 @@ public class SpillCleanScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        itemInHandInventory = GameObject.Find("ItemInHand").gameObject;
     }
 
     // Update is called once per frame

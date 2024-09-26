@@ -248,13 +248,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb0992c122b99446bd864735bc8b57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mixerOverallPrefabObject: {fileID: 222731893582085095}
   drinkInMixerClickableArea: {fileID: 4013593641409908029}
+  mixerIngredientInput: {fileID: 6309678420819104852}
   FailedDrink: {fileID: 2456794447616925271, guid: d7b327094153e35449d285fcc01ebd77, type: 3}
   WaterCup: {fileID: 2456794447616925271, guid: 4b564fa20749c7c44bf9d8970c5775b6, type: 3}
   MilkCup: {fileID: 2456794447616925271, guid: 8e00a76ef84fd04438fcaf746d68a4b6, type: 3}
   PlainGreenTea: {fileID: 2456794447616925271, guid: 6d230acbabe66b74db5bdcffafc67800, type: 3}
   PlainOolongTea: {fileID: 2456794447616925271, guid: 138c3549681ff7d4cae1ce66d3ac3511, type: 3}
   PlainBlackTea: {fileID: 2456794447616925271, guid: 2419b653629269a4aa9f8dd891365d53, type: 3}
+  MilkOverlay: {fileID: 2456794447616925271, guid: c179bfd0432189341b7158a9e6e63501, type: 3}
+  WaterOverlay: {fileID: 2456794447616925271, guid: bb9edf9af4cc37f4f8a550fd5a4dd2b5, type: 3}
+  GreenTeaOverlay: {fileID: 2456794447616925271, guid: 5cafa56d2e47bec46ab27715ade7c16c, type: 3}
+  OolongOverlay: {fileID: 2456794447616925271, guid: 40d3dd6be41c76c49a201647e1e0f4c4, type: 3}
+  BlackTeaOverlay: {fileID: 2456794447616925271, guid: ee42c034db751f943a2f7e7d624e7ba8, type: 3}
+  BobaToppingsInDrinkOverlay1: {fileID: 2456794447616925271, guid: d0ed2c8efd5040e4c9d95c0eecdf03f9, type: 3}
+  BobaToppingsInDrinkOverlay2: {fileID: 2456794447616925271, guid: aeb100f2b4f3c994492663b1211a2ca9, type: 3}
+  BobaToppingsInDrinkOverlay3: {fileID: 2456794447616925271, guid: 16d68a064e8c45d4d8e0df485075f424, type: 3}
+  BobaToppingsInDrinkOverlay4: {fileID: 2456794447616925271, guid: bcb0361ac4d48d943ab4120b897f4fce, type: 3}
+  BobaToppingsInDrinkOverlay5: {fileID: 2456794447616925271, guid: c9db62da1aff5574789b95fa68d0c88b, type: 3}
+  mixerSpillObject: {fileID: 5712126438110863916, guid: 9e6a6037268784444b6a2cb286dc924c, type: 3}
 --- !u!1 &1436455972896777504
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,6 +500,7 @@ MonoBehaviour:
   mixerHasCupInIt: 0
   mixerCupHasBaseInIt: 0
   mixerCupHasAddOnInIt: 0
+  mixerHasIngredientPlacedInMixer: 0
 --- !u!1 &6309678420819104852
 GameObject:
   m_ObjectHideFlags: 0
