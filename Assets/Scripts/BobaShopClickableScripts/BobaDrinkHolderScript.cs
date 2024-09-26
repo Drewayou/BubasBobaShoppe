@@ -44,8 +44,8 @@ public class BobaDrinkHolderScript : MonoBehaviour
 
         interactedCorrectly = false;
 
-        //Check if hand inventory has a boba drink, and the holder is empty, move it to the cup holder.
-        if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" && gameObject.transform.childCount == 0){
+        //Check if hand inventory has a boba drink, or finished boba drink, and the holder is empty, move it to the cup holder.
+        if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" | itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink" && gameObject.transform.childCount == 0){
             itemInHandInventory.transform.GetChild(0).gameObject.transform.SetParent(gameObject.transform,false);
             gameObject.transform.GetChild(0).transform.localScale = new Vector3(.7f,.7f,.7f);
             gameObject.transform.GetChild(0).transform.localPosition = new Vector3(1f,10f,0f);
@@ -99,7 +99,7 @@ public class BobaDrinkHolderScript : MonoBehaviour
         }
 
         //Player interaction to swap boba drinks from mixer and hand inventory.
-        if(itemInHandInventory.transform.childCount != 0 && gameObject.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink"){
+        if(itemInHandInventory.transform.childCount != 0 && gameObject.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" | itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink"){
             
             //Swap cup holder drink.
             itemInHandInventory.transform.GetChild(0).gameObject.transform.SetParent(gameObject.transform,false);

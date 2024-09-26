@@ -248,6 +248,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb0992c122b99446bd864735bc8b57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drinkInMixerClickableArea: {fileID: 4013593641409908029}
+  FailedDrink: {fileID: 2456794447616925271, guid: d7b327094153e35449d285fcc01ebd77, type: 3}
+  WaterCup: {fileID: 2456794447616925271, guid: 4b564fa20749c7c44bf9d8970c5775b6, type: 3}
+  MilkCup: {fileID: 2456794447616925271, guid: 8e00a76ef84fd04438fcaf746d68a4b6, type: 3}
+  PlainGreenTea: {fileID: 2456794447616925271, guid: 6d230acbabe66b74db5bdcffafc67800, type: 3}
+  PlainOolongTea: {fileID: 2456794447616925271, guid: 138c3549681ff7d4cae1ce66d3ac3511, type: 3}
+  PlainBlackTea: {fileID: 2456794447616925271, guid: 2419b653629269a4aa9f8dd891365d53, type: 3}
 --- !u!1 &1436455972896777504
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,6 +484,9 @@ MonoBehaviour:
   mixerFlavorLevelToppings: {fileID: 4362877546904454314, guid: beab445b6f7700748bf4afc4cefb86a9, type: 3}
   ingredientInputToMixer: {fileID: 6309678420819104852}
   mixerButtonInactiveCover: {fileID: 8259684386346604760}
+  mixerHasCupInIt: 0
+  mixerCupHasBaseInIt: 0
+  mixerCupHasAddOnInIt: 0
 --- !u!1 &6309678420819104852
 GameObject:
   m_ObjectHideFlags: 0

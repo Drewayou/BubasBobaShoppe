@@ -16,6 +16,7 @@ TagManager:
   - BobaToppings
   - LiquidBaseAddition
   - LiquidBase
+  - FinishedBobaDrink
   layers:
   - Default
   - TransparentFX
