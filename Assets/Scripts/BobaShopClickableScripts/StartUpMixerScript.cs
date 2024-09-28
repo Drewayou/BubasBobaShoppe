@@ -32,10 +32,16 @@ public class StartUpMixerScript : MonoBehaviour
     [Tooltip("Drag the mixer's \"IngredientInput\" object here.")]
     public GameObject mixerIngredientInput;
 
+    //The gameobject for the mixer's top that contains the ingredient pre-mix.
+    [SerializeField]
+    [Tooltip("Drag the mixer's \"FlavorLevelIcon\" prefab object here.")]
+    public GameObject mixerFlavorLevel;
+
     //The gameobject for the drinks that can be made.
     [SerializeField]
     [Tooltip("Drag the possible drink outcomes here.")]
-    public GameObject FailedDrink, WaterCup, MilkCup, PlainGreenTea, PlainOolongTea, PlainBlackTea, MilkOverlay, WaterOverlay, GreenTeaOverlay, OolongOverlay, BlackTeaOverlay;
+    public GameObject FailedDrink, WaterCup, MilkCup, PlainGreenTea, PlainOolongTea, PlainBlackTea, MilkOverlay, WaterOverlay, GreenTeaOverlay, OolongOverlay, BlackTeaOverlay,
+    BananaBase, PandanBase, StrawberryBase, MangoBase, UbeBase;
 
     //The gameobject for the possible toppings that can be made.
     [SerializeField]
@@ -114,8 +120,107 @@ public class StartUpMixerScript : MonoBehaviour
             //A temp variable gameobject to save the old drink in the mixer.
             GameObject drinkInMixer = drinkInMixerClickableArea.transform.GetChild(0).gameObject;
 
+                //If the mixer has an ingredient in the top, make it the specific drink.
+                if(mixerIngredientInput.GetComponent<MixerIngredientInput>().HasAnIngredientBeenPLacedInMixerTop()){
+
+                    foreach(Transform mixerFlavorLevelItem in mixerFlavorLevel.transform){
+                        if(mixerFlavorLevelItem.tag == "Ingredient"){
+                            switch(mixerFlavorLevelItem.name){
+
+                                case "ShopPandanLeaf(Clone)":
+                                    baseOfNewDrink  = Instantiate(PandanBase, drinkInMixerClickableArea.transform);
+                                    baseOfNewDrink.name = PandanBase.name;
+                                    RescaleNewDrink(baseOfNewDrink);
+                                break;
+                                case "ShopStrawberryMini(Clone)":
+                                    baseOfNewDrink  = Instantiate(StrawberryBase, drinkInMixerClickableArea.transform);
+                                    baseOfNewDrink.name = StrawberryBase.name;
+                                    RescaleNewDrink(baseOfNewDrink);
+                                break;
+                                case "ShopBananaMini(Clone)":
+                                    baseOfNewDrink  = Instantiate(BananaBase, drinkInMixerClickableArea.transform);
+                                    baseOfNewDrink.name = BananaBase.name;
+                                    RescaleNewDrink(baseOfNewDrink);
+                                break;
+                                case "ShopMangoMini(Clone)":
+                                    baseOfNewDrink  = Instantiate(MangoBase, drinkInMixerClickableArea.transform);
+                                    baseOfNewDrink.name = MangoBase.name;
+                                    RescaleNewDrink(baseOfNewDrink);
+                                break;
+                                case "ShopUbeMini(Clone)":
+                                    baseOfNewDrink  = Instantiate(UbeBase, drinkInMixerClickableArea.transform);
+                                    baseOfNewDrink.name = UbeBase.name;
+                                    RescaleNewDrink(baseOfNewDrink);
+                                break;
+                            }
+                            //Erase this ingredient in the mixer since it's used to make the boba drink.
+                            Destroy(mixerFlavorLevelItem.gameObject);
+                        }
+                    }
+                    
+                    foreach(Transform ingredientInCup in drinkInMixer.transform){
+                        
+                        //If a liquid base is present, instantiate it first.
+                        if(ingredientInCup.tag == "LiquidBase"){
+                        switch(drinkInMixer.transform.GetChild(0).name){
+                                case "GreenTeaBase(Clone)":
+                                drinkMade  = Instantiate(GreenTeaOverlay, baseOfNewDrink.transform);
+                                drinkMade.name = PlainGreenTea.name;
+                                RescaleNewDrink(baseOfNewDrink);
+                                break;
+                                case "OolongBase(Clone)":
+                                drinkMade  = Instantiate(OolongOverlay, baseOfNewDrink.transform);
+                                drinkMade.name = PlainOolongTea.name;
+                                RescaleNewDrink(baseOfNewDrink);
+                                break;
+                                case "BlackTeaBase(Clone)":
+                                drinkMade  = Instantiate(BlackTeaOverlay, baseOfNewDrink.transform);
+                                drinkMade.name = PlainBlackTea.name;
+                                RescaleNewDrink(baseOfNewDrink);
+                                break;
+                            }
+                    }
+
+                        //If a liquid base addition is present, & base was made, instantiate it. Else, make it the new base.
+                        if(ingredientInCup.tag == "LiquidBaseAddition"){
+                            switch(ingredientInCup.name){
+
+                                case "WaterBaseAddition(Clone)":
+                            
+                                    drinkMade = Instantiate(WaterOverlay, baseOfNewDrink.transform);
+                                    drinkMade.name = WaterOverlay.name;
+                                    RescaleOverlay(drinkMade);
+                                
+                                break;
+
+                                case "MilkBaseAddition(Clone)":
+                                
+                                    drinkMade = Instantiate(MilkOverlay, baseOfNewDrink.transform);
+                                    drinkMade.name = MilkOverlay.name;
+                                    RescaleOverlay(drinkMade);
+                                
+                                break;
+                            }
+                        }
+
+                        //FIXME: Add other toppings when they're made here. If a boba topping is present, instantiate it.
+                        if(ingredientInCup.tag == "BobaToppings" && baseOfNewDrink.name != null){
+                            switch(ingredientInCup.name){
+                                case "BobaToppingInCup(Clone)":
+                                GameObject bobaOverlayGenerated = randomizeWhichBobaOverLayToMake();
+                                drinkMade = Instantiate(bobaOverlayGenerated, baseOfNewDrink.transform);
+                                RescaleOverlay(drinkMade);
+                                break;
+                            }
+                        }
+                    }
+                    //Erase the other drink in the mixer.
+                    EraseDrinkPreMix(drinkInMixer);
+                }
+
+
                 //If the cup in the mixer only has one child count, specifically for drinks like water cups, milk cups, ect, and no ingredient has been placed in the top of the mixer.
-                if(drinkInMixer.transform.childCount == 1 && !mixerIngredientInput.GetComponent<MixerIngredientInput>().HasAnIngredientBeenPLacedInMixerTop()){
+                else if(drinkInMixer.transform.childCount == 1 && !mixerIngredientInput.GetComponent<MixerIngredientInput>().HasAnIngredientBeenPLacedInMixerTop()){
                     switch(drinkInMixer.transform.GetChild(0).gameObject.tag){
                         case "LiquidBase":
                             switch(drinkInMixer.transform.GetChild(0).name){

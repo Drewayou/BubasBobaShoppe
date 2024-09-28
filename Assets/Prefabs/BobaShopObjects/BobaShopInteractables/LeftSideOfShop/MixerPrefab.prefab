@@ -251,6 +251,7 @@ MonoBehaviour:
   mixerOverallPrefabObject: {fileID: 222731893582085095}
   drinkInMixerClickableArea: {fileID: 4013593641409908029}
   mixerIngredientInput: {fileID: 6309678420819104852}
+  mixerFlavorLevel: {fileID: 1436455972896777504}
   FailedDrink: {fileID: 2456794447616925271, guid: d7b327094153e35449d285fcc01ebd77, type: 3}
   WaterCup: {fileID: 2456794447616925271, guid: 4b564fa20749c7c44bf9d8970c5775b6, type: 3}
   MilkCup: {fileID: 2456794447616925271, guid: 8e00a76ef84fd04438fcaf746d68a4b6, type: 3}
@@ -262,6 +263,11 @@ MonoBehaviour:
   GreenTeaOverlay: {fileID: 2456794447616925271, guid: 5cafa56d2e47bec46ab27715ade7c16c, type: 3}
   OolongOverlay: {fileID: 2456794447616925271, guid: 40d3dd6be41c76c49a201647e1e0f4c4, type: 3}
   BlackTeaOverlay: {fileID: 2456794447616925271, guid: ee42c034db751f943a2f7e7d624e7ba8, type: 3}
+  BananaBase: {fileID: 2456794447616925271, guid: 60e77b75a4893d048bd273368b4b1040, type: 3}
+  PandanBase: {fileID: 2456794447616925271, guid: 92acb85f78cfd6f4f80eebfd6abe14a1, type: 3}
+  StrawberryBase: {fileID: 2456794447616925271, guid: 1e32f7ca366aee24695f6383f2bf162c, type: 3}
+  MangoBase: {fileID: 2456794447616925271, guid: d5ae9d8803aa08e4c9b199452e4e1f86, type: 3}
+  UbeBase: {fileID: 2456794447616925271, guid: 6b64c8146d934344ebc46cc061638415, type: 3}
   BobaToppingsInDrinkOverlay1: {fileID: 2456794447616925271, guid: d0ed2c8efd5040e4c9d95c0eecdf03f9, type: 3}
   BobaToppingsInDrinkOverlay2: {fileID: 2456794447616925271, guid: aeb100f2b4f3c994492663b1211a2ca9, type: 3}
   BobaToppingsInDrinkOverlay3: {fileID: 2456794447616925271, guid: 16d68a064e8c45d4d8e0df485075f424, type: 3}

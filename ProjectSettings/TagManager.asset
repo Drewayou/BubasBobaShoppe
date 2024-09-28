@@ -17,6 +17,7 @@ TagManager:
   - LiquidBaseAddition
   - LiquidBase
   - FinishedBobaDrink
+  - Trash
   layers:
   - Default
   - TransparentFX
