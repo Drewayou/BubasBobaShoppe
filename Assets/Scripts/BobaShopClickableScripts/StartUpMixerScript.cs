@@ -351,7 +351,7 @@ public class StartUpMixerScript : MonoBehaviour
             }
             makeFailedDrink();
             GameObject spill = Instantiate(mixerSpillObject, mixerOverallPrefabObject.transform);
-            spill.transform.localPosition = new Vector3(-3.5f,-40f,0f);
+            spill.transform.localPosition = new Vector3(-3.5f,-39f,0f);
             spill.transform.localScale = new Vector3(.6f,.6f,.6f);
         }
     }

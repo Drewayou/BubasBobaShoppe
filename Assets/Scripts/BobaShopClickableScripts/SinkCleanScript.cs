@@ -69,5 +69,8 @@ public class SinkCleanScript : MonoBehaviour
         GameObject usedCupClone = Instantiate(usedCupPrefab, itemInHandInventory.transform);
         usedCupClone.transform.position = new Vector3(0f,-.75f,0f);
         usedCupClone.transform.localScale = new Vector3(3f,3f,3f);
+
+        //Play the sink animation.
+        sinkAnimation.Play("SinkUsed");
     }
 }

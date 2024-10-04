@@ -98,8 +98,8 @@ public class BobaDrinkHolderScript : MonoBehaviour
             interactedCorrectly = true;
         }
 
-        //Player interaction to swap boba drinks from mixer and hand inventory.
-        if(itemInHandInventory.transform.childCount != 0 && gameObject.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" | itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink"){
+        //Player interaction to swap boba drinks from cup holder and hand inventory.
+        if(itemInHandInventory.transform.childCount != 0 && gameObject.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" || itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink"){
             
             //Swap cup holder drink.
             itemInHandInventory.transform.GetChild(0).gameObject.transform.SetParent(gameObject.transform,false);
