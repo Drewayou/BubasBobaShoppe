@@ -126,7 +126,7 @@ MonoBehaviour:
   moonwalkingMaxTimer: 5
 --- !u!50 &1367891785326466373
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -137,8 +137,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.01
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -191,7 +191,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 1d77fbcb-6fbd-4f83-9659-1def0b440fcb
-    m_ActionName: New action map/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+    m_ActionName: 'New action map/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: c2983d30-279c-4135-804b-9fa9f0cd5a86
@@ -211,7 +211,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 3aba08eb-3242-4acc-9823-9e279ff486f8
-    m_ActionName: PlayerActionMap/AttackButton[/Mouse/leftButton]
+    m_ActionName: 'PlayerActionMap/AttackButton[/Mouse/leftButton]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4210813427365742076}
@@ -227,7 +227,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 4b7919cf-9813-4882-9515-79b95a9f9c76
-    m_ActionName: PlayerActionMap/SprintButton[/Keyboard/shift,/XInputControllerWindows/buttonWest]
+    m_ActionName: 'PlayerActionMap/SprintButton[/Keyboard/shift,/XInputControllerWindows/buttonWest]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
@@ -243,11 +243,11 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 4ed5b3ce-2987-4ff1-9530-59ae453df702
-    m_ActionName: PlayerActionMap/Pause[/XInputControllerWindows/start,/Keyboard/tab]
+    m_ActionName: 'PlayerActionMap/Pause[/XInputControllerWindows/start,/Keyboard/tab]'
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: ecd4084b-ecc8-4eda-a90c-acbbd9d1dbaa
-    m_ActionName: PlayerActionMap/Interact[/Keyboard/e]
+    m_ActionName: 'PlayerActionMap/Interact[/Keyboard/e]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3429090588397925845}
@@ -263,7 +263,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: d0e47888-2803-43b0-af41-0cc0094365f1
-    m_ActionName: PlayerActionMap/MoonWalk[/Keyboard/m]
+    m_ActionName: 'PlayerActionMap/MoonWalk[/Keyboard/m]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerActionMap
@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Camera: {fileID: 0}
 --- !u!95 &6964690254450759822
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -285,6 +285,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -307,6 +308,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -350,6 +354,7 @@ PolygonCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4210813427365742076}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -373,7 +378,8 @@ PolygonCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -530,12 +536,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!114 &4815580506534346965
 MonoBehaviour:
   m_ObjectHideFlags: 0
