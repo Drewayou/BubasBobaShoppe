@@ -293,9 +293,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   treeObject: {fileID: 31271903593435364, guid: 28afe848f5997e94585eac33f62f1fe5, type: 3}
   WorldGenerationObjectHolder: {fileID: 1029145887}
-  treesToGenerate: 200
+  treesToGenerate: 1000
   useParallelismToGenerate: 1
   treeTransformFromGameObject: []
+  randomizedPositionsForTreesArray: []
 --- !u!4 &1029145889
 Transform:
   m_ObjectHideFlags: 0
