@@ -112,9 +112,8 @@ public class MixerIngredientInput : MonoBehaviour
             itemInHandInventoryAnimator.Play("IncorrectInteraction");
     }
 
-    
     //Used to reset the mixer ingredient in mixer bool when the mixer blends.
-    public void UseIngredientInMixerInput(){
+    public void ConsumeIngredientInMixerInput(){
         itemPlacedInMixer = false;
     }
 
@@ -122,5 +121,4 @@ public class MixerIngredientInput : MonoBehaviour
     public bool HasAnIngredientBeenPLacedInMixerTop(){
         return itemPlacedInMixer;
     }
-
 }

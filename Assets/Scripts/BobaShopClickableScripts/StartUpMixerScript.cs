@@ -216,6 +216,8 @@ public class StartUpMixerScript : MonoBehaviour
                     }
                     //Erase the other drink in the mixer.
                     EraseDrinkPreMix(drinkInMixer);
+                    //Reset the ingredient in the mixer to empty since it was blended into the drink.
+                    mixerIngredientInput.GetComponent<MixerIngredientInput>().ConsumeIngredientInMixerInput();
                 }
 
 
