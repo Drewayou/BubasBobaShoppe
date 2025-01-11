@@ -88,10 +88,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c4b549d8303f74cad4cef0443cb354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drinkUID: 
+  drinkUID: SB
   hasTeaOverlay: 0
   teaOverlaySelectionNumber: 0
   hasAdditionalFlavorOverlay: 0
   additionalOverlaySelectionNumber: 0
   hasToppingsOverlay: 0
   toppingInTheDrink: 0
+  drinkIsCold: 0
+  coldType: 0
+  drinkHasCustomSweetness: 0
+  sweetnessLevel: 0

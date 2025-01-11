@@ -118,7 +118,7 @@ public class MixerIngredientInput : MonoBehaviour
     }
 
     //Getter to get the bool if an ingredient has been placed in the mixer top.
-    public bool HasAnIngredientBeenPLacedInMixerTop(){
+    public bool HasAnIngredientBeenPlacedInMixerTop(){
         return itemPlacedInMixer;
     }
 }
