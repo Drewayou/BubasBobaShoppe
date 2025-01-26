@@ -7998,7 +7998,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 951496140482510000, guid: b898adc2756b9c34b81a17bf8c6cafa7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 200
+      value: 190
       objectReference: {fileID: 0}
     - target: {fileID: 951496140482510000, guid: b898adc2756b9c34b81a17bf8c6cafa7, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9508,6 +9508,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: DrinkPlacementMat
       objectReference: {fileID: 0}
+    - target: {fileID: 6766972684128485370, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_RaycastPadding.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766972684128485370, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_RaycastPadding.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6766972684128485370, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_RaycastPadding.z
+      value: 0.9
+      objectReference: {fileID: 0}
     - target: {fileID: 8640302500605656034, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -9629,6 +9641,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d925eb3b9b9fb39479faf9f04f43370c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemInHandInventory: {fileID: 0}
+  bobaToppingsInCupPrefab: {fileID: 0}
+  emptyCup: {fileID: 0}
+  bobaladle: {fileID: 0}
 --- !u!1001 &7602529610989836904
 PrefabInstance:
   m_ObjectHideFlags: 0
