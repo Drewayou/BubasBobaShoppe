@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BobaSellMattScript : MonoBehaviour
@@ -8,23 +9,14 @@ public class BobaSellMattScript : MonoBehaviour
     [SerializeField]
     GameObject itemInHandInventory;
 
-    //Boba toppings in cup prefab.
-    [SerializeField]
-    [Tooltip("Drag the \"Boba topping in cup prefab\" here!")]
-    GameObject bobaToppingsInCupPrefab;
-
-    //Empty cup prefab.
-    [SerializeField]
-    [Tooltip("Drag the \"Empty cup prefab\" here!")]
-    GameObject emptyCup;
-
-    //Empty cup prefab.
-    [SerializeField]
-    [Tooltip("Drag the \"bobaLadle prefab\" here!")]
-    GameObject bobaladle;
+    //List of the game objects in the sell tray.
+    List<GameObject> sellableBobaDrinks= new List<GameObject>();
 
     //A bool to determine if the interaction was sucessfull and play the animation if not.
     bool interactedCorrectly;
+
+    //A bool to determine if the drink is a valid boba drink that one can sell.
+    bool isSellableBobaDrink;
 
     // Start is called before the first frame update
     void Start()
