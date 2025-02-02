@@ -15,9 +15,6 @@ public class BobaSellMattScript : MonoBehaviour
     //A bool to determine if the interaction was sucessfull and play the animation if not.
     bool interactedCorrectly;
 
-    //A bool to determine if the drink is a valid boba drink that one can sell.
-    bool isSellableBobaDrink;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -29,35 +26,48 @@ public class BobaSellMattScript : MonoBehaviour
     {
         
     }
+    public void popSellableBobaDrinks(){
+        if(sellableBobaDrinks.Count == 0){
+            //Do nothing
+            print("Error : No boba drink in the sell mat!");
+            interactedCorrectly = false;
+        }else{
+            gameObject.transform.GetChild(0).transform.SetParent(itemInHandInventory.transform,false);
+            itemInHandInventory.transform.GetChild(0).transform.position = new Vector3(0f,-.75f,0f);
+            itemInHandInventory.transform.GetChild(0).transform.localScale = new Vector3(3f,3f,3f);
+            sellableBobaDrinks.RemoveAt(0);
+            print("Attempted to move drink");
+        }
+    }
 
-    public void InteractWithCupHolder(){
+    public void pushSellableBobaDrinks(GameObject drinkToAdd){
+        if(drinkToAdd.tag != "FinishedBobaDrink"){
+            //Do nothing
+            print("Error : No valid boba drink to add in the mat!");
+            interactedCorrectly = false;
+        }else{
+            drinkToAdd.transform.SetParent(gameObject.transform,false);
+            drinkToAdd.transform.transform.localScale = new Vector3(.7f,.7f,.7f);
+            drinkToAdd.transform.transform.localPosition = new Vector3(1f,10f,0f);
+            interactedCorrectly = true;
+            sellableBobaDrinks.Add(drinkToAdd);
+            print(sellableBobaDrinks.Count.ToString() + " : Drinks on mat.");
+        }
+    }
+
+    public void InteractWithDrinkMat(){
 
         interactedCorrectly = false;
 
-        //Check if hand inventory has a boba drink, or finished boba drink, and the holder is empty, move it to the cup holder.
-        if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" | itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink" && gameObject.transform.childCount == 0){
-            itemInHandInventory.transform.GetChild(0).gameObject.transform.SetParent(gameObject.transform,false);
-            gameObject.transform.GetChild(0).transform.localScale = new Vector3(.7f,.7f,.7f);
-            gameObject.transform.GetChild(0).transform.localPosition = new Vector3(1f,10f,0f);
-            interactedCorrectly = true;
-
-            }else{
-                //FIXME: Cause an overflow spill if there is more than 1 topping in the ladle (You loose the cup and all the toppings!).
-            }
-            interactedCorrectly = true;
+        //Check if hand inventory has a boba drink, or finished boba drink, and the sellableBobaDrinks mat is empty or <3 full of other drinks, move it to the mat.
+        if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink" && sellableBobaDrinks.Count <3){
+            pushSellableBobaDrinks(itemInHandInventory.transform.GetChild(0).gameObject);
         }
 
-        //Player interaction to swap boba drinks from cup holder and hand inventory.
-        if(itemInHandInventory.transform.childCount != 0 && gameObject.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" || itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink"){
-            
-            //Swap cup holder drink.
-            itemInHandInventory.transform.GetChild(0).gameObject.transform.SetParent(gameObject.transform,false);
-            gameObject.transform.GetChild(0).gameObject.transform.SetParent(itemInHandInventory.transform,false);
-            itemInHandInventory.transform.GetChild(0).transform.position = new Vector3(0f,-.75f,0f);
-            itemInHandInventory.transform.GetChild(0).transform.localScale = new Vector3(3f,3f,3f);
-            gameObject.transform.GetChild(0).transform.localScale = new Vector3(.7f,.7f,.7f);
-            gameObject.transform.GetChild(0).transform.localPosition = new Vector3(1f,10f,0f);
-
+        //Player interaction to swap boba drinks from sell mat to hand inventory.
+        else if(itemInHandInventory.transform.childCount == 0 && sellableBobaDrinks.Count >=0){
+            //Swap first mat drink into hand.
+            popSellableBobaDrinks();
             //print("Swapping possible boba drinks!");
             interactedCorrectly = true;
         }
