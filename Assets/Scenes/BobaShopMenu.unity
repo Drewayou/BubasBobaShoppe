@@ -9504,6 +9504,34 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 6079893519306211259}
+    - target: {fileID: 1283082378870705808, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1283082378870705808, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1283082378870705808, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6079893519306211260}
+    - target: {fileID: 1283082378870705808, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1283082378870705808, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: InteractWithDrinkMat
+      objectReference: {fileID: 0}
+    - target: {fileID: 1283082378870705808, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BobaSellMattScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1283082378870705808, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5828547352455778378, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
       propertyPath: m_Name
       value: DrinkPlacementMat
@@ -9641,10 +9669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d925eb3b9b9fb39479faf9f04f43370c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemInHandInventory: {fileID: 0}
-  bobaToppingsInCupPrefab: {fileID: 0}
-  emptyCup: {fileID: 0}
-  bobaladle: {fileID: 0}
+  itemInHandInventory: {fileID: 146500739}
 --- !u!1001 &7602529610989836904
 PrefabInstance:
   m_ObjectHideFlags: 0

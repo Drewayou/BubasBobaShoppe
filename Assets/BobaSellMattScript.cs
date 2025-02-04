@@ -10,7 +10,7 @@ public class BobaSellMattScript : MonoBehaviour
     GameObject itemInHandInventory;
 
     //List of the game objects in the sell tray.
-    List<GameObject> sellableBobaDrinks= new List<GameObject>();
+    List<GameObject> sellableBobaDrinks = new List<GameObject>();
 
     //A bool to determine if the interaction was sucessfull and play the animation if not.
     bool interactedCorrectly;
@@ -37,6 +37,7 @@ public class BobaSellMattScript : MonoBehaviour
             itemInHandInventory.transform.GetChild(0).transform.localScale = new Vector3(3f,3f,3f);
             sellableBobaDrinks.RemoveAt(0);
             print("Attempted to move drink");
+            generateProperDrinkVisuals();
         }
     }
 
@@ -52,6 +53,30 @@ public class BobaSellMattScript : MonoBehaviour
             interactedCorrectly = true;
             sellableBobaDrinks.Add(drinkToAdd);
             print(sellableBobaDrinks.Count.ToString() + " : Drinks on mat.");
+            generateProperDrinkVisuals();
+        }
+    }
+
+    public void generateProperDrinkVisuals(){
+        foreach(GameObject drink in sellableBobaDrinks){
+            if(sellableBobaDrinks.Count == 1){
+                sellableBobaDrinks[0].transform.transform.localScale = new Vector3(0.3f,0.3f,0.3f);
+                sellableBobaDrinks[0].transform.localPosition = new Vector3(0f,10f,0f);
+            }
+            else if(sellableBobaDrinks.Count == 2){
+                sellableBobaDrinks[0].transform.transform.localScale = new Vector3(0.3f,0.3f,0.3f);
+                sellableBobaDrinks[0].transform.localPosition = new Vector3(10f,10f,0f);
+                sellableBobaDrinks[1].transform.transform.localScale = new Vector3(0.3f,0.3f,0.3f);
+                sellableBobaDrinks[1].transform.localPosition = new Vector3(-10f,10f,0f); 
+            }
+            else if(sellableBobaDrinks.Count == 3){
+                sellableBobaDrinks[0].transform.transform.localScale = new Vector3(0.3f,0.3f,0.3f);
+                sellableBobaDrinks[0].transform.localPosition = new Vector3(20f,10f,0f);
+                sellableBobaDrinks[1].transform.transform.localScale = new Vector3(0.3f,0.3f,0.3f);
+                sellableBobaDrinks[1].transform.localPosition = new Vector3(0f,10f,0f);
+                sellableBobaDrinks[2].transform.transform.localScale = new Vector3(0.3f,0.3f,0.3f);
+                sellableBobaDrinks[2].transform.localPosition = new Vector3(-20f,10f,0f);  
+            }
         }
     }
 
