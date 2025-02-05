@@ -59,6 +59,22 @@ public class BobaDrinkHolderScript : MonoBehaviour
             interactedCorrectly = true;
         }
 
+        //Player interaction to SWAP two different boba drinks / cups from cup holder and hand inventory, IF both the cup holder also has a drink/cup.
+        else if(itemInHandInventory.transform.childCount != 0 && gameObject.transform.childCount != 0){
+            if(itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" || itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink"){
+                //Swap cup holder drink.
+                itemInHandInventory.transform.GetChild(0).gameObject.transform.SetParent(gameObject.transform,false);
+                gameObject.transform.GetChild(0).gameObject.transform.SetParent(itemInHandInventory.transform,false);
+                itemInHandInventory.transform.GetChild(0).transform.position = new Vector3(0f,-.75f,0f);
+                itemInHandInventory.transform.GetChild(0).transform.localScale = new Vector3(3f,3f,3f);
+                gameObject.transform.GetChild(0).transform.localScale = new Vector3(.7f,.7f,.7f);
+                gameObject.transform.GetChild(0).transform.localPosition = new Vector3(1f,10f,0f);
+
+                //print("Swapping possible boba drinks!");
+                interactedCorrectly = true;
+            }
+        }
+
         //Check if hand inventory has a ladle with toppings, and if the cup holder has an EMPTY cup, then move the correct toppings to the cup inside the cup holder.
         if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.name == bobaladle.name && gameObject.transform.childCount != 0 && gameObject.transform.GetChild(0).name == emptyCup.name + "(Clone)" && gameObject.transform.GetChild(0).transform.childCount == 0){
             //Check what topping the ladle holds to change it's settings.
@@ -97,22 +113,7 @@ public class BobaDrinkHolderScript : MonoBehaviour
             }
             interactedCorrectly = true;
         }
-
-        //Player interaction to swap boba drinks from cup holder and hand inventory.
-        if(itemInHandInventory.transform.childCount != 0 && gameObject.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" || itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink"){
-            
-            //Swap cup holder drink.
-            itemInHandInventory.transform.GetChild(0).gameObject.transform.SetParent(gameObject.transform,false);
-            gameObject.transform.GetChild(0).gameObject.transform.SetParent(itemInHandInventory.transform,false);
-            itemInHandInventory.transform.GetChild(0).transform.position = new Vector3(0f,-.75f,0f);
-            itemInHandInventory.transform.GetChild(0).transform.localScale = new Vector3(3f,3f,3f);
-            gameObject.transform.GetChild(0).transform.localScale = new Vector3(.7f,.7f,.7f);
-            gameObject.transform.GetChild(0).transform.localPosition = new Vector3(1f,10f,0f);
-
-            //print("Swapping possible boba drinks!");
-            interactedCorrectly = true;
-        }
-
+        
         //Player interaction if they interacted wrongly with the cup holder.
         if(!interactedCorrectly){
             //Play wrong interaction hand animation.
