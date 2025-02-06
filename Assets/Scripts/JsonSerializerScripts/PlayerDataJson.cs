@@ -24,26 +24,45 @@ public class PlayerDataJson
     public int mangos { get; set; }
     public int ube { get; set; }
 
-    //Player shop save data. May need to move to Shop JSON in the future?
+    //Player BOBA shop save data. 
+    //Note : Things/Costs that the player can BUY via NPC SHOPS are located/pulled from "ShopCosts.Json"!
     public int shopTraysAvailable { get; set; }
+
+    // This data value dictates how many cupholders the player can use/have in their shop.
     public int shopCupHoldersAvailable { get; set; }
+
+    // This data value dictates how many mixers the player can use/have in their shop.
     public int mixerAvailable { get; set; }
+
+    // This data value is important for setting the popularity of the 
     public float shopPopularity { get; set; }
 
+    // This data list is for the items selected to be in the trays of the shop. This is usually set before a boba shop round.
     public List<int> shopTraysItemListArray { get; set; }
 
+    // This data value dictates the speed the boba pot cooks.
     public float bobaShopBobaPotCookingSpeed { get; set; }
 
+    // This data value dictates the max ammount of items that can be put in a boba pot.
     public int maxCapacityOfBobaPot { get; set; }
 
+    // This data value dictates the max size of the topping jar. 
     public int maxCapacityOfToppingJars { get; set; }
 
+    // This data value dictates how many "uses" the ladle has. Uses equates to each item it can carry. I.E. the ladle picking up 5 items will 
     public int maxCleanCountOfLadle { get; set; }
 
+    // This data value dictates the max value the ladle can carry.
     public int maxCarrySizeOfLadle { get; set; }
 
+    // This data value dictates how long it takes for the mixer to mix.
     public float speedOfMixer { get; set; }
 
+    // This data value dictates how often the mixer can break.
     public int mixerFailureRate { get; set; }
+
+    // This data value dictates how many cusomters the player can deal with at a time during a boba shop round. Maximum of 6 (3 waiting to order and 3 already ordered).
+    // Customer Queue max size is dictated by the ammount of tables/chairs the player has bought & boba shop popularity. Again, This INCLUDES customers waiting for their order to be done.
+    public int maxBobaShopLineQueue { get; set; }
 
 }

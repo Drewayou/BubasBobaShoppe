@@ -24,6 +24,10 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //The stats of this players shop is pulled from the GameManager.
     private ShopCostsNEarnings playersCurrentShopStats;
 
+    //The Customer queue handler script pulled from the Gameobject and holder.
+    [SerializeField]
+    CustomerHandlerScript customerQueueHandlerScript;
+
     //The Game's In-GameUI object to use / move during / after the game has ended.
     [SerializeField]
     [Header("In-GameUIObject")]
@@ -131,7 +135,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(roundTimer<=180){
+        if(roundTimer<=360){
             roundTimer += Time.deltaTime;
         }else{
             if(roundType == 0){
@@ -144,54 +148,16 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         return roundTimer;
     }
 
-    //For used by spawner scripts to keep track of how many enemies are in this round
+    //FIXME: A method to attempt to spawn a new customer according to shop popularity and if queue line (Order & Waiting queue) is full.
+    public void tryToSpawnACustomer(){
+        if((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerQueueHandlerScript.waitingForOrderCustomerQueue.Count)<thisGamesOverallInstance.ReturnMaxBobaShopLineQueue()){
+            
+        }
+    }
+
+    //For used by customer scripts to keep track of how many customers are in this round
     public void CustomerSpawned(){
         customersSpawned += 1;
-    }
-
-    public float ProbabilityOfPerpertualPlayerAgro(){
-        return playerPerpetualAgroChance;
-    }
-
-    //Setter Methods for this round resources used in other scripts.
-    public void AddCassavaSlimeBallsThisRound(int addedLoot){
-        CassavaSlimeBalls += addedLoot;
-    }
-    public void AddPandanLeavesThisRound(int addedLoot){
-        PandanLeaves += addedLoot;
-    }
-    public void AddBananaMinisThisRound(int addedLoot){
-        BananaMinis += addedLoot;
-    }
-    public void AddStrawberryMinisThisRound(int addedLoot){
-        StrawberryMinis += addedLoot;
-    }
-    public void AddMangoMinisThisRound(int addedLoot){
-        MangoMinis += addedLoot;
-    }
-    public void AddtUbeMinisThisRound(int addedLoot){
-        UbeMinis += addedLoot;
-    }
-
-    //Getter Methods for this round resources for use in other scripts.
-    // I.E. In game UI pulls this into the UI values for the loot gathered!
-    public int GetCassavaSlimeBallsThisRound(){
-        return CassavaSlimeBalls;
-    }
-    public int GetPandanLeavesThisRound(){
-        return PandanLeaves;
-    }
-    public int GetBananaMinisThisRound(){
-        return BananaMinis;
-    }
-    public int GetStrawberryMinisThisRound(){
-        return StrawberryMinis;
-    }
-    public int GetMangoMinisThisRound(){
-        return MangoMinis;
-    }
-    public int GetUbeMinisThisRound(){
-        return UbeMinis;
     }
 
     /// <summary>
@@ -311,7 +277,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         //Debug.Log(playerEarnedCoins);
 
         */
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~NEW LOGIC : Simply save the items gained to playerdata!~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~NEW LOGIC : Shop was overturned!~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     }
 

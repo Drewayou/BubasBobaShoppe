@@ -162,15 +162,19 @@ public class GameManagerScript : MonoBehaviour
         playerStats.mangos = 5;
         playerStats.ube = 5;
 
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Note-this may need ot be moved to shopdata in the future!
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Below are shop data sets for player-related stats. NOT what the player can BUY from NPC shops!
         playerStats.shopTraysAvailable = 3;
         playerStats.shopCupHoldersAvailable = 3;
         playerStats.shopPopularity = 0.0f;
         playerStats.mixerAvailable = 1;
 
-        //FIXME: list array for items in shop? Idk if this works since C#v9 doesn't have resizable arrays.
+        //List array for items in shop. Uses lists for specific methods in C#v9 vs. arrays.
         playerStats.shopTraysItemListArray = new List<int>();
+
+        //How fast the boba pot cooks. Can be upgraded.
         playerStats.bobaShopBobaPotCookingSpeed = 20f;
+
+        //How many boba servings the pot can hold. Can be upgraded.
         playerStats.maxCapacityOfBobaPot = 10;
 
         //Max capacity of topping jars.
@@ -188,9 +192,12 @@ public class GameManagerScript : MonoBehaviour
         //How often the mixer has a failure rate (1/failurevalue).
         playerStats.mixerFailureRate = 5;
 
+        //How many NPC's can line up behind another one making a boba order. Scales with player boba shop popularity & tables/chairs the player has.
+        playerStats.maxBobaShopLineQueue = 3;
+
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        //Shop default settings
+        //NPC/Shop upgrade default settings
         ShopData.shopLevelAt = 1;
         ShopData.playerShopDrinkSellAmmount = 1.0f;
         ShopData.shopLevelUpCost = 10;
@@ -242,7 +249,7 @@ public class GameManagerScript : MonoBehaviour
         world4.chanceOfMango = 0f;
         world4.chanceOfUbe = .20f;
 
-        //Defualt Drink multiplier
+        //Default Drink multiplier
         drinkMultiplier.OolongMultiplier = 1.00f;
         drinkMultiplier.PandanMultiplier = 1.50f;
         drinkMultiplier.BananaMultiplier = 2.00f;
@@ -250,7 +257,7 @@ public class GameManagerScript : MonoBehaviour
         drinkMultiplier.MangoMultiplier = 3.00f;
         drinkMultiplier.UbeMultiplier = 3.00f;
 
-        //Defualt Basic boss level
+        //Default Basic boss level
         cassavaBossLevel.WorldName = "CassavaCastle";
         cassavaBossLevel.isThereABoss = true;
     }
@@ -702,6 +709,14 @@ public class GameManagerScript : MonoBehaviour
 
     public void setPlayerAndBossFight1Available(){
         playerStats.unlockedBossFight = true;
+    }
+
+    public int ReturnMaxBobaShopLineQueue(){
+        return playerStats.maxBobaShopLineQueue;
+    }
+
+    public void UpdateMaxBobaShopLineQueue(int newQueueLimit){
+        playerStats.maxBobaShopLineQueue = newQueueLimit;
     }
 
     public ShopCostsNEarnings ReturnCurrentShopInstance(){
