@@ -92,9 +92,6 @@ public class GameManagerScript : MonoBehaviour
         }
 
     }
-
-    void Update(){
-    }
     
     /// <summary>
     /// StartNewGame erases the current save files on user's local disk and makes the bare bone ones using the set JSON scripts
@@ -165,7 +162,7 @@ public class GameManagerScript : MonoBehaviour
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Below are shop data sets for player-related stats. NOT what the player can BUY from NPC shops!
         playerStats.shopTraysAvailable = 3;
         playerStats.shopCupHoldersAvailable = 3;
-        playerStats.shopPopularity = 0.0f;
+        playerStats.shopPopularity = 4.0f;
         playerStats.mixerAvailable = 1;
 
         //List array for items in shop. Uses lists for specific methods in C#v9 vs. arrays.
@@ -739,6 +736,10 @@ public class GameManagerScript : MonoBehaviour
     }
     public int ReturnMaxAttackStasThisGameCanHandle(){
         return MaxAttackEverThisGame;
+    }
+
+    public float ReturnPlayerShopPopularity(){
+        return playerStats.shopPopularity;
     }
 
     public List<int> AddItemToShopTrayArrayList(){

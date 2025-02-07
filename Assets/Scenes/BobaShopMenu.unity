@@ -5240,6 +5240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d6e7ea70485c6140b350f56f2f25549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overallGameManager: {fileID: 1367759179}
   customerQueueHandlerScript: {fileID: 668586579}
   inGameUIObject: {fileID: 0}
   EndOfRoundUIObject: {fileID: 227311152}
@@ -5259,8 +5260,8 @@ MonoBehaviour:
   ShopLevelNMultiplier: {fileID: 0}
   TotalNewGoldTxt: {fileID: 0}
   NeedSlimeForBobaNotif: {fileID: 0}
-  roundType: 0
   roundTimer: 0
+  customerSpawnCooldownTimer: 0
   possibleDrinksList: []
   oolongMultiplier: 1
   PandanMultiplier: 1

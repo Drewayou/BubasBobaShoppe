@@ -11,9 +11,10 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //The Game's OverallManager Object to pull/put scripts from.
     [Header("GameManager")]
     [Tooltip("Put the game's overall Manager Object to end the game / check if paused / unpaused")]
+    [SerializeField]
     GameObject overallGameManager;
 
-    //The Game's OverallManager SCRIPT to pull/put scripts and values from.
+    //The Game's OverallManager SCRIPT to pull/put scripts and values from. Gets established automatically from above object.
     [Header("GameManagerSCRIPT")]
     [Tooltip("Pull Values from this script")]
     GameManagerScript thisGamesOverallInstance;
@@ -31,7 +32,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //The Game's In-GameUI object to use / move during / after the game has ended.
     [SerializeField]
     [Header("In-GameUIObject")]
-    [Tooltip("Put the game's In-GameUI to move for end of round animations and to disable this UI")]
+    [Tooltip("Put the game's In-GameUI to move for end of round animations and to disable this UI")] 
     GameObject inGameUIObject;
 
     //The above's game animator
@@ -59,15 +60,17 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [Tooltip("Drag the notif object in the end-of round UI")]
     GameObject NeedSlimeForBobaNotif;
 
-    //FIXME: Below is to set what kind of round this is. Via a switch, will dictate what kind of round handlers are active.
-    [SerializeField]
-    public int roundType;
-
     //FIXME: private bool roundIsOver = false;
 
     //FIXME: Temp PUBLIC value to see the time in game. SET TO PRIVATE AFTER DEBUGGING.
     //Timer for this round.
     public float roundTimer;
+
+    //Timer cooldown for possible customer spawning. Changes depending on popularity (20s = 1 star, 1s = 5 star).
+    public float customerSpawnCooldownTimer = 0.0f;
+
+    //Bool to check if first customer has spawned for special reasons.
+    bool firstCustomerSpawned = false;
 
     //List of possible drinks that can be made (deppends on the ingredients obtained during the round).
     public List<String> possibleDrinksList;
@@ -86,7 +89,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     public float oolongMultiplier = 1.0f, PandanMultiplier = 1.0f, BananaMultiplier = 1.0f,
     StrawberryMultiplier = 1.0f, MangoMultiplier = 1.0f, UbeMultiplier = 1.0f;
 
-    //Player Increased coind value by how much this round?
+    //Player Increased coin value by how much this round?
     public float playerEarnedCoins = 0f;
 
     //FIXME: These are connected to the Spawner scripts, enemy agro, ect. To manage the difficulty of the round. Should be modulated by a "level difficulty" method!
@@ -125,6 +128,9 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         //whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();
         UpdateThisRoundDrinksDemand();
 
+        //Update how often the customers can spawn depending on player data (Shop popularity).
+        resetCustomerSpawnCooldownTimer();
+
         //Start the round timer and make sure the timescale is set to 1. Moreover, make sure this round is over bool is not true.
         //FIXME:roundIsOver = false;
         roundTimer = 0f;
@@ -138,10 +144,28 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         if(roundTimer<=360){
             roundTimer += Time.deltaTime;
         }else{
-            if(roundType == 0){
-                endTheBOBASHOPRound();
-            }
+            endTheBOBASHOPRound();
         }
+
+        //FIXME: Timer for customer spawning.
+        //No customers spawn within the first 10 seconds, then attempt to spawn 1/5th chance for a customer every 5 seconds depending on popularity,
+        //Player max queue, and others.
+        if(roundTimer > 10 && !firstCustomerSpawned){
+            tryToSpawnACustomer();
+            firstCustomerSpawned = true;
+            print("Spawned first customer!");
+        }
+        if(firstCustomerSpawned && customerSpawnCooldownTimer>0){
+            customerSpawnCooldownTimer -= Time.deltaTime;
+        }else if(firstCustomerSpawned ){
+            resetCustomerSpawnCooldownTimer();
+            print("Can attempt to spawn another customer!");
+        }
+    }
+
+    //Sets the customer cooldown timer for the CHANCE to spawn another NPC at the boba shop to a formula including shop popularity.
+    public void resetCustomerSpawnCooldownTimer(){
+        customerSpawnCooldownTimer = 25.5f - Mathf.RoundToInt(thisGamesOverallInstance.ReturnPlayerStats().shopPopularity) * 5;
     }
 
     public float getRoundTime(){
