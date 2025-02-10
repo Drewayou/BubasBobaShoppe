@@ -25,9 +25,15 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //The stats of this players shop is pulled from the GameManager.
     private ShopCostsNEarnings playersCurrentShopStats;
 
-    //The Customer queue handler script pulled from the Gameobject and holder.
+    //The Customer queue handler scripts pulled from the Gameobjects and queue holders.
     [SerializeField]
+    [Header("Waiting queue")]
+    [Tooltip("Put the game's \"CustomerQueueHandler\" game object to access the customer queue of people waiting to make orders.")] 
     CustomerHandlerScript customerQueueHandlerScript;
+    [SerializeField]
+    [Header("Drink pending queue")]
+    [Tooltip("Put the game's \"CustomerDrinkWaitQueueHandler\" game object to access the customer queue of people waiting for their drinks.")] 
+    CustomerWaitingHandlerScript customerWaitingHandlerScript;
 
     //The Game's In-GameUI object to use / move during / after the game has ended.
     [SerializeField]
@@ -174,7 +180,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
     //FIXME: A method to attempt to spawn a new customer according to shop popularity and if queue line (Order & Waiting queue) is full.
     public void tryToSpawnACustomer(){
-        if((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerQueueHandlerScript.waitingForOrderCustomerQueue.Count)<thisGamesOverallInstance.ReturnMaxBobaShopLineQueue()){
+        if((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerWaitingHandlerScript.waitingForOrderCustomerQueue.Count)<thisGamesOverallInstance.ReturnMaxBobaShopLineQueue()){
             
         }
     }
