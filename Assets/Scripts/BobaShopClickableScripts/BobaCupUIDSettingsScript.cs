@@ -7,6 +7,9 @@ public class BobaCupUIDSettingsScript : MonoBehaviour
     // String for specific UID of this drink.
     public string drinkUID;
 
+    //The bool if the drink has a fruit/veggie ingredient hunted from the hunt round inserted via the top of the mixer machine.
+    public bool hasIngredientBlended;
+
     // Check if the drink has any tea overlays.
     public bool hasTeaOverlay;
 
