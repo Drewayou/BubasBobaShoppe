@@ -129,7 +129,7 @@ public class StartUpMixerScript : MonoBehaviour
 
                 //BELOW BOC IS IF THE MIXER HAS INGREDIENTS IN THE TOP MIXER!
                 //If the mixer has an ingredient in the top, and more than one ingredient overall, make the specific drink.
-                if(drinkInMixer.transform.childCount > 1 && mixerIngredientInput.GetComponent<MixerIngredientInput>().HasAnIngredientBeenPlacedInMixerTop()){
+                if(mixerIngredientInput.GetComponent<MixerIngredientInput>().HasAnIngredientBeenPlacedInMixerTop()){
 
                     foreach(Transform mixerFlavorLevelItem in mixerFlavorLevel.transform){
                         if(mixerFlavorLevelItem.tag == "Ingredient"){
@@ -161,10 +161,9 @@ public class StartUpMixerScript : MonoBehaviour
                                     RescaleNewDrink(baseOfNewDrink);
                                 break;
                             }
-                            //Make sure the drink UID has the blended ingredient bool.
-                            baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().hasIngredientBlended = true;
                             //Erase this ingredient in the mixer since it's used to make the boba drink.
                             Destroy(mixerFlavorLevelItem.gameObject);
+                            
                         }
                     }
 
@@ -173,9 +172,10 @@ public class StartUpMixerScript : MonoBehaviour
                     
                     foreach(Transform ingredientInCup in drinkInMixer.transform){
                         
+                        if(ingredientInCup.tag == "LiquidBase"){
                         //If a liquid base is present, instantiate it first.
                         drinkUIDScript.hasTeaOverlay = true;
-                        if(ingredientInCup.tag == "LiquidBase"){
+
                         switch(drinkInMixer.transform.GetChild(0).name){
                                 case "GreenTeaBase(Clone)":
                                 drinkMade  = Instantiate(GreenTeaOverlay, baseOfNewDrink.transform);
@@ -213,13 +213,11 @@ public class StartUpMixerScript : MonoBehaviour
                                     RescaleOverlay(drinkMade);
 
                                     //Check if there is/are ingredients blended in, or a Tea base, and adjust UID acordingly.
-                                    if(drinkMade.GetComponent<BobaCupUIDSettingsScript>().hasTeaOverlay == true){
-                                        drinkMade.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "W";
+                                    if(drinkUIDScript.GetComponent<BobaCupUIDSettingsScript>().hasTeaOverlay == true){
+                                        drinkUIDScript.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "W";
                                     }
-                                    if(drinkMade.GetComponent<BobaCupUIDSettingsScript>().hasIngredientBlended == true){
-                                        drinkMade.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "--W";
-                                    }else{
-                                        drinkMade.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "----W";
+                                    else{
+                                        drinkUIDScript.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "--W";
                                     }
                                     
                                     drinkUIDScript.additionalOverlaySelectionNumber = 1;
@@ -233,16 +231,14 @@ public class StartUpMixerScript : MonoBehaviour
                                     RescaleOverlay(drinkMade);
 
                                     //Check if there is/are ingredients blended in, or a Tea base, and adjust UID acordingly.
-                                    if(drinkMade.GetComponent<BobaCupUIDSettingsScript>().hasTeaOverlay == true){
-                                        drinkMade.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "M";
+                                    if(drinkUIDScript.GetComponent<BobaCupUIDSettingsScript>().hasTeaOverlay == true){
+                                        drinkUIDScript.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "M";
                                     }
-                                    if(drinkMade.GetComponent<BobaCupUIDSettingsScript>().hasIngredientBlended == true){
-                                        drinkMade.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "--M";
-                                    }else{
-                                        drinkMade.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "----M";
+                                    else{
+                                        drinkUIDScript.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "--M";
                                     }
                                     drinkUIDScript.additionalOverlaySelectionNumber = 0;
-                                
+
                                 break;
                             }
                         }
@@ -258,8 +254,6 @@ public class StartUpMixerScript : MonoBehaviour
                                 //Check if the drink needs to add a space for the drink overlay.
                                 if(drinkUIDScript.hasAdditionalFlavorOverlay == true){
                                     drinkUIDScript.drinkUID += "*B";
-                                }else{
-                                    drinkUIDScript.drinkUID += "-*B";
                                 }
                                 drinkUIDScript.additionalOverlaySelectionNumber = 0;
                                 break;
@@ -292,7 +286,7 @@ public class StartUpMixerScript : MonoBehaviour
                                 drinkMade.name = PlainGreenTea.name;
                                 drinkUIDScript = drinkMade.GetComponent<BobaCupUIDSettingsScript>();
                                 RescaleNewDrink(drinkMade);
-                                drinkUIDScript.drinkUID += "--GB-";
+                                drinkUIDScript.drinkUID += "--GB";
                                 drinkUIDScript.teaOverlaySelectionNumber = 0;
                                 drinkUIDScript.hasTeaOverlay = true;
                                 //Establish any faulty UID after * (These include toppings, temp, and sweetness UID adjustments.)
@@ -304,7 +298,7 @@ public class StartUpMixerScript : MonoBehaviour
                                 drinkMade.name = PlainOolongTea.name;
                                 RescaleNewDrink(drinkMade);
                                 drinkUIDScript = drinkMade.GetComponent<BobaCupUIDSettingsScript>();
-                                drinkUIDScript.drinkUID += "--OB-";
+                                drinkUIDScript.drinkUID += "--OB";
                                 drinkUIDScript.teaOverlaySelectionNumber = 1;
                                 drinkUIDScript.hasTeaOverlay = true;
                                 //Establish any faulty UID after * (These include toppings, temp, and sweetness UID adjustments.)
@@ -316,7 +310,7 @@ public class StartUpMixerScript : MonoBehaviour
                                 drinkMade.name = PlainBlackTea.name;
                                 RescaleNewDrink(drinkMade);
                                 drinkUIDScript = drinkMade.GetComponent<BobaCupUIDSettingsScript>();
-                                drinkUIDScript.drinkUID += "--BB-";
+                                drinkUIDScript.drinkUID += "--BB";
                                 drinkUIDScript.teaOverlaySelectionNumber = 2;
                                 drinkUIDScript.hasTeaOverlay = true;
                                 //Establish any faulty UID after * (These include toppings, temp, and sweetness UID adjustments.)
@@ -400,22 +394,20 @@ public class StartUpMixerScript : MonoBehaviour
                                 case "WaterBaseAddition(Clone)":
                                 if(baseOfNewDrink == null){
                                      baseOfNewDrink  = Instantiate(WaterCup, drinkInMixerClickableArea.transform);
-                                     baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().hasAdditionalFlavorOverlay = true;
                                      baseOfNewDrink.name = WaterCup.name;
                                      RescaleNewDrink(baseOfNewDrink);
                                 }else{
                                     drinkMade = Instantiate(WaterOverlay, baseOfNewDrink.transform);
                                     RescaleOverlay(drinkMade);
                                 }
+                                baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().hasAdditionalFlavorOverlay = true;
                                 
                                 //Check if there is/are ingredients blended in, or a Tea base, and adjust UID acordingly.
                                     if(baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().hasTeaOverlay == true){
                                         baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "W";
                                     }
-                                    if(baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().hasIngredientBlended == true){
+                                    else{
                                         baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "--W";
-                                    }else{
-                                        baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "----W";
                                     }
 
                                 baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().additionalOverlaySelectionNumber = 1;
@@ -424,21 +416,19 @@ public class StartUpMixerScript : MonoBehaviour
                                 case "MilkBaseAddition(Clone)":
                                 if(baseOfNewDrink == null){
                                      baseOfNewDrink  = Instantiate(MilkCup, drinkInMixerClickableArea.transform);
-                                     baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().hasAdditionalFlavorOverlay = true;
                                      baseOfNewDrink.name = MilkCup.name;
                                      RescaleNewDrink(baseOfNewDrink);
                                 }else{
                                     drinkMade = Instantiate(MilkOverlay, baseOfNewDrink.transform);
                                     RescaleOverlay(drinkMade);
                                 }
+                                baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().hasAdditionalFlavorOverlay = true;
 
                                 //Check if there is/are ingredients blended in, or a Tea base, and adjust UID acordingly.
                                     if(baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().hasTeaOverlay == true){
                                         baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "M";
                                     }
-                                    if(baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().hasIngredientBlended == true){
-                                        baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "--M";
-                                    }else{
+                                    else{
                                         baseOfNewDrink.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "----M";
                                     }
 
@@ -513,8 +503,11 @@ public class StartUpMixerScript : MonoBehaviour
 
     //A method to quick check and establish the final drink UID adjustments (Toppings + Temp + Sweetness)
     public void MakeDrinkUIDFinalization(BobaCupUIDSettingsScript drinkUIDScriptToEdit){
-        //If the drink has been made and there is indeed no topping ingredient in it, adjust the UID accordingly.
+        //If the drink has been made and there is indeed no topping ingredient in it, check if there's a flavor overlay, and adjust the UID accordingly.
         if(drinkUIDScriptToEdit.hasToppingsOverlay == false){
+            if(drinkUIDScriptToEdit.hasAdditionalFlavorOverlay == false){
+                            drinkUIDScriptToEdit.GetComponent<BobaCupUIDSettingsScript>().drinkUID += "-";  
+                        }
             drinkUIDScriptToEdit.drinkUID += "*-";
         }
         //If the drink has a different temp than default, adjust or leve it "-".
@@ -535,7 +528,7 @@ public class StartUpMixerScript : MonoBehaviour
 
     //A method to rescale the overlays of the new drink.
     public void RescaleOverlay(GameObject newOverlaySpawned){
-        newOverlaySpawned.transform.localScale = new Vector3(1f,1f,1f);
+        newOverlaySpawned.transform.localScale = new Vector3(2f,2f,2f);
         newOverlaySpawned.transform.localPosition = new Vector3(0f,0f,0f);
     }
 
