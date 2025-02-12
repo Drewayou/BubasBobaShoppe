@@ -5307,7 +5307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overallGameManager: {fileID: 1367759179}
   customerQueueHandlerScript: {fileID: 668586579}
-  customerWaitingHandlerScript: {fileID: 0}
+  customerWaitingHandlerScript: {fileID: 85980985}
   inGameUIObject: {fileID: 0}
   EndOfRoundUIObject: {fileID: 227311152}
   EndOfRoundToastText: {fileID: 0}

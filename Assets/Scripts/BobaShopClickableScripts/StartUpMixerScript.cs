@@ -528,7 +528,7 @@ public class StartUpMixerScript : MonoBehaviour
 
     //A method to rescale the overlays of the new drink.
     public void RescaleOverlay(GameObject newOverlaySpawned){
-        newOverlaySpawned.transform.localScale = new Vector3(2f,2f,2f);
+        newOverlaySpawned.transform.localScale = new Vector3(1f,1f,1f);
         newOverlaySpawned.transform.localPosition = new Vector3(0f,0f,0f);
     }
 

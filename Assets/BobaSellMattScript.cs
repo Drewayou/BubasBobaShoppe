@@ -86,7 +86,7 @@ public class BobaSellMattScript : MonoBehaviour
 
         //Check if hand inventory has a boba drink, or finished boba drink, and the sellableBobaDrinks mat is empty or <3 full of other drinks, move it to the mat.
         if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink" && sellableBobaDrinks.Count <3){
-            pushSellableBobaDrinks(itemInHandInventory.transform.GetChild(0).gameObject);
+            pushSellableBobaDrinks(itemInHandInventory.transform.GetChild(0).gameObject);   
         }
 
         //Player interaction to swap boba drinks from sell mat to hand inventory.
@@ -95,6 +95,13 @@ public class BobaSellMattScript : MonoBehaviour
             popSellableBobaDrinks();
             //print("Swapping possible boba drinks!");
             interactedCorrectly = true;
+        }
+
+        
+        //If hand is holding and mat is full of 3 drinks, perform a swap.
+        if(itemInHandInventory.transform.childCount != 0 && sellableBobaDrinks.Count == 3){
+            pushSellableBobaDrinks(itemInHandInventory.transform.GetChild(0).gameObject);
+            popSellableBobaDrinks();
         }
 
         //Player interaction if they interacted wrongly with the cup holder.
