@@ -49,6 +49,18 @@ public class PlayerDataJson
     // This data value dictates the max size of the topping jar. 
     public int maxCapacityOfToppingJars { get; set; }
 
+    // This data value dictates the max size of the GeenTea jug. 
+    public int maxCapacityOfGeenTeaJug { get; set; }
+
+    // This data value dictates the max size of the BlackTea jug. 
+    public int maxCapacityOfBlackTeaJug { get; set; }
+
+    // This data value dictates the max size of the OolongTea jug. 
+    public int maxCapacityOfOolongTeaJug { get; set; }
+
+    // This data value dictates the max size of the Sugar jar. 
+    public int maxCapacityOfSugarJar { get; set; }
+
     // This data value dictates how many "uses" the ladle has. Uses equates to each item it can carry. I.E. the ladle picking up 5 items will 
     public int maxCleanCountOfLadle { get; set; }
 

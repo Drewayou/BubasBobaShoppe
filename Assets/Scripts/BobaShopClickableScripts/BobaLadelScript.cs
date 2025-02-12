@@ -90,6 +90,14 @@ public class BobaLadelScript : MonoBehaviour
         return maxLadleCarrySize;
     }
 
+    public void Add1AmmountToLadle(){
+        currentLadleCarrySize += 1;
+    }
+
+    public void Subtract1AmmountToLadle(){
+        currentLadleCarrySize -= 1;
+    }
+
     public void SetAmmountOfIngredientsInLadle(int newAmmountToPutOnLadle){
         currentLadleCarrySize = newAmmountToPutOnLadle;
     }
@@ -105,6 +113,7 @@ public class BobaLadelScript : MonoBehaviour
         gameObject.transform.GetChild(2).gameObject.SetActive(false);
         gameObject.transform.GetChild(3).gameObject.SetActive(false);
         gameObject.transform.GetChild(4).gameObject.SetActive(false);
+        gameObject.transform.GetChild(5).gameObject.SetActive(false);
         SetAmmountOfIngredientsInLadle(0);
     }
 }

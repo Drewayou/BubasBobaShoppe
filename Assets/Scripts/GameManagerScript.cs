@@ -177,6 +177,18 @@ public class GameManagerScript : MonoBehaviour
         //Max capacity of topping jars.
         playerStats.maxCapacityOfToppingJars = 10;
 
+        //Max capacity of GeenTeaJug.
+        playerStats.maxCapacityOfGeenTeaJug = 100;
+
+        //Max capacity of BlackTeaJug.
+        playerStats.maxCapacityOfBlackTeaJug = 100;
+
+        //Max capacity of OolongTeaJug.
+        playerStats.maxCapacityOfOolongTeaJug = 100;
+
+        //Max capacity of Sugar.
+        playerStats.maxCapacityOfSugarJar = 100;
+
         //Max items you can clean with ladle till it gets dirty.
         playerStats.maxCleanCountOfLadle = 10;
 
