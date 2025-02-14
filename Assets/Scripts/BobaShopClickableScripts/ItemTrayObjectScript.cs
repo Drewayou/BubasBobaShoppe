@@ -13,7 +13,7 @@ public class ItemTrayObjectScript : MonoBehaviour
     public int itemTrayNumber;
 
     //Int identification of how MANY items the player has left in their inventory.
-    private int itemSelectedLeftInPlayerInventory;
+    public int itemSelectedLeftInPlayerInventory;
 
     //The Pre-fabs for all the possible Ingredient Items.
     [SerializeField]
@@ -124,16 +124,16 @@ public class ItemTrayObjectScript : MonoBehaviour
 
     //This method is used specifically if the player has ladle, for Cassava slime balls and other toppings.
     //Method Made for cleaner code and higher level abstraction.
-    public void PuBackNLadleItemIngredientToTray(GameObject ladleObject){
+    public void PutBackNLadleItemIngredientToTray(GameObject ladleObject){
         for (int i = ladleObject.GetComponent<BobaLadelScript>().GetAmmountOfIngredientsInLadle(); i !=0; --i){
-                        ladleObject.GetComponent<BobaLadelScript>().Subtract1AmmountToLadle();
-                        ladleObject.GetComponent<BobaLadelScript>().SubtractLadleUses();
                         //Replace the ingredients back in the tray.
                         if(gameObject.transform.childCount < 11){
                             GameObject newIngredientSpawned = Instantiate(selectedIngredientItemPrefab,gameObject.transform);
                             normalizeTheLookOfIngredientsInTray(newIngredientSpawned);
+                            ladleObject.GetComponent<BobaLadelScript>().Subtract1AmmountToLadle();
+                            ladleObject.GetComponent<BobaLadelScript>().SubtractLadleUses();
                         }
-                        //If the ladle isn't dirty, subtract a use for each item put back. Else, change it's state/look.
+                        //If the ladle is dirty, change it's state/look.
                         if(ladleObject.GetComponent<BobaLadelScript>().IsLadleDirty()){
                             ladleObject.transform.Find("BobaLadelEmpty").gameObject.SetActive(false);
                             ladleObject.transform.Find("BobaLadelDirty").gameObject.SetActive(true);
@@ -142,7 +142,7 @@ public class ItemTrayObjectScript : MonoBehaviour
         itemSelectedLeftInPlayerInventory +=1;
         }
 
-    //This method is used if the player has tong or ladle.
+    //MAIN METHOD : This method is used if the player has tong or ladle.
     public void TakeOrDropItemIngredientFromTray(){
 
         //If the player holds an EMPTY Tong (No item between the tong objects), trigger a grab of the item to the tong/inventory.
@@ -167,11 +167,14 @@ public class ItemTrayObjectScript : MonoBehaviour
         else if(itemInHandInventory.transform.childCount != 0 && (itemInHandInventory.transform.GetChild(0).name == "FTongHolding(Clone)") && (itemInHandInventory.transform.GetChild(1).name == selectedIngredientItemPrefab.name + "(Clone)")){
             
             //Preform this visual trickery if and ONLY if there are enough items left in player save data.
-            if(itemSelectedLeftInPlayerInventory > 11){
+            if(itemSelectedLeftInPlayerInventory > 11 & gameObject.transform.childCount<10){
                 //Destroy the item in your hand & the tray for visual trickery reasons above.
                 Destroy(itemInHandInventory.transform.GetChild(1).gameObject);
-                Destroy(gameObject.transform.GetChild(0).gameObject);
-                //Place back to overall player inventory.
+                //If the item tray has >=10 items, destroy 1 to make the illusion. 
+                if(gameObject.transform.childCount<10){
+                    Destroy(gameObject.transform.GetChild(0).gameObject);
+                }
+                //Place back to overall player inventory & item tray.
                 itemSelectedLeftInPlayerInventory +=1;
                 AttemptToSpawnONEIngredientsInTray();
             }else{
@@ -207,29 +210,30 @@ public class ItemTrayObjectScript : MonoBehaviour
                 //Transfer the topping ammounts to the ladle and remove from item tray accordingly.
                 //Preform this visual trickery if and ONLY if there are enough items left in player save data, and the player got a valid topping.
                 if(ladleInInventory.transform.Find("BobaLadelEmpty").gameObject.activeSelf != true){
-                    //Destroy n items in the tray for visual trickery reasons above, depending on how many items the ladle took.
+                    //Destroy n items in the tray for visual trickery reasons above, depending on how many items the ladle took and were in the item tray.
                     if(ladleInInventory.GetComponent<BobaLadelScript>().GetMaxCarryLadleAmmount() > gameObject.transform.childCount){
                         ladleInInventory.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(gameObject.transform.childCount);
                         for(int i = gameObject.transform.childCount ; i > 0; --i){
+                            itemSelectedLeftInPlayerInventory -=1;
                             Destroy(gameObject.transform.GetChild(i-1).gameObject);
                         }
                     }else{
                         for (int i = ladleInInventory.GetComponent<BobaLadelScript>().GetMaxCarryLadleAmmount(); i > 0; --i){
                             ladleInInventory.GetComponent<BobaLadelScript>().Add1AmmountToLadle();
+                            itemSelectedLeftInPlayerInventory -=1;
                             Destroy(gameObject.transform.GetChild(i-1).gameObject);
                         if(itemSelectedLeftInPlayerInventory > 11 && gameObject.transform.childCount < 10){
                             AttemptToSpawnONEIngredientsInTray();
                         }
                     }
                     }
-                    itemSelectedLeftInPlayerInventory -=1;
                 }
             //If the player holds a FILLED Ladle (Topping items in the ladle), trigger a put back the item(s) to the item tray/inventory.
             }else if(!ladleInInventory.transform.GetChild(0).gameObject.activeSelf){
                 if(selectedItemIndexThatWillBeInThisTray == 1 && ladleInInventory.transform.Find("BobaLadelRawSlimeHeld").gameObject.activeSelf == true){
                     ladleInInventory.transform.Find("BobaLadelEmpty").gameObject.SetActive(true);
                     ladleInInventory.transform.Find("BobaLadelRawSlimeHeld").gameObject.SetActive(false);
-                    PuBackNLadleItemIngredientToTray(ladleInInventory);
+                    PutBackNLadleItemIngredientToTray(ladleInInventory);
                 }
                 /* FIXME: Alt if statments to be added when lychee/redbean are added
                 if(selectedItemIndexThatWillBeInThisTray == 1 && ladleInInventory.transform.Find("BobaLadelRawRedbean").gameObject.activeSelf == true){

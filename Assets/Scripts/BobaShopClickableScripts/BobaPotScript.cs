@@ -141,18 +141,21 @@ public class BobaPotScript : MonoBehaviour
         //The player has nothing in their hand!
 
         //Else if the pot already has ingredients in it, interact depending on what the player has in their hand if the pot isn't filled.
-        }else if(bobaToppingsIngredientsInPotCurrentAmount < bobaToppingMaximumInPot && gameObject.transform.childCount != 0 && itemInHandInventory.transform.childCount >= 2 || itemInHandInventory.gameObject.name == "BobaLadleObject"){
+        }else if(!isPotDoneCooking && bobaToppingsIngredientsInPotCurrentAmount <= bobaToppingMaximumInPot && gameObject.transform.childCount != 0 && itemInHandInventory.transform.childCount!=0){
             
             //FIXME: Need to add the other topping conditions below.
             switch(bobaIngredientInPotStringType){
                 case "Boba":
-
-                //If using the tong, move the item in hand into the boba pot parent.
-                if(itemInHandInventory.transform.childCount >= 2 && itemInHandInventory.transform.GetChild(1).name=="ShopCassavaBall(Clone)"){
+                
+                //Check if possible tong item.
+                if(itemInHandInventory.transform.childCount >= 2){
+                    //If using the tong, move the item in hand into the boba pot parent.
+                    if(itemInHandInventory.transform.GetChild(1).name=="ShopCassavaBall(Clone)"){
+                        DropCookingItemInBobaPotAnimationAndExtras();
                         itemInHandInventory.transform.GetChild(1).transform.SetParent(gameObject.transform);
                         bobaToppingsIngredientsInPotCurrentAmount += 1;
-                //If using the tong and it is empty move the item in the pot into the tong.      
-                }else if(itemInHandInventory.transform.childCount >= 2 && itemInHandInventory.transform.GetChild(1).name=="BTongHolding(Clone)"){
+                    //If using the tong and it is empty move the item in the pot into the tong.      
+                    }else if(itemInHandInventory.transform.GetChild(1).name=="BTongHolding(Clone)"){
                         //Move the item in the boba pot into the hand parent object.
                         gameObject.transform.GetChild(0).transform.SetParent(itemInHandInventory.transform);
                         //Get item in hand inventory, and move the newly placed item in index 2 -> 1 for the tong object to render correctly.
@@ -161,12 +164,27 @@ public class BobaPotScript : MonoBehaviour
 
                         //Play the animation of taking out the boba and resize the item. Moreover, check if the pot is empty & do actions if it is.
                         TakeCookingItemFromBobaPotAnimationAndExtras();
-                //If using the ladle, move the items into the boba pot parent.
-                }else if(itemInHandInventory.gameObject.name == "BobaLadleObject" && itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(5).gameObject.activeSelf){
-                    managePlacingPossibleLadleOverflowInteraction(itemInHandInventory.gameObject);
-                    itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                    itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
                 }
+                
+                //Check if possible ladle item.
+                if(itemInHandInventory.transform.GetChild(0).gameObject.name == "BobaLadleObject"){
+                    //If using the ladle, move the items into the boba pot parent.
+                    }if(itemInHandInventory.gameObject.transform.GetChild(0).name == "BobaLadleObject" && itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(5).gameObject.activeSelf){
+                        managePlacingPossibleLadleOverflowInteraction(itemInHandInventory.transform.GetChild(0).gameObject);
+                        itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                        itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(false);
+                        checkIfLadleIsClean();
+                    //If using the ladle to move the items BACK to the tray.
+                    }else if(itemInHandInventory.gameObject.transform.GetChild(0).name == "BobaLadleObject" && itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.activeSelf){
+                        TransferAmmountReadjustment(itemInHandInventory.gameObject.transform.GetChild(0).gameObject);
+                        itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+                        itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
+                    }
+                }
+                break;
+
+                default :
+                itemInHandInventoryAnimator.Play("IncorrectInteraction");
                 break;
             }
         //If the player clicks the boba pot without anything in their hand, and if it has items in it, set the pot timers to start cooking!
@@ -216,19 +234,36 @@ public class BobaPotScript : MonoBehaviour
     }
 
     //A method to make sure that the ladle gets at much from the pot as possible.
-    public void TransferAmmountReadjustment(GameObject ladleInInventoryObjectPassthrough ){
+    public void TransferAmmountReadjustment(GameObject ladleInInventoryObjectPassthrough){
         //If the boba ladle is picking up toppings from the pot but has a higher ammount than the pot, transfer as much to the ladle.
+        //Destroys the child objects in them as well.
         if(ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().GetMaxCarryLadleAmmount()>bobaToppingsIngredientsInPotCurrentAmount){
             ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsInLadle(bobaToppingsIngredientsInPotCurrentAmount);
-            ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SubtractLadleUsesByInput(bobaToppingsIngredientsInPotCurrentAmount);
+            cookOrRemoveNItemsInPot(bobaToppingsIngredientsInPotCurrentAmount);
             bobaToppingsIngredientsInPotCurrentAmount = 0;
 
         //Else, max out the ladle and take as much from the pot as possible.
         }else{
             ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SetAmmountOfIngredientsToLadleMax();
-            ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().SubtractLadleUsesByMaxCarrySize();
             bobaToppingsIngredientsInPotCurrentAmount -= ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().GetMaxCarryLadleAmmount();
+            cookOrRemoveNItemsInPot(ladleInInventoryObjectPassthrough.GetComponent<BobaLadelScript>().GetMaxCarryLadleAmmount());
         }
+    }
+
+    //Method that destroys n items in the pot
+    public void cookOrRemoveNItemsInPot(int numOfItemsToRemove){
+        for(int i = 0 ; i < numOfItemsToRemove ; i++){
+            Destroy(gameObject.transform.GetChild(i).gameObject);
+        }
+    }
+
+    //Method to update ladle if it's clean.
+    public void checkIfLadleIsClean(){
+        //If the ladle is dirty, change it's state/look.
+            if(itemInHandInventory.gameObject.transform.GetChild(0).GetComponent<BobaLadelScript>().IsLadleDirty()){
+                itemInHandInventory.gameObject.transform.GetChild(0).transform.Find("BobaLadelEmpty").gameObject.SetActive(false);
+                itemInHandInventory.gameObject.transform.GetChild(0).transform.Find("BobaLadelDirty").gameObject.SetActive(true);
+                }
     }
 
     //FIXME: This block of code simply does the boba pot animation and removes the item from the Tongs!
@@ -329,6 +364,8 @@ public class BobaPotScript : MonoBehaviour
 
                         //Rebalance ladle vs boba pot item numbers.
                         managePlacingPossibleLadleOverflowInteraction(ladleInInventory);
+
+                        checkIfLadleIsClean();
                     }
                     /*
                     if(ladleInInventory.transform.Find("BobaLadelRawRedBean").gameObject.activeSelf){
