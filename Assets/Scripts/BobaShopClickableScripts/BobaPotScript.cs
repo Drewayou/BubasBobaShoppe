@@ -164,6 +164,7 @@ public class BobaPotScript : MonoBehaviour
 
                         //Play the animation of taking out the boba and resize the item. Moreover, check if the pot is empty & do actions if it is.
                         TakeCookingItemFromBobaPotAnimationAndExtras();
+                    }
                 }
                 
                 //Check if possible ladle item.
@@ -180,7 +181,7 @@ public class BobaPotScript : MonoBehaviour
                         itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                         itemInHandInventory.gameObject.transform.GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
                     }
-                }
+                
                 break;
 
                 default :
