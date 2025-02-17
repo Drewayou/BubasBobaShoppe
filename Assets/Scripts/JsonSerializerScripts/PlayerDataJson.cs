@@ -16,7 +16,7 @@ public class PlayerDataJson
     public bool unlockedLeve4 { get; set; }
     public bool unlockedBossFight { get; set; }
 
-    //Player dropable items data
+    //Player dropable monster items data
     public int casavaBalls { get; set; }
     public int pandanLeaves { get; set; }
     public int bananas { get; set; }
@@ -24,12 +24,42 @@ public class PlayerDataJson
     public int mangos { get; set; }
     public int ube { get; set; }
 
+    //Player boba shop items data
+    public int greenTeaAmmount { get; set; }
+    public int oolongTeaAmmount { get; set; }
+    public int blackTeaAmmount { get; set; }
+    public int sugarAmmount { get; set; }
+    public int milkAmmount { get; set; }
+
     //Player BOBA shop save data. 
+
+    //Shop BOOLS for unlocks in the shop (Story / npc shop based)
+    // This data value dictates if the player has the black tea unlocked.
+    public bool blackTeaUnlocked { get; set; }
+
+    // This data value dictates if the player has the oolong tea unlocked.
+    public bool oolongTeaUnlocked { get; set; }
+
+    // This data value dictates if the player has the Milk unlocked.
+    public bool milkUnlocked { get; set; }
+
+    // This data value dictates if the player has the sugar unlocked.
+    public bool sugarModifierUnlocked { get; set; }
+
+    // This data value dictates if the player has the drink temperature modifier unlocked.
+    public bool tempModifierUnlocked { get; set; }
+
     //Note : Things/Costs that the player can BUY via NPC SHOPS are located/pulled from "ShopCosts.Json"!
     public int shopTraysAvailable { get; set; }
 
-    // This data value dictates how many cupholders the player can use/have in their shop.
-    public int shopCupHoldersAvailable { get; set; }
+    // This data value dictates how many cupholders the player can use/have in their shop in the RIGHT side.
+    public int shopCupHoldersAvailableRightSide { get; set; }
+
+    // This data value dictates how many cupholders the player can use/have in their shop in the LEFT side.
+    public int shopCupHoldersAvailableLeftSide { get; set; }
+
+    // This data value dictates how many topping jars the player can use/have in their shop.
+    public int shopToppingJarsAvailable { get; set; }
 
     // This data value dictates how many mixers the player can use/have in their shop.
     public int mixerAvailable { get; set; }
@@ -57,6 +87,9 @@ public class PlayerDataJson
 
     // This data value dictates the max size of the OolongTea jug. 
     public int maxCapacityOfOolongTeaJug { get; set; }
+
+    // This data value dictates the max size of the Milk jug. 
+    public int maxCapacityOfMilkJug { get; set; }
 
     // This data value dictates the max size of the Sugar jar. 
     public int maxCapacityOfSugarJar { get; set; }

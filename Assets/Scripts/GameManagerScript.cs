@@ -160,10 +160,25 @@ public class GameManagerScript : MonoBehaviour
         playerStats.ube = 5;
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Below are shop data sets for player-related stats. NOT what the player can BUY from NPC shops!
-        playerStats.shopTraysAvailable = 3;
-        playerStats.shopCupHoldersAvailable = 3;
+        playerStats.milkAmmount = 100;
+        playerStats.sugarAmmount = 100;
+        playerStats.greenTeaAmmount = 100;
+        playerStats.blackTeaAmmount = 100;
+        playerStats.oolongTeaAmmount = 100;
+        
+        playerStats.shopTraysAvailable = 3; // (Max 6)
+        playerStats.shopCupHoldersAvailableRightSide = 3; // (Max 3)
+        playerStats.shopCupHoldersAvailableLeftSide = 3; // (Max 6)
+        playerStats.shopToppingJarsAvailable = 3; // (Max 3)
         playerStats.shopPopularity = 4.0f;
         playerStats.mixerAvailable = 1;
+
+        //bools for shop unlocks
+        playerStats.blackTeaUnlocked = true;
+        playerStats.oolongTeaUnlocked = true;
+        playerStats.milkUnlocked = true;
+        playerStats.sugarModifierUnlocked = false;
+        playerStats.tempModifierUnlocked = false;
 
         //List array for items in shop. Uses lists for specific methods in C#v9 vs. arrays.
         playerStats.shopTraysItemListArray = new List<int>();
@@ -186,6 +201,9 @@ public class GameManagerScript : MonoBehaviour
         //Max capacity of OolongTeaJug.
         playerStats.maxCapacityOfOolongTeaJug = 100;
 
+        //Max capacity of Milk.
+        playerStats.maxCapacityOfMilkJug = 100;
+
         //Max capacity of Sugar.
         playerStats.maxCapacityOfSugarJar = 100;
 
@@ -203,6 +221,9 @@ public class GameManagerScript : MonoBehaviour
 
         //How many NPC's can line up behind another one making a boba order. Scales with player boba shop popularity & tables/chairs the player has.
         playerStats.maxBobaShopLineQueue = 3;
+
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Below are shop data sets for player-related stats of un-lockable boba shop items!
+        
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
