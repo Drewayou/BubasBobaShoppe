@@ -7207,6 +7207,8 @@ GameObject:
   - component: {fileID: 1615785117}
   - component: {fileID: 1615785119}
   - component: {fileID: 1615785118}
+  - component: {fileID: 1615785121}
+  - component: {fileID: 1615785120}
   m_Layer: 5
   m_Name: JoshMree Boba Shop
   m_TagString: Untagged
@@ -7271,6 +7273,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1615785116}
   m_CullTransparentMesh: 1
+--- !u!114 &1615785120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615785116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2923aecb3f96ac41a98ff496724f6d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1615785121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615785116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411b96f6681900d4596d61913dfc53c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitingForOrderCustomerQueue: []
 --- !u!224 &1629052756 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1566845704015839696, guid: 776f29ab9d0dc144cb869aa132c55940, type: 3}

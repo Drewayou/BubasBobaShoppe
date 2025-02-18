@@ -112,8 +112,8 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     public float chanceOfSlime, chanceOfPandan, chanceOfBanana, chanceOfStrawberry, chanceOfMango, chanceOfUbe;
 
     //Saves how many customers were spawned in the round
-    [Header("SpawnedEnemies")]
-    [Tooltip("Used count how many enemies are spawned in the world currently. Does not record any enemies pre-placed into the world!")]
+    [Header("SpawnedCustomers")]
+    [Tooltip("Used count how many customers are spawned in the world currently. Does not record any enemies pre-placed into the world!")]
     public int customersSpawned = 0;
 
     //NOTE : Player ALWAYS starts with 3 lives!
