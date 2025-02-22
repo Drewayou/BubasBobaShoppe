@@ -501,6 +501,7 @@ public class StartUpMixerScript : MonoBehaviour
         Destroy(thisDrink);
     }
 
+    //FIXME : Edit this after you implement the Temperature and Sweetness adjustments.
     //A method to quick check and establish the final drink UID adjustments (Toppings + Temp + Sweetness)
     public void MakeDrinkUIDFinalization(BobaCupUIDSettingsScript drinkUIDScriptToEdit){
         //If the drink has been made and there is indeed no topping ingredient in it, check if there's a flavor overlay, and adjust the UID accordingly.

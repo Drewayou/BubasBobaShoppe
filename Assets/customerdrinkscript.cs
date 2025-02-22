@@ -8,7 +8,14 @@ public class CustomerDrinkScript : MonoBehaviour
     GameManagerScript thisGamesOverallInstanceScript;
 
     // The List of favorite drinks this character wants.
-    List<GameObject> characterFavoriteBobaDrinks = new List<GameObject>();
+    // Added via UID string.
+    List<string> characterFavoriteBobaDrinks = new List<string>();
+
+    // Chances the character gets their favorite drink(s) (usually a 50% chance if the drink is available, aka c/10 chance where c is input chance of 5 default).
+    int chanceOfFavoriteDrink = 5; 
+
+    // Check if the temperature of the day changes the selected temp drink if possible.
+    bool dayHasANonStandardTempDiff = false;
 
     // The parts of the UID string for the drinks that the player can order are saved here.
     List<string> possibleFruitVeggieIngredient = new List<string>();
@@ -31,9 +38,11 @@ public class CustomerDrinkScript : MonoBehaviour
     }
 
     //This method creates the propper lists of possible drink settings pulled from the user data.
-    public void checkListDrinkUIDList(){
+    public void establishCheckListDrinkUIDList(){
 
         //Checks what fruits/veggie ingredients the player has availabe in the shop.
+        //Add "null".
+        possibleToppings.Add("--");
         foreach(int ingredient in thisGamesOverallInstanceScript.ReturnPlayerStats().shopTraysItemListArray){
 
         //Finds out what item would be in this tray according to what number tray this script is on, and what items were selected in the round prior.
@@ -90,8 +99,51 @@ public class CustomerDrinkScript : MonoBehaviour
         }
 
         //Checks what tea bases are available.
+        //Add "null".
+        possibleTeaBases.Add("--");
         if(thisGamesOverallInstanceScript.ReturnPlayerStats().greenTeaAmmount > 0){
+            possibleTeaBases.Add("GB");
+        }
+        if(thisGamesOverallInstanceScript.ReturnPlayerStats().blackTeaUnlocked && thisGamesOverallInstanceScript.ReturnPlayerStats().blackTeaAmmount> 0){
+            possibleTeaBases.Add("BB");
+        }
+        if(thisGamesOverallInstanceScript.ReturnPlayerStats().oolongTeaUnlocked && thisGamesOverallInstanceScript.ReturnPlayerStats().oolongTeaAmmount> 0){
+            possibleTeaBases.Add("OB");
+        }
 
+        //Checks what flavor overlays are available.
+        //Add "null".
+        possibleFlavorOverlays.Add("-");
+        if(thisGamesOverallInstanceScript.ReturnPlayerStats().milkUnlocked && thisGamesOverallInstanceScript.ReturnPlayerStats().milkAmmount> 0){
+            possibleFlavorOverlays.Add("M");
+        }
+        //Add water.
+        possibleFlavorOverlays.Add("W");
+
+        //Checks what drink temperatures are available.
+        //Add "null".
+        possibleTemperature.Add("-");
+        if(thisGamesOverallInstanceScript.ReturnPlayerStats().tempModifierUnlocked){
+            //If the day has a different temp than normal, add a chance to switch drinks to weather type.
+            if(dayHasANonStandardTempDiff){
+            //Add "Hot".
+            possibleTemperature.Add("H");
+            //Add "Iced".
+            possibleTemperature.Add("I");
+            //Add "Slushy".
+            possibleTemperature.Add("S");
+            } 
+        }
+        //Checks what drink sweetnesses are available.
+        //Add "null".
+        possibleSweetness.Add("-");
+        if(thisGamesOverallInstanceScript.ReturnPlayerStats().tempModifierUnlocked){
+            //Add "Hot".
+            possibleSweetness.Add("1");
+            //Add "Iced".
+            possibleSweetness.Add("2");
+            //Add "Slushy".
+            possibleSweetness.Add("3");
         }
     }
 
@@ -99,6 +151,6 @@ public class CustomerDrinkScript : MonoBehaviour
     public void prepareDrinkSelection(){
         
         //Checks what drinks are available and adds them to the list.
-        checkListDrinkUIDList();
+        establishCheckListDrinkUIDList();
     }
 }
