@@ -12,6 +12,7 @@ public class CustomerDrinkScript : MonoBehaviour
     List<string> characterFavoriteBobaDrinks = new List<string>();
 
     // Chances the character gets their favorite drink(s) (usually a 50% chance if the drink is available, aka c/10 chance where c is input chance of 5 default).
+    // Selection of favorite drink is c < select, or if 1/10, if the number rand selects 1, the character selects their favorite drink.
     int chanceOfFavoriteDrink = 5; 
 
     // Check if the temperature of the day changes the selected temp drink if possible.
@@ -31,18 +32,38 @@ public class CustomerDrinkScript : MonoBehaviour
         thisGamesOverallInstanceScript = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    //THIS IS THE MAIN METHOD USED BY NPC'S TO ORDER A DRINK.
+    //This method is used to determine if the drinks possible in the list can be made by the player. Used by other code.
+    public string CharacterOrdersDrink(){
         
+        //Checks what drinks are available and adds them to the list.
+        EstablishAvailableDrinkUIDList();
+
+        //Make customer decide what drinks they want.
+        if(Random.Range(1,11)<=chanceOfFavoriteDrink){
+            //If the int selected was < "chanceOfFavoriteDrink", check if the character has a favorite drink list. 
+            //If so, attempt to order such drink if available. Lest, check if there's another favorite drink, or generate a random one with the available 
+            //possible drink lists.
+            if(characterFavoriteBobaDrinks.Count != 0){
+                //Check all favorite drinks of the character if it can be made.
+                foreach(string drinkUID in characterFavoriteBobaDrinks){
+                    if(CheckIfDrinkCanBeMade(drinkUID)){
+                        return drinkUID;
+                    }
+                }
+            }  
+        }
+        //Make a random drink with player's available ingredients if above checks fail.
+        return GenerateRandomDrinkUIDWithIngredients();
     }
 
     //This method creates the propper lists of possible drink settings pulled from the user data.
-    public void establishCheckListDrinkUIDList(){
+    public void EstablishAvailableDrinkUIDList(){
 
         //Checks what fruits/veggie ingredients the player has availabe in the shop.
-        //Add "null".
-        possibleToppings.Add("--");
+        //Add "nulls" to toppings and ingredients.
+        possibleFruitVeggieIngredient.Add("--");
+        possibleToppings.Add("*-");
         foreach(int ingredient in thisGamesOverallInstanceScript.ReturnPlayerStats().shopTraysItemListArray){
 
         //Finds out what item would be in this tray according to what number tray this script is on, and what items were selected in the round prior.
@@ -147,10 +168,53 @@ public class CustomerDrinkScript : MonoBehaviour
         }
     }
 
-    //This method is used to determine if the drinks possible in the list can be made by the player.
-    public void prepareDrinkSelection(){
+    //This method checks out and returns a possilke drink via UID and above list of ingredients. 
+    public string GenerateRandomDrinkUIDWithIngredients(){
+        string randomDrinkDesired = "";
+
+        //Add possibleFruitVeggieIngredient
+        randomDrinkDesired += possibleFruitVeggieIngredient[Random.Range(0,possibleFruitVeggieIngredient.Count)];
+        //Add possibleTeaBases
+        randomDrinkDesired += possibleTeaBases[Random.Range(0,possibleTeaBases.Count)];
+        //Add possibleFlavorOverlays
+        randomDrinkDesired += possibleFlavorOverlays[Random.Range(0,possibleFlavorOverlays.Count)];
+        //Add possibleToppings
+        randomDrinkDesired += possibleToppings[Random.Range(0,possibleToppings.Count)];
+        //Add possibleTemperature
+        randomDrinkDesired += possibleTemperature[Random.Range(0,possibleTemperature.Count)];
+        //Add possibleSweetness
+        randomDrinkDesired += possibleSweetness[Random.Range(0,possibleSweetness.Count)];
+
+        print("Random Drink ordered!: " + randomDrinkDesired);
+        return randomDrinkDesired;
+    }
+
+    //This method checks if a drink UID can be made with the possible list of ingredients/player items.
+    //NOTE: This may be a VERY expensive method so possibly add a timer of 2 seconds to allow the game to catch up and visually
+    //show the player the NPC is "thinking" about ordering a drink.
+    public bool CheckIfDrinkCanBeMade(string drinkUIDInput){
         
-        //Checks what drinks are available and adds them to the list.
-        establishCheckListDrinkUIDList();
+        //Checks string literal in parts if it is in the list of coresponding ingredients.
+        //Check first two letters in UID that coresponds to available ingredients exists.
+        if(possibleFruitVeggieIngredient.Contains(drinkUIDInput.Substring(0,2))){
+            //Check next two letters in UID that coresponds to available possibleTeaBases exists.
+            if(possibleTeaBases.Contains(drinkUIDInput.Substring(2,2))){
+                //Check next letter in UID that coresponds to available possibleFlavorOverlays exists.
+                if(possibleFlavorOverlays.Contains(drinkUIDInput.Substring(4,1))){
+                    //Check next two letters in UID that coresponds to available possibleToppings exists.
+                    if(possibleToppings.Contains(drinkUIDInput.Substring(5,2))){
+                        //Check next letter in UID that coresponds to available possibleTemperature exists.
+                        if(possibleTemperature.Contains(drinkUIDInput.Substring(7,1))){
+                            //Check next letter in UID that coresponds to available possibleSweetness exists.
+                            if(possibleSweetness.Contains(drinkUIDInput.Substring(8,1))){
+                                print("The favorite drink this customer wants can be made!");
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;   
     }
 }
