@@ -29,8 +29,15 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [SerializeField]
     [Header("Waiting queue")]
     [Tooltip("Put the game's \"CustomerQueueHandler\" game object to access the customer queue of people waiting to make orders.")] 
-    CustomerHandlerScript customerQueueHandlerScript;
-    [SerializeField]
+    public CustomerHandlerScript customerQueueHandlerScript;
+
+    [SerializeField]  
+    [Header("Drink pending queue GAMEOBJECT")]
+    [Tooltip("Put the game's \"CustomerDrinkWaitQueueHandler\" game object to access transform properties of this object.")] 
+    public GameObject customerWaitingHandlerGameObject;
+
+
+    [SerializeField]  
     [Header("Drink pending queue")]
     [Tooltip("Put the game's \"CustomerDrinkWaitQueueHandler\" game object to access the customer queue of people waiting for their drinks.")] 
     CustomerWaitingHandlerScript customerWaitingHandlerScript;
@@ -39,7 +46,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [SerializeField]
     [Header("In-GameUIObject")]
     [Tooltip("Put the game's In-GameUI to move for end of round animations and to disable this UI")] 
-    GameObject inGameUIObject;
+    public GameObject inGameUIObject;
 
     //The above's game animator
     private Animator inGameUIAnimator;
@@ -77,9 +84,6 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
     //Bool to check if first customer has spawned for special reasons.
     bool firstCustomerSpawned = false;
-
-    //List of possible drinks that can be made (deppends on the ingredients obtained during the round).
-    public List<String> possibleDrinksList;
 
     //Values to calculate how much of which resources were gained from the round.
     private int CassavaSlimeBalls = 0, PandanLeaves = 0, BananaMinis = 0,
@@ -121,7 +125,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
     // Start is called before the first frame update.
     void Start()
-    {
+    { 
         playerLives = 3;
         overallGameManager = GameObject.Find("GameManagerObject");
         thisGamesOverallInstance = overallGameManager.GetComponent<GameManagerScript>();

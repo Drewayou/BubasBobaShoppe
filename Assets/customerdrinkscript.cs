@@ -9,12 +9,17 @@ public class CustomerDrinkScript : MonoBehaviour
 
     // The List of favorite drinks this character wants.
     // Added via UID string.
-    List<string> characterFavoriteBobaDrinks = new List<string>();
+    [SerializeField]
+    [Tooltip("Input the UID's of this character's favorite drink here.")]
+    public List<string> characterFavoriteBobaDrinks = new List<string>();
 
     // Chances the character gets their favorite drink(s) (usually a 50% chance if the drink is available, aka c/10 chance where c is input chance of 5 default).
     // Selection of favorite drink is c < select, or if 1/10, if the number rand selects 1, the character selects their favorite drink.
-    int chanceOfFavoriteDrink = 5; 
+    [SerializeField]
+    [Tooltip("Input the chance(c) that this character would pick a favorite/new drink [c/10]")]
+    public int chanceOfFavoriteDrink = 5; 
 
+    //FIXME: Edit this when ading seasons / temperature drinks.
     // Check if the temperature of the day changes the selected temp drink if possible.
     bool dayHasANonStandardTempDiff = false;
 
@@ -215,6 +220,16 @@ public class CustomerDrinkScript : MonoBehaviour
                 }
             }
         }
-        return false;   
+        return false;
+    }
+
+    //This method is called by other scripts to have customers do custom order dialogues.
+    public void DoCustomerDialogueLogic(){
+
+    }
+
+    //This method is called by other scripts to have customers do pickup orders and adds coins to the boba shop game manager.
+    public void DoCustomerOrderPickupLogic(){
+        
     }
 }
