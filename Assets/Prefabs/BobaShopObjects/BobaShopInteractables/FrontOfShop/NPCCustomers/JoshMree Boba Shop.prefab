@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7122805140083835906}
   - component: {fileID: 4828783193519611215}
   - component: {fileID: 2401313020969091386}
+  - component: {fileID: 4924507096967082227}
   m_Layer: 5
   m_Name: JoshMree Boba Shop
   m_TagString: Untagged
@@ -91,3 +92,15 @@ MonoBehaviour:
   characterFavoriteBobaDrinks:
   - MBOBM*B--
   chanceOfFavoriteDrink: 5
+--- !u!114 &4924507096967082227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6532027010211178319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa10874c817e1ec4eb5a33fcfa725f12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
