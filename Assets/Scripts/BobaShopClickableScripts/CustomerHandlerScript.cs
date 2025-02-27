@@ -38,12 +38,19 @@ public class CustomerHandlerScript : MonoBehaviour
     //FIXME: Add animation to this customer line when a new customer is added.
     //This method organizes the visual placement of the customers on the screen and sets their clickable mask on/off depending what place they get in line.
     public void VisuallyAddNewCustomerToTheLine(GameObject customerToAdd){
-        if(toOrderCustomerQueue.IndexOf(customerToAdd) == 0){
-            customerToAdd.GetComponent<Image>().raycastTarget = true;
-            //Add animation.
+        GameObject customerObject = Instantiate(customerToAdd);
+        customerObject.name = customerToAdd.name;
+        customerObject.transform.SetParent(this.gameObject.transform,false);
+        if(toOrderCustomerQueue.Count == 1){
+
+            //FIXME: Temp placement.
+            customerObject.GetComponent<Image>().raycastTarget = true;
+            customerObject.transform.localPosition = new Vector3(0f,0f,0f);
+            customerObject.transform.localScale = new Vector3(1f,1f,1f);
+            //Add animation...
         }else{
-            customerToAdd.GetComponent<Image>().raycastTarget = false;
-            //Add animation.
+            customerObject.GetComponent<Image>().raycastTarget = false;
+            //Add animation...
         }
     }
 

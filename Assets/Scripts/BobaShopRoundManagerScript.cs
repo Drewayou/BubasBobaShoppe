@@ -36,11 +36,14 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [Tooltip("Put the game's \"CustomerDrinkWaitQueueHandler\" game object to access transform properties of this object.")] 
     public GameObject customerWaitingHandlerGameObject;
 
-
     [SerializeField]  
     [Header("Drink pending queue")]
     [Tooltip("Put the game's \"CustomerDrinkWaitQueueHandler\" game object to access the customer queue of people waiting for their drinks.")] 
     CustomerWaitingHandlerScript customerWaitingHandlerScript;
+
+    //The script attached to this game object that programs what customers can spawn.
+    //Gets set via the Start() method.
+    NPCCustomersThatCanSpawnScript customersThatCanSpawnThisRoundScript;
 
     //The Game's In-GameUI object to use / move during / after the game has ended.
     [SerializeField]
@@ -129,6 +132,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         playerLives = 3;
         overallGameManager = GameObject.Find("GameManagerObject");
         thisGamesOverallInstance = overallGameManager.GetComponent<GameManagerScript>();
+        customersThatCanSpawnThisRoundScript = this.gameObject.GetComponent<NPCCustomersThatCanSpawnScript>();
 
         //Make Sure the ENDOFGAME UI isn't on and the INGAME UI is.
         EndOfRoundUIObject.SetActive(false);
@@ -163,13 +167,12 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         if(roundTimer > 10 && !firstCustomerSpawned){
             tryToSpawnACustomer();
             firstCustomerSpawned = true;
-            print("Spawned first customer!");
         }
         if(firstCustomerSpawned && customerSpawnCooldownTimer>0){
             customerSpawnCooldownTimer -= Time.deltaTime;
-        }else if(firstCustomerSpawned ){
+        }else if(firstCustomerSpawned){
+            tryToSpawnACustomer();
             resetCustomerSpawnCooldownTimer();
-            print("Can attempt to spawn another customer!");
         }
     }
 
@@ -185,7 +188,8 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //FIXME: A method to attempt to spawn a new customer according to shop popularity and if queue line (Order & Waiting queue) is full.
     public void tryToSpawnACustomer(){
         if((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerWaitingHandlerScript.waitingForOrderCustomerQueue.Count)<thisGamesOverallInstance.ReturnMaxBobaShopLineQueue()){
-            
+            customerQueueHandlerScript.AddCustomerToThisQueue(customersThatCanSpawnThisRoundScript.LoadRandomCustomerFromList());
+            print("Spawned a customer.");
         }
     }
 

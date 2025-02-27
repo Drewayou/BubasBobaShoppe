@@ -742,7 +742,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
     public int ReturnMaxBobaShopLineQueue(){
-        return playerStats.maxBobaShopLineQueue;
+        return PlayerStatsThisInstance.maxBobaShopLineQueue;
     }
 
     public void UpdateMaxBobaShopLineQueue(int newQueueLimit){
