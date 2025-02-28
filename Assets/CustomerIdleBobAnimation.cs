@@ -6,8 +6,14 @@ public class CustomerIdleBobAnimation : MonoBehaviour
     // This script basically animates the boba shop NPO's bobbing visuals.
 
     // The multplier speed that this character bobs up/down. For each occilation takes exactly 1(s).
+    // Usually taken from their speed setting in "CustomerDrinkScript".
     float characterBobingSpeedMultiplier = 2f;
     float bobbingTimer = 0f;
+
+    void Start()
+    {   
+        characterBobingSpeedMultiplier = gameObject.GetComponent<CustomerDrinkScript>().characterShopSpeed;
+    }
 
     // Update is called once per frame
     void Update()

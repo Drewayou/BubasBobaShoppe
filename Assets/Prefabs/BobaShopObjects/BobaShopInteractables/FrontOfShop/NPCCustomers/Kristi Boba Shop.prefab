@@ -92,7 +92,7 @@ MonoBehaviour:
   characterFavoriteBobaDrinks:
   - PBGBM*B--
   chanceOfFavoriteDrink: 5
-  characterShopSpeed: 2.3
+  characterShopSpeed: 2
 --- !u!114 &-3817824328499508050
 MonoBehaviour:
   m_ObjectHideFlags: 0

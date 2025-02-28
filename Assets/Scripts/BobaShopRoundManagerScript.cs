@@ -188,7 +188,9 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //FIXME: A method to attempt to spawn a new customer according to shop popularity and if queue line (Order & Waiting queue) is full.
     public void tryToSpawnACustomer(){
         if((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerWaitingHandlerScript.waitingForOrderCustomerQueue.Count)<thisGamesOverallInstance.ReturnMaxBobaShopLineQueue()){
-            customerQueueHandlerScript.AddCustomerToThisQueue(customersThatCanSpawnThisRoundScript.LoadRandomCustomerFromList());
+            GameObject customerPlannedToSpawn = customersThatCanSpawnThisRoundScript.LoadRandomCustomerFromList();
+            customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers.Remove(customerPlannedToSpawn);
+            customerQueueHandlerScript.AddCustomerToThisQueue(customerPlannedToSpawn);
             print("Spawned a customer.");
         }
     }

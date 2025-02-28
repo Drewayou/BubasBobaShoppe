@@ -24,7 +24,7 @@ public class CustomerDrinkScript : MonoBehaviour
     // This field allows the specific speed for boba shop characters.
     [SerializeField]
     [Tooltip("Input the speed(s) that this character has when walking to the specific shop parts in the shop.")]
-    public float characterShopSpeed = 2.5f; 
+    public float characterShopSpeed = 2.5f;
 
     //FIXME: Edit this when ading seasons / temperature drinks.
     // Check if the temperature of the day changes the selected temp drink if possible.
