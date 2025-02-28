@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4820243571225292885}
   - component: {fileID: 795583995853550857}
   - component: {fileID: 6847805925061577228}
+  - component: {fileID: -3817824328499508050}
   m_Layer: 5
   m_Name: Kristi Boba Shop
   m_TagString: Untagged
@@ -59,8 +60,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 1}
-  m_RaycastTarget: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -91,3 +92,16 @@ MonoBehaviour:
   characterFavoriteBobaDrinks:
   - PBGBM*B--
   chanceOfFavoriteDrink: 5
+  characterShopSpeed: 2.3
+--- !u!114 &-3817824328499508050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2435224706125197348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa10874c817e1ec4eb5a33fcfa725f12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

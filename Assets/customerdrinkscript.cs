@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CustomerDrinkScript : MonoBehaviour
 {
+    // This is the main script for customer-specific interactions in the boba shop.
+
     // The GameManager script pulled from the game manager object.
     // Usefull to determine the player stats for what drinks they unlocked.
     GameManagerScript thisGamesOverallInstanceScript;
@@ -18,6 +20,11 @@ public class CustomerDrinkScript : MonoBehaviour
     [SerializeField]
     [Tooltip("Input the chance(c) that this character would pick a favorite/new drink [c/10]")]
     public int chanceOfFavoriteDrink = 5; 
+
+    // This field allows the specific speed for boba shop characters.
+    [SerializeField]
+    [Tooltip("Input the speed(s) that this character has when walking to the specific shop parts in the shop.")]
+    public float characterShopSpeed = 2.5f; 
 
     //FIXME: Edit this when ading seasons / temperature drinks.
     // Check if the temperature of the day changes the selected temp drink if possible.
