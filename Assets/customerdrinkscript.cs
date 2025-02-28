@@ -16,10 +16,18 @@ public class CustomerDrinkScript : MonoBehaviour
     public List<string> characterFavoriteBobaDrinks = new List<string>();
 
     // Chances the character gets their favorite drink(s) (usually a 50% chance if the drink is available, aka c/10 chance where c is input chance of 5 default).
-    // Selection of favorite drink is c < select, or if 1/10, if the number rand selects 1, the character selects their favorite drink.
+    // Selection of favorite drink is c < 10, or if 1/10, if the number rand selects 1, the character selects their favorite drink.
     [SerializeField]
     [Tooltip("Input the chance(c) that this character would pick a favorite/new drink [c/10]")]
     public int chanceOfFavoriteDrink = 5; 
+
+    // Chances the character gets multiple drink(s). Default is 3/10, but increases as popularity increases and changes on special occasions.
+    // Selection of more drinks ordered is c < 10, or if 1/10, if the number rand selects 1, the character selects orders 2 drinks and does the chance again.
+    // Thus, the chance of another drink NOT correlated to the previous chance and has a 2/20 chance for two drinks to be ordered, and 1/20 chance for 3 drinks.
+    // HOWEVER, multiplier chance of 11 & 12 cause two and three drinks to be always ordered respectively.
+    [SerializeField]
+    [Tooltip("Input the chance(c) that this character would order multiple drinks [c/10]")]
+    public int chanceOfMultpileDrinks = 3; 
 
     // This field allows the specific speed for boba shop characters.
     [SerializeField]
@@ -29,6 +37,10 @@ public class CustomerDrinkScript : MonoBehaviour
     //FIXME: Edit this when ading seasons / temperature drinks.
     // Check if the temperature of the day changes the selected temp drink if possible.
     bool dayHasANonStandardTempDiff = false;
+
+    // The list of drinks UID's that this character has choosen.
+    [Tooltip("Input the UID's of this character's favorite drink here.")]
+    public List<string> drinksThisNPCOrdered = new List<string>();
 
     // The parts of the UID string for the drinks that the player can order are saved here.
     List<string> possibleFruitVeggieIngredient = new List<string>();
@@ -180,7 +192,7 @@ public class CustomerDrinkScript : MonoBehaviour
         }
     }
 
-    //This method checks out and returns a possilke drink via UID and above list of ingredients. 
+    //This method checks out and returns a possible drink via UID and above list of ingredients. 
     public string GenerateRandomDrinkUIDWithIngredients(){
         string randomDrinkDesired = "";
 
@@ -238,5 +250,31 @@ public class CustomerDrinkScript : MonoBehaviour
     //This method is called by other scripts to have customers do pickup orders and adds coins to the boba shop game manager.
     public void DoCustomerOrderPickupLogic(){
         
+    }
+
+    //This method actually generates the drinks the NPC orders via the methods above and saves them into the "drinksThisNPCOrdered" list variable.
+    public void GenerateCustomerOrderUIDList(){
+        drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+
+        //If character decides to order 2 drinks.
+        if(chanceOfMultpileDrinks < Random.Range(1,11)){
+            drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+        }
+
+        //If character decides to order 3 drinks.
+        if(chanceOfMultpileDrinks < Random.Range(1,11)){
+            drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+        }
+
+        //Only order two drinks
+        if(chanceOfMultpileDrinks == 11){
+            drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+        }
+
+        //Only order three drinks
+        if(chanceOfMultpileDrinks == 12){
+            drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+            drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+        }
     }
 }
