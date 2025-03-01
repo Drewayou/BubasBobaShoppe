@@ -12,11 +12,11 @@ public interface Inter_ShopSellerNPC
    //Methods for NPC Shop Seller dialogue.
 
    //For when the player first enters the shop UI or buys items.
-   void npcSellerQuip(int sellingQuipIndexSell);
+   string npcSellerQuip(int sellingQuipIndexSell);
    //For when the player leaves the shop.
-   void npcSellerGoodbye(int goodbyeQuipIndexSell);
+   string npcSellerGoodbye(int goodbyeQuipIndexSell);
    //For NPC explination of items or story-driven dialogue.
-   void npcSellerImportant(int storyDialogueIndexSell);
+   string npcSellerImportant(int storyDialogueIndexSell);
    //Other dialogue not related to the above conditions.
-   void npcSellerEtc(int otherDialogueIndexSell);
+   string npcSellerEtc(int otherDialogueIndexSell);
 }

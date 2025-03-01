@@ -12,9 +12,9 @@ public interface Inter_TownNPC
    //Methods for TOWN exploration dialogue.
 
    //Method for small talk during the Town exploration rounds.
-   void smallTalkTown(int smallTalkDialogueIndexTown);
+   string smallTalkTown(int smallTalkDialogueIndexTown);
    //Method for important, cinimatic, or story-based dialogue during the Town exploration rounds.
-   void importantDialogueTown(int importantDialogueIndexTown);
+   string importantDialogueTown(int importantDialogueIndexTown);
    //Other dialogue not related to the above conditions.
-   void otherDialogueTown(int ectDialogueIndexTown);
+   string otherDialogueTown(int ectDialogueIndexTown);
 }

@@ -15,6 +15,11 @@ public class CustomerDrinkScript : MonoBehaviour
     [Tooltip("Input the UID's of this character's favorite drink here.")]
     public List<string> characterFavoriteBobaDrinks = new List<string>();
 
+    // The List of drinks this character ordered.
+    // Added via game generation.
+    [Tooltip("The drinks the NPC ordered here.")]
+    public List<string> drinksThisNPCOrdered = new List<string>();
+
     // Chances the character gets their favorite drink(s) (usually a 50% chance if the drink is available, aka c/10 chance where c is input chance of 5 default).
     // Selection of favorite drink is c < 10, or if 1/10, if the number rand selects 1, the character selects their favorite drink.
     [SerializeField]
@@ -37,10 +42,6 @@ public class CustomerDrinkScript : MonoBehaviour
     //FIXME: Edit this when ading seasons / temperature drinks.
     // Check if the temperature of the day changes the selected temp drink if possible.
     bool dayHasANonStandardTempDiff = false;
-
-    // The list of drinks UID's that this character has choosen.
-    [Tooltip("Input the UID's of this character's favorite drink here.")]
-    public List<string> drinksThisNPCOrdered = new List<string>();
 
     // The parts of the UID string for the drinks that the player can order are saved here.
     List<string> possibleFruitVeggieIngredient = new List<string>();
@@ -209,6 +210,30 @@ public class CustomerDrinkScript : MonoBehaviour
         //Add possibleSweetness
         randomDrinkDesired += possibleSweetness[Random.Range(0,possibleSweetness.Count)];
 
+        //This makes sure the random drink cannot be water + extras only (topping,sugars,temp adustments with a water cup).
+        if(randomDrinkDesired.Substring(4,1)=="W"){
+            if(!(randomDrinkDesired.Substring(5,4)=="*---")){
+                print("Error, dirty water drink generated, re-generating drink!");
+                randomDrinkDesired = GenerateRandomDrinkUIDWithIngredients();
+            }
+        }
+
+        //This makes sure that if a fruit/veggie ingredient occurs, there HAS to be a liquid like water, milk, or other tea base with it.
+        if(!(randomDrinkDesired.Substring(0,2)=="--")){
+            if(randomDrinkDesired.Substring(4,1)=="-"){
+                if(randomDrinkDesired.Substring(2,2)=="--"){
+                    print("Error, ingredient choosen but no liquid, re-generating drink!");
+                    randomDrinkDesired = GenerateRandomDrinkUIDWithIngredients();
+                }
+            }
+        }
+
+        //This makes sure the rest of the drink isn't just toppings/temp/sugar adjustments.
+        if(randomDrinkDesired.Substring(0,5)=="-----"){
+            print("Error, UID generated a non-drink, re-generating drink!");
+            randomDrinkDesired = GenerateRandomDrinkUIDWithIngredients();
+        }
+
         print("Random Drink ordered!: " + randomDrinkDesired);
         return randomDrinkDesired;
     }
@@ -257,13 +282,12 @@ public class CustomerDrinkScript : MonoBehaviour
         drinksThisNPCOrdered.Add(CharacterOrdersDrink());
 
         //If character decides to order 2 drinks.
-        if(chanceOfMultpileDrinks < Random.Range(1,11)){
+        if(chanceOfMultpileDrinks > Random.Range(1,11)){
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
-        }
-
-        //If character decides to order 3 drinks.
-        if(chanceOfMultpileDrinks < Random.Range(1,11)){
-            drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+            //If character decides to order 3 drinks.
+                if(chanceOfMultpileDrinks > Random.Range(1,11)){
+                drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+                }
         }
 
         //Only order two drinks

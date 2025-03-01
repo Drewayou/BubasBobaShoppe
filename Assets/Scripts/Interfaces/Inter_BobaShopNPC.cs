@@ -12,11 +12,11 @@ public interface Inter_BobaShopNPC
    //Methods for BobaShop NPC ordering dialogue.
 
    //Dialogue when the customer is orders a drink (May reference a standard JSON for normal orders or a special character ordering JSON).
-   void customerOrdersAtShopBobaShop(int orderNormalIndexBShop);
+   string customerOrdersAtShopBobaShop(int orderNormalIndexBShop);
    //Dialogue when the customer is greatful.
-   void customerThanksBobaShop(int thanksDialogueIndexBShop);
+   string customerThanksBobaShop(int thanksDialogueIndexBShop);
    //Dialogue when the customer is upset.
-   void customerNegatesBobaShop(int negationDialogueIndexBShop);
+   string customerNegatesBobaShop(int negationDialogueIndexBShop);
    //Other dialogue not related to the above conditions.
-   void customerOrdersSpecialBobaShop(int orderSpecialIndexBShop);
+   string customerOrdersSpecialBobaShop(int orderSpecialIndexBShop);
 }

@@ -13,9 +13,9 @@ public interface Inter_HuntingRoundNPC
    //Methods for NPC hunting round dialogue.
 
    //Method for small talk during the hunting rounds.
-   void smallTalkHunting(int smallTalkDialogueIndexHunt);
+   string smallTalkHunting(int smallTalkDialogueIndexHunt);
    //Method for important, cinimatic, or story-based dialogue during the Hunting exploration rounds.
-   void importantDialogueHunting(int importantDialogueIndexHunt);
+   string importantDialogueHunting(int importantDialogueIndexHunt);
    //Other dialogue not related to the above conditions.
-   void otherDialogueHunting(int ectDialogueIndexHunt);
+   string otherDialogueHunting(int ectDialogueIndexHunt);
 }

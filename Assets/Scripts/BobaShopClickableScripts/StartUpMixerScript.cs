@@ -69,7 +69,6 @@ public class StartUpMixerScript : MonoBehaviour
         currentGameManagerInstance = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
         currentRoundManagerInstance = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
 
-
         //Get the mixer doors in this prefab.
         mixerDoorsObject = gameObject.transform.parent.transform.GetChild(2).gameObject;
 
@@ -511,13 +510,49 @@ public class StartUpMixerScript : MonoBehaviour
                         }
             drinkUIDScriptToEdit.drinkUID += "*-";
         }
-        //If the drink has a different temp than default, adjust or leve it "-".
-        if(drinkTempMixSetting == 0){
+        //If the drink has a different temp than default, adjust or leave it "-".
+        switch(drinkTempMixSetting){
+            case 0:
             drinkUIDScriptToEdit.drinkUID += "-";
+            break;
+
+            case -1: // This is Iced/Chilled.
+            drinkUIDScriptToEdit.drinkUID += "I";
+            break;
+
+            case -2: // This is Frozen/Slushy.
+            drinkUIDScriptToEdit.drinkUID += "S";
+            break;
+
+            case 1: // This is Hot.
+            drinkUIDScriptToEdit.drinkUID += "H";
+            break;
+
+            default:
+            drinkUIDScriptToEdit.drinkUID += "-";
+            break;
         }
-        //If the drink has a different sweetness than default 100% (normal), adjust or leve it "-".
-        if(drinkSweetness == 0){
+        //If the drink has a different sweetness than default 100% (normal), adjust or leave it "-".
+        switch(drinkSweetness){
+            case 0: // This is 100% or normal sweetness.
             drinkUIDScriptToEdit.drinkUID += "-";
+            break;
+
+            case 1: // This is 125% sweetness.
+            drinkUIDScriptToEdit.drinkUID += "1";
+            break;
+
+            case 2: // This is 150% sweetness.
+            drinkUIDScriptToEdit.drinkUID += "2";
+            break;
+
+            case 3: // This is 200% sweetness.
+            drinkUIDScriptToEdit.drinkUID += "3";
+            break;
+
+            default:
+            drinkUIDScriptToEdit.drinkUID += "-";
+            break;
         }
     }
 
