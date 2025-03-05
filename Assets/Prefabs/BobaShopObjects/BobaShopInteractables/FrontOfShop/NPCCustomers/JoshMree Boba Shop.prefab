@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &5946577663129651250
+--- !u!1 &6532027010211178319
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,51 +84,56 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2303982502192466317}
-  - component: {fileID: 1361717034643987483}
-  - component: {fileID: 8268342051008613170}
-  - component: {fileID: 7862075400846178065}
+  - component: {fileID: 4651098272768287430}
+  - component: {fileID: 7122805140083835906}
+  - component: {fileID: 8631524111948438837}
+  - component: {fileID: 2401313020969091386}
+  - component: {fileID: -4894711959117600637}
+  - component: {fileID: -8682105646120530877}
+  - component: {fileID: 6832437386072738729}
+  - component: {fileID: 8111314671732663968}
   m_Layer: 5
-  m_Name: Character Image
+  m_Name: JoshMree Boba Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &2303982502192466317
+--- !u!224 &4651098272768287430
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5946577663129651250}
+  m_GameObject: {fileID: 6532027010211178319}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4651098272768287430}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 3862715935545594979}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 900}
+  m_SizeDelta: {x: 895, y: 895}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &1361717034643987483
+--- !u!222 &7122805140083835906
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5946577663129651250}
+  m_GameObject: {fileID: 6532027010211178319}
   m_CullTransparentMesh: 1
---- !u!114 &8268342051008613170
+--- !u!114 &8631524111948438837
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5946577663129651250}
+  m_GameObject: {fileID: 6532027010211178319}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -152,68 +157,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7862075400846178065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5946577663129651250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa10874c817e1ec4eb5a33fcfa725f12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &6532027010211178319
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4651098272768287430}
-  - component: {fileID: 7122805140083835906}
-  - component: {fileID: 2401313020969091386}
-  - component: {fileID: -4894711959117600637}
-  - component: {fileID: 6832437386072738729}
-  - component: {fileID: -8682105646120530877}
-  m_Layer: 5
-  m_Name: JoshMree Boba Shop
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &4651098272768287430
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6532027010211178319}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 3862715935545594979}
-  - {fileID: 2303982502192466317}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 895, y: 895}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &7122805140083835906
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6532027010211178319}
-  m_CullTransparentMesh: 1
 --- !u!114 &2401313020969091386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +185,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6f7586a319a4574699afda181452e54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8682105646120530877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6532027010211178319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34ed90a9d8aabf247afd901029b1b021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6832437386072738729
@@ -284,7 +239,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 8631524111948438837}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -300,7 +255,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &-8682105646120530877
+--- !u!114 &8111314671732663968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -309,7 +264,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6532027010211178319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34ed90a9d8aabf247afd901029b1b021, type: 3}
+  m_Script: {fileID: 11500000, guid: fa10874c817e1ec4eb5a33fcfa725f12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7467143461226382484
