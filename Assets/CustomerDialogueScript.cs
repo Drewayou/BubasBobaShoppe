@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class JoshMreeDialogueCustomer : MonoBehaviour, Inter_BobaShopNPC
+public class CustomerDialogueScript : MonoBehaviour, Inter_BobaShopNPC
 {
     //Script to call upon the standard dialogue for drinks.
-    StandardDialogueCustomer basicDialogueScript;
+    StandardDrinkNameDialogueGenerator basicDialogueScript;
 
     //Script to call upon the NPC to order drinks.
     CustomerDrinkScript customerOrdersDrinkScript;
@@ -15,7 +15,20 @@ public class JoshMreeDialogueCustomer : MonoBehaviour, Inter_BobaShopNPC
 
     public string customerOrdersAtShopBobaShop(int orderNormalIndexBShop)
     {
-        throw new System.NotImplementedException();
+        switch(orderNormalIndexBShop){
+            case 0:
+            return "A good day for some drinks!";
+            case 1:
+            return "Hello there!";
+            case 2:
+            return "Hello~";
+            case 3:
+            return "Hiya!";
+            case 4:
+            return "Hi.";
+            default: 
+            return "Hello!";
+        }
     }
 
     public string customerOrdersSpecialBobaShop(int orderSpecialIndexBShop)
@@ -36,7 +49,7 @@ public class JoshMreeDialogueCustomer : MonoBehaviour, Inter_BobaShopNPC
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        basicDialogueScript = this.gameObject.GetComponent<StandardDialogueCustomer>();
+        basicDialogueScript = this.gameObject.GetComponent<StandardDrinkNameDialogueGenerator>();
         customerOrdersDrinkScript = this.gameObject.GetComponent<CustomerDrinkScript>();
     }
 

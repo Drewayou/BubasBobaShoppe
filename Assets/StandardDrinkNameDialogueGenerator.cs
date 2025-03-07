@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class StandardDialogueCustomer : MonoBehaviour
+public class StandardDrinkNameDialogueGenerator : MonoBehaviour
 {
     // THIS SCRIPT IS ONLY FOR PRODUCING STANDARD CUSTOMER ORDER DIALOGUES!
 

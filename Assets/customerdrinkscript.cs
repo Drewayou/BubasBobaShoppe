@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CustomerDrinkScript : MonoBehaviour
@@ -8,6 +9,23 @@ public class CustomerDrinkScript : MonoBehaviour
     // The GameManager script pulled from the game manager object.
     // Usefull to determine the player stats for what drinks they unlocked.
     GameManagerScript thisGamesOverallInstanceScript;
+
+    // This chattiness number depends on the customer if they want to pre-talk before ordering a drink or not.
+    // The player's relationship score with the NPC also alters this score.
+    // Default is 1, ergo one dialogue before ordering.
+    // The TEXT of the dialogue is handled by the custom customer script.
+    public int chattiness = 1;
+
+    // The script that pulls the basic customer dialogue from Json files and/or hardcoded basic replies.
+    CustomerDialogueScript customerDialogue;
+
+    // The script that pulls the basic drink order dialogue from the Standard generator.
+    StandardDrinkNameDialogueGenerator drinkOrderStandardDialogue;
+
+    // Added via popup textbox UI TMP component for the character here to change text.
+    [SerializeField]
+    [Tooltip("Drag and drop the textbox TMP UI here.")]
+    TMP_Text customerDialogueBox;
 
     // The List of favorite drinks this character wants.
     // Added via UID string.
@@ -19,6 +37,9 @@ public class CustomerDrinkScript : MonoBehaviour
     // Added via game generation.
     [Tooltip("The drinks the NPC ordered here.")]
     public List<string> drinksThisNPCOrdered = new List<string>();
+
+    // The int variable that counts if the character ordered n number of drinks.
+    public int customerVerballyOrderedNDrinks = 0;
 
     // Chances the character gets their favorite drink(s) (usually a 50% chance if the drink is available, aka c/10 chance where c is input chance of 5 default).
     // Selection of favorite drink is c < 10, or if 1/10, if the number rand selects 1, the character selects their favorite drink.
@@ -55,6 +76,8 @@ public class CustomerDrinkScript : MonoBehaviour
     void Start()
     {
         thisGamesOverallInstanceScript = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
+        customerDialogue = this.gameObject.GetComponent<CustomerDialogueScript>();
+        drinkOrderStandardDialogue = this.gameObject.GetComponent<StandardDrinkNameDialogueGenerator>();
     }
 
     //THIS IS THE MAIN METHOD USED BY NPC'S TO ORDER A DRINK.
@@ -268,8 +291,19 @@ public class CustomerDrinkScript : MonoBehaviour
     }
 
     //This method is called by other scripts to have customers do custom order dialogues.
+    //If the character is done chatting and orders all the drinks, move them to the other queue.
     public void DoCustomerDialogueLogic(){
+        if(chattiness>0){
+            customerDialogueBox.text = customerDialogue.customerOrdersAtShopBobaShop(Random.Range(0,5));
+            chattiness -= 1;   
+            //Actually generate the drinks that the customer wants if they are done chatting.
+            if(chattiness == 0){GenerateCustomerOrderUIDList();}
 
+        //FIXME: Find a wayto check if there are dubpivate UID orders and change them via order by name and ammount.
+        }else if(customerVerballyOrderedNDrinks > 0){
+            customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],1);
+            customerVerballyOrderedNDrinks -=1;
+        }
     }
 
     //This method is called by other scripts to have customers do pickup orders and adds coins to the boba shop game manager.
@@ -280,25 +314,29 @@ public class CustomerDrinkScript : MonoBehaviour
     //This method actually generates the drinks the NPC orders via the methods above and saves them into the "drinksThisNPCOrdered" list variable.
     public void GenerateCustomerOrderUIDList(){
         drinksThisNPCOrdered.Add(CharacterOrdersDrink());
-
+        customerVerballyOrderedNDrinks = 1;
         //If character decides to order 2 drinks.
         if(chanceOfMultpileDrinks > Random.Range(1,11)){
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+            customerVerballyOrderedNDrinks = 2;
             //If character decides to order 3 drinks.
                 if(chanceOfMultpileDrinks > Random.Range(1,11)){
                 drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+                customerVerballyOrderedNDrinks = 3;
                 }
         }
 
         //Only order two drinks
         if(chanceOfMultpileDrinks == 11){
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+            customerVerballyOrderedNDrinks = 2;
         }
 
         //Only order three drinks
         if(chanceOfMultpileDrinks == 12){
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+            customerVerballyOrderedNDrinks = 3;
         }
     }
 }

@@ -169,9 +169,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2923aecb3f96ac41a98ff496724f6d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chattiness: 1
+  customerDialogueBox: {fileID: 6066005081584364261}
   characterFavoriteBobaDrinks:
   - PBGBM*B--
   drinksThisNPCOrdered: []
+  customerVerballyOrderedNDrinks: 0
   chanceOfFavoriteDrink: 5
   chanceOfMultpileDrinks: 3
   characterShopSpeed: 2
@@ -243,9 +246,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 107136334117406254}
-        m_TargetAssemblyTypeName: JoshMreeDialogueCustomer, Assembly-CSharp
-        m_MethodName: DrinkCreationTEST
+      - m_Target: {fileID: 6847805925061577228}
+        m_TargetAssemblyTypeName: CustomerDrinkScript, Assembly-CSharp
+        m_MethodName: DoCustomerDialogueLogic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
