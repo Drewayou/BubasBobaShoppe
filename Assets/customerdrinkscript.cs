@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework.Constraints;
 using TMPro;
 using UnityEngine;
 
@@ -293,16 +295,100 @@ public class CustomerDrinkScript : MonoBehaviour
     //This method is called by other scripts to have customers do custom order dialogues.
     //If the character is done chatting and orders all the drinks, move them to the other queue.
     public void DoCustomerDialogueLogic(){
-        if(chattiness>0){
+        if(chattiness > 0){
             customerDialogueBox.text = customerDialogue.customerOrdersAtShopBobaShop(Random.Range(0,5));
             chattiness -= 1;   
             //Actually generate the drinks that the customer wants if they are done chatting.
-            if(chattiness == 0){GenerateCustomerOrderUIDList();}
+            if(chattiness == 0){
+                GenerateCustomerOrderUIDList();
+            }
 
-        //FIXME: Find a wayto check if there are dubpivate UID orders and change them via order by name and ammount.
+        //Checks if there are dubplicate UID orders and change them via order by name and ammount, and if the customer ordered any more drinks.
         }else if(customerVerballyOrderedNDrinks > 0){
-            customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],1);
-            customerVerballyOrderedNDrinks -=1;
+
+            //FIXME: There should be a quicker and more efficient way to make this.
+            //If all drinks are distinct.
+            if(drinksThisNPCOrdered.Distinct().Count() == drinksThisNPCOrdered.Count){
+                //If 3 distinct drinks are not yet ordered.
+                if(customerVerballyOrderedNDrinks == 3){
+                    customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],1);
+                    customerVerballyOrderedNDrinks -= 1;
+                    return;
+                }
+                //If two distinct drinks are not yet ordered.
+                if(customerVerballyOrderedNDrinks == 2){
+                    string prefixDia = "";
+                    int oneDrinkOrderedDia = Random.Range(0,3);
+                    if(oneDrinkOrderedDia==0){
+                        prefixDia = "Also: ";
+                    }
+                    if(oneDrinkOrderedDia==1){
+                        prefixDia = "&: ";
+                    }
+                    if(oneDrinkOrderedDia==2){
+                        prefixDia = "And... ";
+                    }
+                    customerDialogueBox.text = prefixDia + drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],1);
+                    customerVerballyOrderedNDrinks -= 1;
+                    return;
+                }
+                //If the last distinct drinks is not yet ordered.
+                if(customerVerballyOrderedNDrinks == 1){
+                    string prefixDia = "";
+                    string suffixfixDia = "";
+                    int oneDrinkOrderedDia = Random.Range(0,3);
+                    if(oneDrinkOrderedDia==0){
+                        prefixDia = "Also: ";
+                        suffixfixDia = " To wrap it all up!";
+                    }
+                    if(oneDrinkOrderedDia==1){
+                        prefixDia = "& Finally, ";
+                    }
+                    if(oneDrinkOrderedDia==2){
+                        prefixDia = "Lastly, ";
+                    }
+                    customerDialogueBox.text = prefixDia + drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],1) + suffixfixDia;
+                    customerVerballyOrderedNDrinks -= 1;
+                    return;
+                }
+            }else{
+                //If 3 drinks that were ordered have the same UID's, order them and finish the dialogue.
+                if(customerVerballyOrderedNDrinks == 3 && drinksThisNPCOrdered.Distinct().Count() == 1){
+                    customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],3);
+                    customerVerballyOrderedNDrinks = 0;
+                }
+                //If there are 2 similar drinks only, order them.
+                if(customerVerballyOrderedNDrinks == 2 && drinksThisNPCOrdered.Distinct().Count() == 1){
+                    customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],2);
+                    customerVerballyOrderedNDrinks = 0;
+                }
+                //If there are 3 total drinks to order left, 2 similar drinks but 1 other UID drink, order the single drink first.
+                if(customerVerballyOrderedNDrinks == 3 && drinksThisNPCOrdered.Distinct().Count() == 2){
+                    //Check all elements for the unique drink UID.
+                    foreach(string drinkUID in drinksThisNPCOrdered){
+                        if(drinkUID != drinksThisNPCOrdered.Any().ToString()){
+                            string uniqueDrink = drinkUID;
+                            customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(uniqueDrink,1);
+                            customerVerballyOrderedNDrinks = 2;
+                            break;
+                        }
+                    }
+                    return;
+                }
+                //If there are 2 total drinks to order left, 2 similar drinks but 1 other UID drink total, order the double drinks last.
+                if(customerVerballyOrderedNDrinks == 2 && drinksThisNPCOrdered.Distinct().Count() == 2 && drinksThisNPCOrdered.Count() == 3){
+                    //Check all elements for the duplicate drink UID.
+                    foreach(string drinkUID in drinksThisNPCOrdered){
+                        if(drinkUID == drinksThisNPCOrdered.Any().ToString()){
+                            string duplicateDrink = drinkUID;
+                            customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(duplicateDrink,2);
+                            customerVerballyOrderedNDrinks = 0;
+                            break;
+                        }
+                    }
+                    return;
+                }
+            }
         }
     }
 
@@ -313,27 +399,32 @@ public class CustomerDrinkScript : MonoBehaviour
 
     //This method actually generates the drinks the NPC orders via the methods above and saves them into the "drinksThisNPCOrdered" list variable.
     public void GenerateCustomerOrderUIDList(){
-        drinksThisNPCOrdered.Add(CharacterOrdersDrink());
-        customerVerballyOrderedNDrinks = 1;
-        //If character decides to order 2 drinks.
-        if(chanceOfMultpileDrinks > Random.Range(1,11)){
+        if(chanceOfMultpileDrinks != 11 && chanceOfMultpileDrinks != 12){
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
-            customerVerballyOrderedNDrinks = 2;
-            //If character decides to order 3 drinks.
-                if(chanceOfMultpileDrinks > Random.Range(1,11)){
+            customerVerballyOrderedNDrinks = 1;
+            //If character decides to order 2 drinks.
+            if(chanceOfMultpileDrinks > Random.Range(1,11)){
                 drinksThisNPCOrdered.Add(CharacterOrdersDrink());
-                customerVerballyOrderedNDrinks = 3;
+                customerVerballyOrderedNDrinks = 2;
+                //If character decides to order 3 drinks.
+                    if(chanceOfMultpileDrinks > Random.Range(1,11)){
+                    drinksThisNPCOrdered.Add(CharacterOrdersDrink());
+                    customerVerballyOrderedNDrinks = 3;
                 }
+            }
         }
+        
 
         //Only order two drinks
         if(chanceOfMultpileDrinks == 11){
+            drinksThisNPCOrdered.Add(CharacterOrdersDrink());
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
             customerVerballyOrderedNDrinks = 2;
         }
 
         //Only order three drinks
         if(chanceOfMultpileDrinks == 12){
+            drinksThisNPCOrdered.Add(CharacterOrdersDrink());
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
             customerVerballyOrderedNDrinks = 3;

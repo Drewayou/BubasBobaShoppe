@@ -1,4 +1,5 @@
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StandardDrinkNameDialogueGenerator : MonoBehaviour
@@ -11,6 +12,9 @@ public class StandardDrinkNameDialogueGenerator : MonoBehaviour
     
     //The Round manager instance of this round (Will automatically be pulled in Start() method).
     private BobaShopRoundManagerScript currentRoundManagerInstance;
+
+    //The hash map that saves any duplicated drinks if they exist.
+    IDictionary<string, int> drinkHash = new Dictionary<string, int>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,6 +29,16 @@ public class StandardDrinkNameDialogueGenerator : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // This method checks if there are UID duplicates in the array.
+    public bool DuplicateDrinkOrderCheck(List<string> drinkOrders){
+        foreach(string orderUID in drinkOrders){
+            if(orderUID == drinkOrders.Any().ToString()){
+                return true;
+            }
+        }
+        return false;
     }
 
     // This method creates the dialogue depending on what UID is inputed.
