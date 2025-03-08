@@ -311,7 +311,7 @@ MonoBehaviour:
   - MBGBM*B--
   drinksThisNPCOrdered: []
   customerVerballyOrderedNDrinks: 0
-  chanceOfFavoriteDrink: 5
+  chanceOfFavoriteDrink: 8
   chanceOfMultpileDrinks: 12
   characterShopSpeed: 2.3
 --- !u!114 &-3148915496550557696

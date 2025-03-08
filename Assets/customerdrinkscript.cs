@@ -365,32 +365,49 @@ public class CustomerDrinkScript : MonoBehaviour
                 //If there are 3 total drinks to order left, 2 similar drinks but 1 other UID drink, order the single drink first.
                 if(customerVerballyOrderedNDrinks == 3 && drinksThisNPCOrdered.Distinct().Count() == 2){
                     //Check all elements for the unique drink UID.
-                    foreach(string drinkUID in drinksThisNPCOrdered){
-                        if(drinkUID != drinksThisNPCOrdered.Any().ToString()){
-                            string uniqueDrink = drinkUID;
-                            customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(uniqueDrink,1);
-                            customerVerballyOrderedNDrinks = 2;
-                            break;
-                        }
+                    //temp var to save UID of the unique drink.
+                    string uniqueDrink;
+                    if(drinksThisNPCOrdered[0] == drinksThisNPCOrdered[1]){
+                        uniqueDrink = drinksThisNPCOrdered[2];
+                    }else if(drinksThisNPCOrdered[0] == drinksThisNPCOrdered[2]){
+                        uniqueDrink = drinksThisNPCOrdered[1];
+                    }else{
+                        uniqueDrink = drinksThisNPCOrdered[0];
                     }
-                    return;
-                }
+                        customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(uniqueDrink,1);
+                        customerVerballyOrderedNDrinks = 2;
+                        return;
+                    }
                 //If there are 2 total drinks to order left, 2 similar drinks but 1 other UID drink total, order the double drinks last.
-                if(customerVerballyOrderedNDrinks == 2 && drinksThisNPCOrdered.Distinct().Count() == 2 && drinksThisNPCOrdered.Count() == 3){
+                if(customerVerballyOrderedNDrinks == 2 && drinksThisNPCOrdered.Distinct().Count() == 2){
                     //Check all elements for the duplicate drink UID.
-                    foreach(string drinkUID in drinksThisNPCOrdered){
-                        if(drinkUID == drinksThisNPCOrdered.Any().ToString()){
-                            string duplicateDrink = drinkUID;
-                            customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(duplicateDrink,2);
-                            customerVerballyOrderedNDrinks = 0;
-                            break;
-                        }
+                    //temp var to save UID of the unique drink.
+                    string dupeDrink;
+                    if(drinksThisNPCOrdered[0] == drinksThisNPCOrdered[1]){
+                        dupeDrink = drinksThisNPCOrdered[0];
+                    }else if(drinksThisNPCOrdered[0] == drinksThisNPCOrdered[2]){
+                        dupeDrink = drinksThisNPCOrdered[0];
+                    }else{
+                        dupeDrink = drinksThisNPCOrdered[1];
                     }
-                    return;
+                        int doubleDrinkOrderedDia = Random.Range(0,3);
+                        string prefixDia = "";
+                        if(doubleDrinkOrderedDia==0){
+                        prefixDia = "Also: ";
+                        }
+                        if(doubleDrinkOrderedDia==1){
+                        prefixDia = "And finally, ";
+                        }
+                        if(doubleDrinkOrderedDia==2){
+                        prefixDia = "Lastly, ";
+                        }
+                        customerDialogueBox.text = prefixDia + drinkOrderStandardDialogue.OrderDrinkByName(dupeDrink,2);
+                        customerVerballyOrderedNDrinks = 0;
+                        return;
+                    }
                 }
             }
         }
-    }
 
     //This method is called by other scripts to have customers do pickup orders and adds coins to the boba shop game manager.
     public void DoCustomerOrderPickupLogic(){
