@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &997921768882726162
 RectTransform:
   m_ObjectHideFlags: 0
@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chattiness: 1
+  customerDialogueBoxObject: {fileID: 1299341690874130913}
   customerDialogueBox: {fileID: 6066005081584364261}
   characterFavoriteBobaDrinks:
   - PBGBM*B--

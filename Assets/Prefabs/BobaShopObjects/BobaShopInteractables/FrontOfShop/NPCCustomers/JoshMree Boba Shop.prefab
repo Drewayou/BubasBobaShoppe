@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3862715935545594979
 RectTransform:
   m_ObjectHideFlags: 0
@@ -170,12 +170,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chattiness: 1
+  customerDialogueBoxObject: {fileID: 1736861010266249296}
   customerDialogueBox: {fileID: 4795642463837031892}
   characterFavoriteBobaDrinks:
   - MBOBM*B--
   drinksThisNPCOrdered: []
   customerVerballyOrderedNDrinks: 0
-  chanceOfFavoriteDrink: 8
+  chanceOfFavoriteDrink: 5
   chanceOfMultpileDrinks: 12
   characterShopSpeed: 2.5
 --- !u!114 &-4894711959117600637

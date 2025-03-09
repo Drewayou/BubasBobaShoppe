@@ -21,8 +21,13 @@ public class CustomerDrinkScript : MonoBehaviour
     // The script that pulls the basic customer dialogue from Json files and/or hardcoded basic replies.
     CustomerDialogueScript customerDialogue;
 
-    // The script that pulls the basic drink order dialogue from the Standard generator.
+    // The script that pulls the basic drink order text dialogue from the Standard generator.
     StandardDrinkNameDialogueGenerator drinkOrderStandardDialogue;
+
+    // The Textbox UI gameobject for the character here to hide/show the bubble.
+    [SerializeField]
+    [Tooltip("Drag and drop the textbox TMP UI here.")]
+    GameObject customerDialogueBoxObject;
 
     // Added via popup textbox UI TMP component for the character here to change text.
     [SerializeField]
@@ -295,6 +300,7 @@ public class CustomerDrinkScript : MonoBehaviour
     //This method is called by other scripts to have customers do custom order dialogues.
     //If the character is done chatting and orders all the drinks, move them to the other queue.
     public void DoCustomerDialogueLogic(){
+        customerDialogueBoxObject.SetActive(true);
         if(chattiness > 0){
             customerDialogueBox.text = customerDialogue.customerOrdersAtShopBobaShop(Random.Range(0,5));
             chattiness -= 1;   
@@ -406,6 +412,9 @@ public class CustomerDrinkScript : MonoBehaviour
                         return;
                     }
                 }
+            }
+            if(customerVerballyOrderedNDrinks == 0 && chattiness == 0){
+                customerDialogueBoxObject.SetActive(false);
             }
         }
 
