@@ -58,9 +58,15 @@ public class CustomerHandlerScript : MonoBehaviour
     //This method is activated when an order is truly placed by the customer and it pushes all other customers forward and the main customer to the other queue.
     public void TakeCustomerOrderNAnimateAction(){
         //Check the game object that this script is attached to (the "CustomerQueueHandler" GameObject) to move it's customer to the next queue.
-        GameObject customerThatOrderedADrink = this.gameObject.transform.GetChild(0).gameObject;
+        GameObject customerThatOrderedADrink = toOrderCustomerQueue[0];
         CustomerDrinkWaitQueueHandler.GetComponent<CustomerWaitingHandlerScript>().AddCustomerToThisWatingQueue(customerThatOrderedADrink);
+        toOrderCustomerQueue.RemoveAt(0);
+        StartCoroutine(LerpNPCOtherQueuePosition(1200,customerThatOrderedADrink));
+        //If the player isn't looking at the front shop, cancel walk in animation.
         AdjustRayCasts();
+        foreach(GameObject customer in toOrderCustomerQueue){
+            AdjustColorNAnimationOfNewCustomer(customer);
+        }
     }
 
     //This method adjusts the raycast and color values of the NPC's in this queue.
@@ -172,10 +178,27 @@ public class CustomerHandlerScript : MonoBehaviour
     {
         float timeElapsed = 0;
 
-        while (timeElapsed < 1.5f)
+        while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
         {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 1.5f);
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
             NPCToMove.transform.localPosition = new Vector3(valueToLerp,math.sin(valueToLerp*math.PI)-55,0);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x,-55,0);
+    }
+
+    //This enum is a lerp for the NPC's position "walking" into the other animation.
+    public IEnumerator LerpNPCOtherQueuePosition(float newPositionDesired, GameObject NPCToMove)
+    {
+        float timeElapsed = 0;
+
+        while (timeElapsed < 60)
+        {
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 60);
+            NPCToMove.transform.localPosition = new Vector3(valueToLerp,-55,0);
             timeElapsed += Time.deltaTime;
 
             yield return null;

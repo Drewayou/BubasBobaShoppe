@@ -31,16 +31,6 @@ public class StandardDrinkNameDialogueGenerator : MonoBehaviour
         
     }
 
-    // This method checks if there are UID duplicates in the array.
-    public bool DuplicateDrinkOrderCheck(List<string> drinkOrders){
-        foreach(string orderUID in drinkOrders){
-            if(orderUID == drinkOrders.Any().ToString()){
-                return true;
-            }
-        }
-        return false;
-    }
-
     // This method creates the dialogue depending on what UID is inputed.
     public string OrderDrinkByName(string drinkUID,int numberOfThisDrinkOrder){
 
@@ -389,7 +379,7 @@ public class StandardDrinkNameDialogueGenerator : MonoBehaviour
 
     //FIXME:
     //This method is a future implementation to add custom names to drinks.
-    public string pullDrinkNameFromData(){
+    public string PullDrinkNameFromData(){
         //Add a way to pull customer player drinks via JSON hashmaps?
         return "";
     }

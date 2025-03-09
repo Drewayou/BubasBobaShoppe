@@ -34,6 +34,10 @@ public class CustomerDrinkScript : MonoBehaviour
     [Tooltip("Drag and drop the textbox TMP UI here.")]
     TMP_Text customerDialogueBox;
 
+    // Call the customer handler script.
+    [Tooltip("The customer Handler script that gets pulled when the customer spawns in the queue their in.")]
+    CustomerHandlerScript customerHandlerScriptProcessor;
+
     // The List of favorite drinks this character wants.
     // Added via UID string.
     [SerializeField]
@@ -85,6 +89,7 @@ public class CustomerDrinkScript : MonoBehaviour
         thisGamesOverallInstanceScript = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
         customerDialogue = this.gameObject.GetComponent<CustomerDialogueScript>();
         drinkOrderStandardDialogue = this.gameObject.GetComponent<StandardDrinkNameDialogueGenerator>();
+        customerHandlerScriptProcessor = this.gameObject.GetComponentInParent<CustomerHandlerScript>();
     }
 
     //THIS IS THE MAIN METHOD USED BY NPC'S TO ORDER A DRINK.
@@ -415,6 +420,7 @@ public class CustomerDrinkScript : MonoBehaviour
             }
             if(customerVerballyOrderedNDrinks == 0 && chattiness == 0){
                 customerDialogueBoxObject.SetActive(false);
+                customerHandlerScriptProcessor.TakeCustomerOrderNAnimateAction();
             }
         }
 
