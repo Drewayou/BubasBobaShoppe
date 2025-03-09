@@ -2621,7 +2621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c43e62003d25df5428495cdcd1deef45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CustomerDrinkWaitQueueHandler: {fileID: 0}
+  CustomerDrinkWaitQueueHandler: {fileID: 85980983}
   toOrderCustomerQueue: []
 --- !u!1001 &668598199
 PrefabInstance:
