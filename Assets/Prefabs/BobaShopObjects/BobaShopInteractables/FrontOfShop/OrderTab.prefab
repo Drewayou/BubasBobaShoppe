@@ -375,7 +375,7 @@ RectTransform:
   m_GameObject: {fileID: 4710661876618452680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5021608865897635720}
@@ -516,7 +516,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: -15}
+  m_AnchoredPosition: {x: 60, y: -15}
   m_SizeDelta: {x: 50, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5931347784844593822
@@ -589,7 +589,7 @@ RectTransform:
   m_GameObject: {fileID: 5998895790693694977}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6905276986478837602}
@@ -633,7 +633,7 @@ RectTransform:
   m_GameObject: {fileID: 6174020995602380626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7120654349146246240}
@@ -786,12 +786,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cdc03590b3bd448a82541dc658ec0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drinkTabIndexThisIs: 0
   customerWaitingDrinkQueue: {fileID: 0}
+  textIco: {fileID: 4216289119297973520, guid: b1211ef77938c6f40970b1e8445ba074, type: 3}
   pandanIco: {fileID: 4216289119297973520, guid: 194ff7504757ec04ab7d6920996d6457, type: 3}
   bananaIco: {fileID: 4216289119297973520, guid: e75b6c363f2aa5e4dba0f2f95bce6e4e, type: 3}
   strawberryIco: {fileID: 4216289119297973520, guid: 5b12cc5b5a2bf4340b21e68ce172e945, type: 3}
   mangoIco: {fileID: 4216289119297973520, guid: 840424ec6c4e2c348a3f3d782ced33ef, type: 3}
   ubeIco: {fileID: 4216289119297973520, guid: 5828fe62999891b4f9f0bdfc442f385c, type: 3}
+  bobaIco: {fileID: 4216289119297973520, guid: ab633f2222137ce48afad7c0f6287be9, type: 3}
 --- !u!1 &7565356945421108655
 GameObject:
   m_ObjectHideFlags: 0

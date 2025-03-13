@@ -321,13 +321,13 @@ public class CustomerDrinkScript : MonoBehaviour
             //If all drinks are distinct.
             if(drinksThisNPCOrdered.Distinct().Count() == drinksThisNPCOrdered.Count){
                 //If 3 distinct drinks are not yet ordered.
-                if(customerVerballyOrderedNDrinks == 3){
-                    customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],1);
+                if(customerVerballyOrderedNDrinks == drinksThisNPCOrdered.Count){
+                    customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[0],1);
                     customerVerballyOrderedNDrinks -= 1;
                     return;
                 }
                 //If two distinct drinks are not yet ordered.
-                if(customerVerballyOrderedNDrinks == 2){
+                if(customerVerballyOrderedNDrinks == 2 && drinksThisNPCOrdered.Count == 3){
                     string prefixDia = "";
                     int oneDrinkOrderedDia = Random.Range(0,3);
                     if(oneDrinkOrderedDia==0){
@@ -339,7 +339,7 @@ public class CustomerDrinkScript : MonoBehaviour
                     if(oneDrinkOrderedDia==2){
                         prefixDia = "And... ";
                     }
-                    customerDialogueBox.text = prefixDia + drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],1);
+                    customerDialogueBox.text = prefixDia + drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[1],1);
                     customerVerballyOrderedNDrinks -= 1;
                     return;
                 }
@@ -358,20 +358,26 @@ public class CustomerDrinkScript : MonoBehaviour
                     if(oneDrinkOrderedDia==2){
                         prefixDia = "Lastly, ";
                     }
-                    customerDialogueBox.text = prefixDia + drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],1) + suffixfixDia;
+                    if(drinksThisNPCOrdered.Count>2){
+                        customerDialogueBox.text = prefixDia + drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[2],1) + suffixfixDia;
+                    }else{
+                        customerDialogueBox.text = prefixDia + drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[drinksThisNPCOrdered.Count-1],1) + suffixfixDia;
+                    }
                     customerVerballyOrderedNDrinks -= 1;
                     return;
                 }
             }else{
                 //If 3 drinks that were ordered have the same UID's, order them and finish the dialogue.
                 if(customerVerballyOrderedNDrinks == 3 && drinksThisNPCOrdered.Distinct().Count() == 1){
-                    customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],3);
+                    customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[0],3);
                     customerVerballyOrderedNDrinks = 0;
+                    return;
                 }
                 //If there are 2 similar drinks only, order them.
                 if(customerVerballyOrderedNDrinks == 2 && drinksThisNPCOrdered.Distinct().Count() == 1){
-                    customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[customerVerballyOrderedNDrinks-1],2);
+                    customerDialogueBox.text = drinkOrderStandardDialogue.OrderDrinkByName(drinksThisNPCOrdered[0],2);
                     customerVerballyOrderedNDrinks = 0;
+                    return;
                 }
                 //If there are 3 total drinks to order left, 2 similar drinks but 1 other UID drink, order the single drink first.
                 if(customerVerballyOrderedNDrinks == 3 && drinksThisNPCOrdered.Distinct().Count() == 2){

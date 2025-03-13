@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class OrderTabUIGeneratorScript : MonoBehaviour
@@ -14,7 +15,7 @@ public class OrderTabUIGeneratorScript : MonoBehaviour
     // These gameobjects are the ingredient Icons to populate the drink tabs.
     [SerializeField]
     [Tooltip("Drag and drop the ingredient Icon gameobjects to populate the drink tabs.")]
-    GameObject pandanIco,bananaIco,strawberryIco,mangoIco,ubeIco;
+    GameObject textIco,pandanIco,bananaIco,strawberryIco,mangoIco,ubeIco,bobaIco;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,70 +43,90 @@ public class OrderTabUIGeneratorScript : MonoBehaviour
                 
                 //Break down each drink UID to populate the tab.
                 //Tea Ingredient Base
+                GameObject teaIngredientBase;
                 switch(drinkUIDToScan.Substring(0, 2)){
                     case "--":
                         //Do Nothing.
                     break;
                     case "PD":
-                        Instantiate(pandanIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase = Instantiate(pandanIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.55f);
+                        teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
                         infoIndexNext++;
                     break;
                     case "BN":
-                        Instantiate(bananaIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase = Instantiate(bananaIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.55f);
+                        teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
                         infoIndexNext++;
                     break;
                     case "SB":
-                        Instantiate(strawberryIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase = Instantiate(strawberryIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.25f);
+                        teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
                         infoIndexNext++;
                     break;
                     case "MB":
-                        Instantiate(mangoIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase = Instantiate(mangoIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.25f);
+                        teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
                         infoIndexNext++;
                     break;
                     case "UB":
-                        Instantiate(ubeIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase = Instantiate(ubeIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.55f);
+                        teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
                         infoIndexNext++;
                     break;
                 }
                 //TeaBase
+                GameObject textTeaBase;
                 switch(drinkUIDToScan.Substring(2, 2)){
                     case "--":
                         //Do Nothing
                     break;
                     case "GB":
-                        Instantiate(ubeIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textTeaBase = Instantiate(textIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textTeaBase.GetComponent<TMP_Text>().SetText("G");
                         infoIndexNext++;
                     break;
                     case "BB":
-                        Instantiate(ubeIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textTeaBase = Instantiate(textIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textTeaBase.GetComponent<TMP_Text>().SetText("B");
                         infoIndexNext++;
                     break;
                     case "OB":
-                        Instantiate(ubeIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textTeaBase = Instantiate(textIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textTeaBase.GetComponent<TMP_Text>().SetText("O");
                         infoIndexNext++;
                     break;
                 }
                 //Drink overlay
+                GameObject textFlavorOverlay;
                 switch(drinkUIDToScan.Substring(4, 1)){
                     case "-":
                         //Do Nothing.
                     break;
                     case "M":
-                        Instantiate(ubeIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textFlavorOverlay = Instantiate(textIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textFlavorOverlay.GetComponent<TMP_Text>().SetText("M");
                         infoIndexNext++;
                     break;
                     case "W":
-                        Instantiate(ubeIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textFlavorOverlay = Instantiate(textIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        textFlavorOverlay.GetComponent<TMP_Text>().SetText("W");
                         infoIndexNext++;
                     break;
                 }
                 //Toppings
+                GameObject bobaToppings;
                 switch(drinkUIDToScan.Substring(5, 2)){
                     case "*-":
                         //Do Nothing.
                     break;
                     case "*B":
-                        Instantiate(ubeIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        bobaToppings = Instantiate(bobaIco,this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
+                        bobaToppings.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
                         infoIndexNext++;
                     break;
                 }
