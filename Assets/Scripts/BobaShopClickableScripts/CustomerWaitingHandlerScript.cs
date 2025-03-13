@@ -18,6 +18,10 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     [Tooltip("Drag and drop the order tabs to use their scripts and populate the order tabs.")]
     OrderTabUIGeneratorScript OrderTab1Script,OrderTab2Script,OrderTab3Script;
 
+    [SerializeField]
+    [Tooltip("Drag and drop the order tabs GAMEOJECTS to use their scripts and populate the order tabs.")]
+    GameObject OrderTab1GameObject,OrderTab2GameObject,OrderTab3GameObject;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,6 +33,12 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // This is called when this script is on. Makes sure the customers in this queue are off screen.
+    void OnEnable()
+    {
+        RecheckCustomerVisuals();
     }
 
     //This method is used by the customer handler script to put the customers into this queue.
@@ -64,8 +74,25 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
 
     //Trigger the order tabs to update.
     public void UpdateOrderTabs(){
-        OrderTab1Script.GenerateDrinkTabUI();
-        OrderTab2Script.GenerateDrinkTabUI();
-        OrderTab3Script.GenerateDrinkTabUI();
+        if(waitingForOrderCustomerQueue.Count == 1){
+            OrderTab1GameObject.SetActive(true);
+            OrderTab1Script.GenerateDrinkTabUI();
+        }
+        if(waitingForOrderCustomerQueue.Count == 2){
+            OrderTab2GameObject.SetActive(true);
+            OrderTab2Script.GenerateDrinkTabUI();
+        }
+        if(waitingForOrderCustomerQueue.Count == 3){
+            OrderTab3GameObject.SetActive(true);
+            OrderTab3Script.GenerateDrinkTabUI();
+        }
+    }
+
+    //Place all the customers in this queue off screen.
+    public void RecheckCustomerVisuals(){
+        foreach(GameObject customer in waitingForOrderCustomerQueue){
+            Vector3 offScreenParams = new Vector3(-1200f,0f,0f);
+            customer.transform.localPosition = offScreenParams;
+        }
     }
 }
