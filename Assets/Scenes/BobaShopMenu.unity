@@ -4461,6 +4461,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 527824866}
     m_Modifications:
+    - target: {fileID: 6231217152191079204, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: customerWaitingDrinkQueue
+      value: 
+      objectReference: {fileID: 85980985}
     - target: {fileID: 6962159774877528320, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4545,6 +4549,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OrderTab2
       objectReference: {fileID: 0}
+    - target: {fileID: 8493952618611127786, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 72b036f7150791946b8ea962bf8d19ee, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5486,6 +5494,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 527824866}
     m_Modifications:
+    - target: {fileID: 6231217152191079204, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: ubeIco
+      value: 
+      objectReference: {fileID: 4216289119297973520, guid: 5828fe62999891b4f9f0bdfc442f385c, type: 3}
+    - target: {fileID: 6231217152191079204, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: mangoIco
+      value: 
+      objectReference: {fileID: 4216289119297973520, guid: 840424ec6c4e2c348a3f3d782ced33ef, type: 3}
+    - target: {fileID: 6231217152191079204, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: bananaIco
+      value: 
+      objectReference: {fileID: 4216289119297973520, guid: e75b6c363f2aa5e4dba0f2f95bce6e4e, type: 3}
+    - target: {fileID: 6231217152191079204, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: pandanIco
+      value: 
+      objectReference: {fileID: 4216289119297973520, guid: 194ff7504757ec04ab7d6920996d6457, type: 3}
+    - target: {fileID: 6231217152191079204, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: strawberryIco
+      value: 
+      objectReference: {fileID: 4216289119297973520, guid: 5b12cc5b5a2bf4340b21e68ce172e945, type: 3}
+    - target: {fileID: 6231217152191079204, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: customerWaitingDrinkQueue
+      value: 
+      objectReference: {fileID: 85980985}
     - target: {fileID: 6962159774877528320, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5593,6 +5625,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 527824866}
     m_Modifications:
+    - target: {fileID: 6231217152191079204, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: customerWaitingDrinkQueue
+      value: 
+      objectReference: {fileID: 85980985}
     - target: {fileID: 6962159774877528320, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5677,6 +5713,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OrderTab3
       objectReference: {fileID: 0}
+    - target: {fileID: 8493952618611127786, guid: 0f3746dcf64389c409777c9f40af20f3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 72b036f7150791946b8ea962bf8d19ee, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

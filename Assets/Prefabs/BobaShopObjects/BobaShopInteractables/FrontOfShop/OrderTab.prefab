@@ -516,7 +516,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 60, y: -15}
+  m_AnchoredPosition: {x: 6, y: -15}
   m_SizeDelta: {x: 50, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5931347784844593822
@@ -706,7 +706,7 @@ GameObject:
   - component: {fileID: 6962159774877528320}
   - component: {fileID: 6566433946950801999}
   - component: {fileID: 8493952618611127786}
-  - component: {fileID: 389950435572007130}
+  - component: {fileID: 6231217152191079204}
   m_Layer: 5
   m_Name: OrderTab
   m_TagString: Untagged
@@ -764,7 +764,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 72b036f7150791946b8ea962bf8d19ee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f863cd114aeaa2d4295b79c77aedbb8d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -774,28 +774,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!95 &389950435572007130
-Animator:
-  serializedVersion: 7
+--- !u!114 &6231217152191079204
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7499932077070805755}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4797d20f38e5bd7418fc0b8717a73b6b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5cdc03590b3bd448a82541dc658ec0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customerWaitingDrinkQueue: {fileID: 0}
+  pandanIco: {fileID: 4216289119297973520, guid: 194ff7504757ec04ab7d6920996d6457, type: 3}
+  bananaIco: {fileID: 4216289119297973520, guid: e75b6c363f2aa5e4dba0f2f95bce6e4e, type: 3}
+  strawberryIco: {fileID: 4216289119297973520, guid: 5b12cc5b5a2bf4340b21e68ce172e945, type: 3}
+  mangoIco: {fileID: 4216289119297973520, guid: 840424ec6c4e2c348a3f3d782ced33ef, type: 3}
+  ubeIco: {fileID: 4216289119297973520, guid: 5828fe62999891b4f9f0bdfc442f385c, type: 3}
 --- !u!1 &7565356945421108655
 GameObject:
   m_ObjectHideFlags: 0

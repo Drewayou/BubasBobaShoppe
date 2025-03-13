@@ -14,6 +14,10 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     // Timer for customers picking up their order (Their walk speed and aimations for them "picking up" their boba order at the sell mat).
     public float customerWalkingTimer = 0f; 
 
+    [SerializeField]
+    [Tooltip("Drag and drop the order tabs to use their scripts and populate the order tabs.")]
+    OrderTabUIGeneratorScript OrderTab1Script,OrderTab2Script,OrderTab3Script;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,6 +37,7 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
         waitingForOrderCustomerQueue.Add(customer);
         customer.GetComponent<Image>().raycastTarget = false;
         VisuallyMoveCustomerAcrossScreen(customer);
+        UpdateOrderTabs();
     }
 
     //FIXME: Add animation to this customer line when a new customer is added.
@@ -55,5 +60,12 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
         //Remove customer from waiting for drink queue.
         waitingForOrderCustomerQueue.Remove(waitingForOrderCustomerQueue[0]);
         }
+    }
+
+    //Trigger the order tabs to update.
+    public void UpdateOrderTabs(){
+        OrderTab1Script.GenerateDrinkTabUI();
+        OrderTab2Script.GenerateDrinkTabUI();
+        OrderTab3Script.GenerateDrinkTabUI();
     }
 }

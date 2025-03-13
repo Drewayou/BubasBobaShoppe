@@ -95,9 +95,13 @@ public class CustomerHandlerScript : MonoBehaviour
         if(toOrderCustomerQueue.Count == 2){
             //If the player isn't looking at the front shop, cancel walk in animation.
             if(gameObject.transform.parent.gameObject.activeSelf){
+                StartCoroutine(LerpNPCQueueColors(255,toOrderCustomerQueue[0].GetComponent<Image>()));
+                StartCoroutine(LerpNPCQueuePosition(-550,toOrderCustomerQueue[0]));
                 StartCoroutine(LerpNPCQueueColors(155,toOrderCustomerQueue[1].GetComponent<Image>()));
                 StartCoroutine(LerpNPCQueuePosition(-650,toOrderCustomerQueue[1]));
             }else{
+                toOrderCustomerQueue[0].transform.localPosition = new Vector3(-550,-55,0);
+                toOrderCustomerQueue[0].GetComponent<Image>().color = new Color32(255,255,255,255);
                 customer.transform.localPosition = new Vector3(-650,-55,0);
                 customer.GetComponent<Image>().color = new Color32(155,155,155,255);
             }
