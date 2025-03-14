@@ -5509,11 +5509,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46289e5eb2595c4a8be261960f4f8bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisRoundOfPossibleCustomers:
+  thisRoundOfPossibleCustomers: []
+  normalBobaShopCustomerNPCs:
   - {fileID: 6512044488427664842, guid: 65b441efc88fd0444919c95e40eaf9be, type: 3}
   - {fileID: 6532027010211178319, guid: c2843eed209b96d4ca82f247db525216, type: 3}
   - {fileID: 2435224706125197348, guid: 685c0f7005122504f8a6b57e95911a04, type: 3}
-  normalBobaShopCustomerNPCs: []
   seasonalBobaShopCustomerNPCs: []
   specialBobaShopCustomerNPCs: []
 --- !u!1001 &1220267142
