@@ -15,6 +15,9 @@ public class BobaSellMattScript : MonoBehaviour
     //A bool to determine if the interaction was sucessfull and play the animation if not.
     bool interactedCorrectly;
 
+    //Straw counters = to the amount of straws on the placement mat.
+    int strawsOnTheMat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,17 @@ public class BobaSellMattScript : MonoBehaviour
     {
         
     }
+
+    //Straws number increases when the player clicks the straw item.
+    public void addStrawToTheMat(){
+        strawsOnTheMat++;
+    }
+
+    //Straws get removed in the same order that the drinks do.
+    public void subtractStrawFromTheMat(){
+        strawsOnTheMat++;
+    }
+
     public void popSellableBobaDrinks(){
         if(sellableBobaDrinks.Count == 0){
             //Do nothing
