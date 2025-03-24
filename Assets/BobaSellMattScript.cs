@@ -31,16 +31,16 @@ public class BobaSellMattScript : MonoBehaviour
     }
 
     //Straws number increases when the player clicks the straw item.
-    public void addStrawToTheMat(){
+    public void AddStrawToTheMat(){
         strawsOnTheMat++;
     }
 
     //Straws get removed in the same order that the drinks do.
-    public void subtractStrawFromTheMat(){
+    public void SubtractStrawFromTheMat(){
         strawsOnTheMat++;
     }
 
-    public void popSellableBobaDrinks(){
+    public void PopSellableBobaDrinks(){
         if(sellableBobaDrinks.Count == 0){
             //Do nothing
             print("Error : No boba drink in the sell mat!");
@@ -51,11 +51,11 @@ public class BobaSellMattScript : MonoBehaviour
             itemInHandInventory.transform.GetChild(0).transform.localScale = new Vector3(3f,3f,3f);
             sellableBobaDrinks.RemoveAt(0);
             print("Attempted to move drink");
-            generateProperDrinkVisuals();
+            GenerateProperDrinkVisuals();
         }
     }
 
-    public void pushSellableBobaDrinks(GameObject drinkToAdd){
+    public void PushSellableBobaDrinks(GameObject drinkToAdd){
         if(drinkToAdd.tag != "FinishedBobaDrink"){
             //Do nothing
             print("Error : No valid boba drink to add in the mat!");
@@ -67,11 +67,11 @@ public class BobaSellMattScript : MonoBehaviour
             interactedCorrectly = true;
             sellableBobaDrinks.Add(drinkToAdd);
             print(sellableBobaDrinks.Count.ToString() + " : Drinks on mat.");
-            generateProperDrinkVisuals();
+            GenerateProperDrinkVisuals();
         }
     }
 
-    public void generateProperDrinkVisuals(){
+    public void GenerateProperDrinkVisuals(){
         foreach(GameObject drink in sellableBobaDrinks){
             if(sellableBobaDrinks.Count == 1){
                 sellableBobaDrinks[0].transform.transform.localScale = new Vector3(0.3f,0.3f,0.3f);
@@ -100,13 +100,13 @@ public class BobaSellMattScript : MonoBehaviour
 
         //Check if hand inventory has a boba drink, or finished boba drink, and the sellableBobaDrinks mat is empty or <3 full of other drinks, move it to the mat.
         if(itemInHandInventory.transform.childCount != 0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink" && sellableBobaDrinks.Count <3){
-            pushSellableBobaDrinks(itemInHandInventory.transform.GetChild(0).gameObject);   
+            PushSellableBobaDrinks(itemInHandInventory.transform.GetChild(0).gameObject);   
         }
 
         //Player interaction to swap boba drinks from sell mat to hand inventory.
         else if(itemInHandInventory.transform.childCount == 0 && sellableBobaDrinks.Count >=0){
             //Swap first mat drink into hand.
-            popSellableBobaDrinks();
+            PopSellableBobaDrinks();
             //print("Swapping possible boba drinks!");
             interactedCorrectly = true;
         }
@@ -114,8 +114,8 @@ public class BobaSellMattScript : MonoBehaviour
         
         //If hand is holding and mat is full of 3 drinks, perform a swap.
         if(itemInHandInventory.transform.childCount != 0 && sellableBobaDrinks.Count == 3){
-            pushSellableBobaDrinks(itemInHandInventory.transform.GetChild(0).gameObject);
-            popSellableBobaDrinks();
+            PushSellableBobaDrinks(itemInHandInventory.transform.GetChild(0).gameObject);
+            PopSellableBobaDrinks();
         }
 
         //Player interaction if they interacted wrongly with the cup holder.
