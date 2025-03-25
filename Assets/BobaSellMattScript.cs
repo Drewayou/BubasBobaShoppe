@@ -126,4 +126,8 @@ public class BobaSellMattScript : MonoBehaviour
             print("You can't place other items into the cup holder!");
         }
     }
+
+    public void SellNextDrinkInDrinkMat(){
+        Destroy(sellableBobaDrinks[0].gameObject);
+    }
 }

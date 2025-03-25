@@ -14,6 +14,11 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     // Timer for customers picking up their order (Their walk speed and aimations for them "picking up" their boba order at the sell mat).
     public float customerWalkingTimer = 0f; 
 
+    // Script for the drink mat to be pulled.
+    [SerializeField]
+    [Tooltip("Drag and drop the boba sell mat here to get it's script code.")]
+    private BobaSellMattScript bobaSellMatScript;
+
     [SerializeField]
     [Tooltip("Drag and drop the order tabs to use their scripts and populate the order tabs.")]
     OrderTabUIGeneratorScript OrderTab1Script,OrderTab2Script,OrderTab3Script;
