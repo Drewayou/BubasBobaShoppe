@@ -10,7 +10,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     
     //The Game's OverallManager Object to pull/put scripts from.
     [Header("GameManager")]
-    [Tooltip("Put the game's overall Manager Object to end the game / check if paused / unpaused")]
+    [Tooltip("Put the game's overall Manager Object to end the game / check if paused / unpaused ")]
     [SerializeField]
     GameObject overallGameManager;
 
