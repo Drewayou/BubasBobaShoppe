@@ -51,7 +51,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [Tooltip("Put the game's In-GameUI to move for end of round animations and to disable this UI")] 
     public GameObject inGameUIObject;
 
-    //The above's game animator
+    //The above's game animator.
     private Animator inGameUIAnimator;
 
     //The Game's End-Of-RoundUI object to use / move during / after the game has ended.
