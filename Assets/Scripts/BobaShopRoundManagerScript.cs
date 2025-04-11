@@ -99,7 +99,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     StrawberrySold = 0, MangoSold = 0, UbeSold = 0;
 
     //ValuesOfEachDrinkSetPre-round by Overall Game Manager in pre-round UI and RNG.
-    public float oolongMultiplier = 1.0f, PandanMultiplier = 1.0f, BananaMultiplier = 1.0f,
+    public float baseDrinkMultiplier = 1.0f, PandanMultiplier = 1.0f, BananaMultiplier = 1.0f,
     StrawberryMultiplier = 1.0f, MangoMultiplier = 1.0f, UbeMultiplier = 1.0f;
 
     //Player Increased coin value by how much this round?
@@ -326,7 +326,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     }
 
     private void UpdateThisRoundDrinksDemand(){
-        oolongMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().OolongMultiplier;
+        baseDrinkMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().OolongMultiplier;
         PandanMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().PandanMultiplier;
         BananaMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().BananaMultiplier;
         StrawberryMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().StrawberryMultiplier;
@@ -335,7 +335,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     }
 
     private void UpdateEndRoundUI(){
-        BaseTeaORCassavaFlexTxt.text = oolongMultiplier.ToString("F2");
+        BaseTeaORCassavaFlexTxt.text = baseDrinkMultiplier.ToString("F2");
         BaseTeaSoldTxt.text = "x" +oolongSold.ToString(); 
         PandanFlexTxt.text = PandanMultiplier.ToString("F2");
         PandanSoldTxt.text = "x" +PandanSold.ToString(); 

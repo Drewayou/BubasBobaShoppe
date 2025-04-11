@@ -3,17 +3,16 @@ using UnityEngine;
 public class MoneyCalculationScript : MonoBehaviour
 {
 
+    // Get the boba shop game manager script to pull data from.
+    BobaShopRoundManagerScript thisRoundOverallInstanceScript;
+    
     // This script calculates how much money the player gets according to the drink uuid matching.
-    // Start is called once before the first execution of Update after the MonoBehaviour is created.
+    private float drinkCost = 0;
+
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //Find and load the BobaShopRound data.
+        thisRoundOverallInstanceScript = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
     }
 
     // Check if UUID's of two drinks are identical.
@@ -27,5 +26,35 @@ public class MoneyCalculationScript : MonoBehaviour
     // This method triggers if the drinks are both EXACTLY the same UID.
     public void CalculateExactlySimilarDrinks(){
 
+    }
+
+    // This method calculates the beginning of the UID for FRUIT INGREDIENT! Pulls the data from the game manager.
+    public void CalculateIngredientCost(string UUID){
+        switch(UUID.Substring(0,2)){
+            case "--":
+            //No increase in drink cost.
+            drinkCost += thisRoundOverallInstanceScript.baseDrinkMultiplier;
+            break;
+            case "PD":
+            //Increase acording to pandan market cost.
+            drinkCost += thisRoundOverallInstanceScript.PandanMultiplier;
+            break;
+            case "BN":
+            //Increase acording to banana market cost.
+            drinkCost += thisRoundOverallInstanceScript.BananaMultiplier;
+            break;
+            case "MB":
+            //Increase acording to mango market cost.
+            drinkCost += thisRoundOverallInstanceScript.MangoMultiplier;
+            break;
+            case "UB":
+            //Increase acording to ube market cost.
+            drinkCost += thisRoundOverallInstanceScript.UbeMultiplier;
+            break;
+            case "SB":
+            //Increase acording to strawberry market cost.
+            drinkCost += thisRoundOverallInstanceScript.StrawberryMultiplier;
+            break;
+        }
     }
 }
