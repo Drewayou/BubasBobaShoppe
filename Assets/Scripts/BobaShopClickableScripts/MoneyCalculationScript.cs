@@ -57,4 +57,14 @@ public class MoneyCalculationScript : MonoBehaviour
             break;
         }
     }
+
+    // This method calculates the beginning of the UID for TEA BASE! Pulls the data from the game manager.
+    public void CalculateIngredientCost(string UUID){
+        switch(UUID.Substring(2,2)){
+            case "--":
+            //No increase in drink cost.
+            
+            break;
+        }
+    }
 }
