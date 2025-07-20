@@ -238,7 +238,7 @@ public class GameManagerScript : MonoBehaviour
         ShopData.world3Cost = 50;
         ShopData.world4Cost = 75;
 
-        //Basic world settings
+        //Basic world settings this essentially sets the spawn rate chances of each fruit monster home by a %
         world1.WorldName = "PandanForest";
         world1.SpawnersAlive = 3;
         world1.LevelDifficulty = 1;
