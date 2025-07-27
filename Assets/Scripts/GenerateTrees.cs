@@ -7,6 +7,8 @@ using System.Collections;
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
+    //Note: This is a temp code that may/may not be in use within the main game.
+    //This was made for a university project.
     //Struct to perform the job of randomply finding transform places for trees via Parallelism.
     public struct GenerationParallelJob : IJobParallelForTransform
     {
