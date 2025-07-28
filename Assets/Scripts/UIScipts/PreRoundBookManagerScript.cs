@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PreRoundBookManagerScript : MonoBehaviour
 {
+    //Instantiate object referrences
     GameManagerScript thisGamesCurrentManagerScript;
     ShopCostsNEarnings thisGamesCurrentShopDataInstance;
     PlayerDataJson thisPlayersCurrentData;

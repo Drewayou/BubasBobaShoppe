@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 public class PlayerHPValAndUIScript : MonoBehaviour
 {
 
+    //Instantiate the game UI Objects
     [SerializeField]
     [Tooltip("Drop the player object to track HP bar below")]
     [Header("Player Object for the round")]
