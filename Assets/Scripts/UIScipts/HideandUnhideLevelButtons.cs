@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HideandUnhideShopBoughtButtons : MonoBehaviour
 {
+    //Initialize game manager object
     GameManagerScript thisGameManagerScript;
 
     [SerializeField]
