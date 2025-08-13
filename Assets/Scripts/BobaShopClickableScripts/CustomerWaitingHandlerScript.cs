@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class CustomerWaitingHandlerScript : MonoBehaviour
 {
+    // This script handles the player interaction and a couple UI tabs to recieve orders from the customer and move them to the waiting handler game object.
+    // CONNECTED TO "CustomerDrinkWaitQueueHandler" Game Object.
+
     // Get the boba shop game manager script to pull data from.
     BobaShopRoundManagerScript thisRoundOverallInstanceScript;
 
@@ -61,20 +64,6 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
         //Turn off raycast on the customers to prevent clicking on them.
         customerWalksToWaitForDrink.GetComponent<Image>().raycastTarget = false;
         //FIXME: Add animation code here.
-    }
-
-    //FIXME: Add animation to method to show the customer "Picking up" their drinks.
-    //This method is activated when the bell is pressed.
-    public void VisuallyMoveCustomerToPickupOrder(){
-        //If no customers are waiting in the queue and no customer is picking up their order (customerWalkingTimer isn't > 0).
-        if(waitingForOrderCustomerQueue.Count!=0 && customerWalkingTimer <= 0){
-        //Add the code and animations for customer picking up the drink. (Note, make sure to add a timer so that the customer HAS to "touch" and pickup the drinks).
-        
-        //The code for what happens when the timer hits 0 (customer is at the drink sell mat) is with the "CustomerDrinkScript".
-        waitingForOrderCustomerQueue[0].GetComponent<CustomerDrinkScript>().DoCustomerOrderPickupLogic();
-        //Remove customer from waiting for drink queue.
-        waitingForOrderCustomerQueue.Remove(waitingForOrderCustomerQueue[0]);
-        }
     }
 
     //Trigger the order tabs to update.

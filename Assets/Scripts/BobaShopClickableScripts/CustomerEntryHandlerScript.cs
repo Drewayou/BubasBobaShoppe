@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class CustomerHandlerScript : MonoBehaviour
 {
+    // This script handles what happens if the boba shop round handler needs to generate a new customer and add them to the queue.
+    // CONNECTED TO "CustomerQueueHandler" Game Object.
+
     // Get the boba shop game manager script to pull data from.
     BobaShopRoundManagerScript thisRoundOverallInstanceScript;
 
@@ -199,10 +202,10 @@ public class CustomerHandlerScript : MonoBehaviour
     {
         float timeElapsed = 0;
 
-        while (timeElapsed < 60)
+        while (timeElapsed < 5)
         {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 60);
-            NPCToMove.transform.localPosition = new Vector3(valueToLerp,-55,0);
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
+            NPCToMove.transform.localPosition = new Vector3(valueToLerp,math.sin(valueToLerp*math.PI)-55,0);
             timeElapsed += Time.deltaTime;
 
             yield return null;

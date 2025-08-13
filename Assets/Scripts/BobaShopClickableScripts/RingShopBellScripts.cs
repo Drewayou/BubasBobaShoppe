@@ -5,6 +5,9 @@ using UnityEngine;
 public class RingShopBellScripts : MonoBehaviour
 {
 
+    //This script handles the bell ringing interaction with the player, and initiates other scripts to respond to it.
+    //CONNECTED TO "BellPrefab" Game Object.
+
     //Gets game Object to find the Game Manager.
     [SerializeField]
     [Tooltip("Drag the \"GameManagerObject\" object in here.")]
@@ -18,6 +21,11 @@ public class RingShopBellScripts : MonoBehaviour
     [Tooltip("Drag the \"itemInHandInventory\" object in here.")]
     GameObject itemInHandInventory;
     Animator itemInHandInventoryAnimator;
+
+    //Gets game Object to tell the customers waiting for their drink in this queue to pickup thier order if possible.
+    [SerializeField]
+    [Tooltip("Drag the \"CustomerDrinkWaitQueueHandler\" object in here.")]
+    GameObject customerWait4DrinkHandler;
 
     //The SFX prefab to make the bell ring sound.
     [SerializeField]
@@ -45,22 +53,31 @@ public class RingShopBellScripts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     //A script that runs when the bell is pressed.
-    public void ringShopBell(){
-        if(itemInHandInventory.transform.childCount == 0){
-        makeBellNoise();
-        //FIXME: Add a way to call the next customer in queue 
-        //callCustomer();
+    public void ringShopBell()
+    {
+        if (itemInHandInventory.transform.childCount == 0)
+        {
+            MakeBellNoise();
+            //FIXME: Add a way to call the next customer in queue 
+            CallCustomer();
         }
     }
 
-    public void makeBellNoise(){
+    public void MakeBellNoise()
+    {
         //FIXME: find a way to store all the SFX sound effects.
         Instantiate(bellSFXRing);
         bellsAnimator.Play("BellRing");
+    }
+
+    //This method contacts OrderPickupHandler script to start the customer drink pickup process.
+    public void CallCustomer()
+    {
+        customerWait4DrinkHandler.GetComponent<CustomerOrderPickupScript>().CheckIfCustomersAreWaitingForDrinks();
     }
     
 }
