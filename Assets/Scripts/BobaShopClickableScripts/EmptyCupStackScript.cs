@@ -5,6 +5,8 @@ using UnityEngine;
 public class EmptyCupStackScript : MonoBehaviour
 {
 
+    //This script manages the cup stack
+
     //Gets game Object to check what the player is currently holding
     [SerializeField]
     GameObject itemInHandInventory;

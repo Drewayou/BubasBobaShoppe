@@ -209,6 +209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 85980984}
   - component: {fileID: 85980985}
+  - component: {fileID: 85980986}
   m_Layer: 5
   m_Name: CustomerDrinkWaitQueueHandler
   m_TagString: Untagged
@@ -256,6 +257,19 @@ MonoBehaviour:
   OrderTab1GameObject: {fileID: 327330026}
   OrderTab2GameObject: {fileID: 2015201636}
   OrderTab3GameObject: {fileID: 2025809895}
+--- !u!114 &85980986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85980983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f6809fcfe7b6e469cf4b2112c7ef04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CustomerLeavingHandlerObject: {fileID: 192196096}
 --- !u!1 &86863919
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,6 +1082,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7744ebb5949d8442825807131cc55b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &192196096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 192196097}
+  m_Layer: 5
+  m_Name: CustomerLeavingHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &192196097
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192196096}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 363006804}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &197550065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,6 +1811,7 @@ RectTransform:
   - {fileID: 820305979}
   - {fileID: 668586578}
   - {fileID: 85980984}
+  - {fileID: 192196097}
   - {fileID: 197550066}
   - {fileID: 706809646}
   - {fileID: 86863920}
@@ -8766,6 +8816,10 @@ PrefabInstance:
       propertyPath: itemInHandInventory
       value: 
       objectReference: {fileID: 146500739}
+    - target: {fileID: 7852204165575098581, guid: b898adc2756b9c34b81a17bf8c6cafa7, type: 3}
+      propertyPath: customerWait4DrinkHandler
+      value: 
+      objectReference: {fileID: 85980983}
     - target: {fileID: 8897896673876143938, guid: b898adc2756b9c34b81a17bf8c6cafa7, type: 3}
       propertyPath: m_Name
       value: BellPrefab
