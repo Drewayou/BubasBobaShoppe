@@ -51,8 +51,13 @@ public class SinkCleanScript : MonoBehaviour
                 sinkAnimation.Play("SinkUsed");
                 itemInHandInventory.transform.GetChild(0).GetComponent<BobaLadelScript>().SetLadleToClean();
                 break;
+
+                case "EmptyCup(Clone)":
+                WashCup();
+                break;
             }
-        }else if(itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink" | itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink"){
+        }else if(itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" | itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink")
+        {
             WashCup();
         }else{
             //Play wrong interaction hand animation.
