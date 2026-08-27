@@ -82,26 +82,26 @@ public class StartUpMixerScript : MonoBehaviour
         
     }
 
-    //FIXME: Add a timer for the mixing process.
     public void StartMixingADrink(){
 
         //Start mixing the drink!
-        if(MixerIsClean()/*&& MixerHasIngredients()*/){
-            thisBobaMixerAnimator.Play("MixerDoorsClose");
+        if(MixerIsClean() && MixerHasIngredients() && !drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing)
+        {
+            //thisBobaMixerAnimator.Play("MixerDoorsClose");
             mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsClose");
 
-            //Dispense thedrink made from the ingredients.
-            DispenseDrinkMade();
+            //Prevent the mixer cup area from being clickable.
+            drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing = true;
 
-            //Open the mixer doors.
-            mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsOpen");
+            //Dispense drink and open the mixer doors depending on stats of player.
+            StartCoroutine(MixerWait(currentGameManagerInstance.ReturnPlayerStats().speedOfMixer));
         }
         
     }
 
     //Check if this mixer has a spill!
     public bool MixerIsClean(){
-        if(gameObject.transform.parent.Find("MixerSpill") == null){
+        if(gameObject.transform.Find("MixerSpill") == null){
             return true;
         }else{
                 print("You have to clean up this mess first!");
@@ -597,5 +597,17 @@ public class StartUpMixerScript : MonoBehaviour
             return BobaToppingsInDrinkOverlay1;
         }
         return BobaToppingsInDrinkOverlay2;
+    }
+
+    IEnumerator MixerWait(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        //PLay the door opening animation.
+        mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsOpen");
+        //Dispense thedrink made from the ingredients.
+        DispenseDrinkMade();
+        //Allow the mixer cup area to be clickable again.
+        drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing = false;
     }
 }
