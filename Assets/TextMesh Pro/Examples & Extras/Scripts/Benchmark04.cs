@@ -44,8 +44,6 @@ namespace TMPro.Examples
                     //textMeshPro.font = Resources.Load("Fonts & Materials/LiberationSans SDF", typeof(TextMeshProFont)) as TextMeshProFont;
                     //textMeshPro.anchor = AnchorPositions.Left;
                     textMeshPro.rectTransform.pivot = new Vector2(0, 0.5f);
-
-                    textMeshPro.enableWordWrapping = false;
                     textMeshPro.extraPadding = true;
                     textMeshPro.isOrthographic = true;
                     textMeshPro.fontSize = i;

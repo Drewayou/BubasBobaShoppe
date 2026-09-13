@@ -56,7 +56,7 @@ public class SinkCleanScript : MonoBehaviour
                 WashCup();
                 break;
             }
-        }else if(itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" | itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink")
+        }else if(itemInHandInventory.transform.childCount!=0 && itemInHandInventory.transform.GetChild(0).gameObject.tag == "BobaDrink" | itemInHandInventory.transform.GetChild(0).gameObject.tag == "FinishedBobaDrink")
         {
             WashCup();
         }else{

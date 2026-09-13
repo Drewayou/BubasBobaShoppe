@@ -105,7 +105,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //Player Increased coin value by how much this round?
     public float playerEarnedCoins = 0f;
 
-    //FIXME: These are connected to the Spawner scripts, enemy agro, ect. To manage the difficulty of the round. Should be modulated by a "level difficulty" method!
+    //FIXME: These are connected to the Spawner scripts, enemy agro, customer patience, ect. To manage the difficulty of the round. Should be modulated by a "level difficulty" method!
     //The int should be pulled by the GAMEMANAGER script!
     public int levelDifficulty;
 
@@ -165,13 +165,13 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         //No customers spawn within the first 10 seconds, then attempt to spawn 1/5th chance for a customer every 5 seconds depending on popularity,
         //Player max queue, and others.
         if(roundTimer > 10 && !firstCustomerSpawned){
-            tryToSpawnACustomer();
+            tryToSpawnARoundLoadedCustomer();
             firstCustomerSpawned = true;
         }
         if(firstCustomerSpawned && customerSpawnCooldownTimer>0){
             customerSpawnCooldownTimer -= Time.deltaTime;
         }else if(firstCustomerSpawned){
-            tryToSpawnACustomer();
+            tryToSpawnARoundLoadedCustomer();
             resetCustomerSpawnCooldownTimer();
         }
     }
@@ -186,12 +186,16 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     }
 
     //FIXME: A method to attempt to spawn a new customer according to shop popularity and if queue line (Order & Waiting queue) is full.
-    public void tryToSpawnACustomer(){
-        if((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerWaitingHandlerScript.waitingForOrderCustomerQueue.Count)<thisGamesOverallInstance.ReturnMaxBobaShopLineQueue()){
-            GameObject customerPlannedToSpawn = customersThatCanSpawnThisRoundScript.LoadRandomCustomerFromList();
-            customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers.Remove(customerPlannedToSpawn);
-            customerQueueHandlerScript.AddCustomerToThisQueue(customerPlannedToSpawn);
-            print("Spawned a customer.");
+    public void tryToSpawnARoundLoadedCustomer(){
+        if(customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers.Count!=0)
+        {
+            if ((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerWaitingHandlerScript.waitingForOrderCustomerQueue.Count) < thisGamesOverallInstance.ReturnMaxBobaShopLineQueue())
+            {
+                GameObject customerPlannedToSpawn = customersThatCanSpawnThisRoundScript.LoadRandomCustomerFromList();
+                customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers.Remove(customerPlannedToSpawn);
+                customerQueueHandlerScript.AddCustomerToThisQueue(customerPlannedToSpawn);
+                print("Spawned a customer.");
+            }
         }
     }
 

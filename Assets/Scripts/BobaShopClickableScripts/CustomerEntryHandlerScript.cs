@@ -40,7 +40,6 @@ public class CustomerHandlerScript : MonoBehaviour
         RecheckCustomerVisuals();
     }
 
-    //FIXME: Add animation to this customer line when a new customer is added.
     //This method Adds and organizes the visual placement of the customers on the screen and sets their clickable mask on/off depending what place they get in line.
     public void AddCustomerToThisQueue(GameObject customerToAdd){
 

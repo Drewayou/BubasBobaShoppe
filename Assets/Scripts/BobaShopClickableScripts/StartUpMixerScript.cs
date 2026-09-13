@@ -22,6 +22,9 @@ public class StartUpMixerScript : MonoBehaviour
     //The mixer doors in this mixer prefab that overlays the drinks in the mixer.
     private GameObject mixerDoorsObject;
 
+    //The mixer time to finish mix (Usually game stat mixing time + current time). 
+    public float mixerTimeToFinishMix;
+
     //The gameobject for the drink area that contains the drink pre-mix.
     [SerializeField]
     [Tooltip("Drag the mixer clickable drink area here.")]
@@ -79,7 +82,30 @@ public class StartUpMixerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing)
+        {
+            if (mixerTimeToFinishMix<=currentRoundManagerInstance.roundTimer)
+            {
+                //Allow the mixer cup area to be clickable again.
+                drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing = false;
+                //Play the door opening animation.
+                mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsOpen");
+                //Dispense thedrink made from the ingredients.
+                DispenseDrinkMade();
+            }
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing)
+        {
+            mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsChurn");
+        }
+        else
+        {
+            mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsOpen");
+        }
     }
 
     public void StartMixingADrink(){
@@ -90,13 +116,14 @@ public class StartUpMixerScript : MonoBehaviour
             //thisBobaMixerAnimator.Play("MixerDoorsClose");
             mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsClose");
 
+            //Set time when the mixer should be done mixing.
+            this.mixerTimeToFinishMix = currentRoundManagerInstance.roundTimer + currentGameManagerInstance.ReturnPlayerStats().speedOfMixer;
+
             //Prevent the mixer cup area from being clickable.
             drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing = true;
-
-            //Dispense drink and open the mixer doors depending on stats of player.
-            StartCoroutine(MixerWait(currentGameManagerInstance.ReturnPlayerStats().speedOfMixer));
+            
         }
-        
+
     }
 
     //Check if this mixer has a spill!
@@ -610,4 +637,5 @@ public class StartUpMixerScript : MonoBehaviour
         //Allow the mixer cup area to be clickable again.
         drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing = false;
     }
+
 }

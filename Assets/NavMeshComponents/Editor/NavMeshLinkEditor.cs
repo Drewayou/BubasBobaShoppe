@@ -1,10 +1,8 @@
-using NavMeshPlus.Components;
+using NavMeshPlus.Editors.Components;
 using UnityEditor;
-using UnityEditor.AI;
 using UnityEngine;
-using UnityEngine.AI;
 
-namespace NavMeshPlus.Editors.Components
+namespace NavMeshPlus.Components.Editors
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(NavMeshLink))]
@@ -25,6 +23,15 @@ namespace NavMeshPlus.Editors.Components
         static Color s_HandleColor = new Color(255f, 167f, 39f, 210f) / 255;
         static Color s_HandleColorDisabled = new Color(255f * 0.75f, 167f * 0.75f, 39f * 0.75f, 100f) / 255;
 
+        static int GetObjectId(Object obj)
+        {
+#if UNITY_6000_0_OR_NEWER
+            return obj.GetEntityId().GetHashCode();
+#else
+            return obj.GetInstanceID();
+#endif
+        }
+
         void OnEnable()
         {
             m_AgentTypeID = serializedObject.FindProperty("m_AgentTypeID");
@@ -39,13 +46,10 @@ namespace NavMeshPlus.Editors.Components
             s_SelectedID = 0;
             s_SelectedPoint = -1;
 
-            NavMeshVisualizationSettings.showNavigation++;
+
         }
 
-        void OnDisable()
-        {
-            NavMeshVisualizationSettings.showNavigation--;
-        }
+
 
         static Matrix4x4 UnscaledLocalToWorldMatrix(Transform t)
         {
@@ -137,10 +141,12 @@ namespace NavMeshPlus.Editors.Components
             Gizmos.DrawLine(navLink.startPoint + right * rad, navLink.endPoint + right * rad);
         }
 
-        [DrawGizmo(GizmoType.Selected | GizmoType.Active | GizmoType.Pickable)]
+
+        [DrawGizmo(GizmoType.InSelectionHierarchy | GizmoType.Active | GizmoType.Pickable)]
+
         static void RenderBoxGizmo(NavMeshLink navLink, GizmoType gizmoType)
         {
-            if (!EditorApplication.isPlaying)
+            if (!EditorApplication.isPlaying && navLink.isActiveAndEnabled)
                 navLink.UpdateLink();
 
             var color = s_HandleColor;
@@ -164,7 +170,9 @@ namespace NavMeshPlus.Editors.Components
         [DrawGizmo(GizmoType.NotInSelectionHierarchy | GizmoType.Pickable)]
         static void RenderBoxGizmoNotSelected(NavMeshLink navLink, GizmoType gizmoType)
         {
-            if (NavMeshVisualizationSettings.showNavigation > 0)
+            if (!EditorApplication.isPlaying && navLink.isActiveAndEnabled)
+                navLink.UpdateLink();
+
             {
                 var color = s_HandleColor;
                 if (!navLink.enabled)
@@ -208,7 +216,7 @@ namespace NavMeshPlus.Editors.Components
 
             Vector3 pos;
 
-            if (navLink.GetInstanceID() == s_SelectedID && s_SelectedPoint == 0)
+            if (GetObjectId(navLink) == s_SelectedID && s_SelectedPoint == 0)
             {
                 EditorGUI.BeginChangeCheck();
                 Handles.CubeHandleCap(0, startPt, zup, 0.1f * startSize, Event.current.type);
@@ -224,11 +232,11 @@ namespace NavMeshPlus.Editors.Components
                 if (Handles.Button(startPt, zup, 0.1f * startSize, 0.1f * startSize, Handles.CubeHandleCap))
                 {
                     s_SelectedPoint = 0;
-                    s_SelectedID = navLink.GetInstanceID();
+                    s_SelectedID = GetObjectId(navLink);
                 }
             }
 
-            if (navLink.GetInstanceID() == s_SelectedID && s_SelectedPoint == 1)
+            if (GetObjectId(navLink) == s_SelectedID && s_SelectedPoint == 1)
             {
                 EditorGUI.BeginChangeCheck();
                 Handles.CubeHandleCap(0, endPt, zup, 0.1f * startSize, Event.current.type);
@@ -244,7 +252,7 @@ namespace NavMeshPlus.Editors.Components
                 if (Handles.Button(endPt, zup, 0.1f * endSize, 0.1f * endSize, Handles.CubeHandleCap))
                 {
                     s_SelectedPoint = 1;
-                    s_SelectedID = navLink.GetInstanceID();
+                    s_SelectedID = GetObjectId(navLink);
                 }
             }
 
@@ -268,7 +276,7 @@ namespace NavMeshPlus.Editors.Components
         }
 
         [MenuItem("GameObject/Navigation/NavMesh Link", false, 2002)]
-        static public void CreateNavMeshLink(MenuCommand menuCommand)
+        public static void CreateNavMeshLink(MenuCommand menuCommand)
         {
             var parent = menuCommand.context as GameObject;
             GameObject go = NavMeshComponentsGUIUtility.CreateAndSelectGameObject("NavMesh Link", parent);
