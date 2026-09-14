@@ -128,6 +128,11 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [Tooltip("This is base patience for customers and should be modulated against other factors.")]
     public float customerOverallPatienceThisRound = 10f;
 
+    //Special flags for customer order patience counters.
+    public float customerTimerInQO1 = .01f, customerTimerInQO2, customerTimerInQO3, customerTimerInDO1, customerTimerInDO2, customerTimerInDO3, customerTimerInSO1;
+    public float customerStartingTimeInQO1, customerStartingTimeInQO2, customerStartingTimeInQO3, customerStartingTimeInDO1, customerStartingTimeInDO2, customerStartingTimeInDO3, customerStartingTimeInSO1;
+    public float eCustomerEndTimeAInQO1, eCustomerEndTimeAInQO2, eCustomerEndTimeAInQO3, eCustomerEndTimeAInDO1, eCustomerEndTimeAInDO2, eCustomerEndTimeAInDO3, eCustomerEndTimeAInSO1;
+
     //NOTE : Player ALWAYS starts with 3 lives!
     public int playerLives;
 
@@ -145,6 +150,9 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         //Make Sure the ENDOFGAME UI isn't on and the INGAME UI is.
         EndOfRoundUIObject.SetActive(false);
         //FIXME:inGameUIObject.SetActive(true);
+
+        //Set all customer timers to .1
+        customerTimerInQO1 = customerTimerInQO2 = customerTimerInQO3 = customerTimerInDO1 = customerTimerInDO2 = customerTimerInDO3 = customerTimerInSO1 = 0.1f;
 
         //Get the drink demand from this game's manager and apply them to this round
         //whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();
@@ -165,6 +173,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     {
         if(roundTimer<=360){
             roundTimer += Time.deltaTime;
+            EscalateQueueTimers();
         }else{
             endTheBOBASHOPRound();
         }
@@ -173,12 +182,15 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         //No customers spawn within the first 10 seconds, then attempt to spawn 1/5th chance for a customer every 5 seconds depending on popularity,
         //Player max queue, and others.
         if(roundTimer > 10 && !firstCustomerSpawned){
-            tryToSpawnARoundLoadedCustomer();
             firstCustomerSpawned = true;
+            tryToSpawnARoundLoadedCustomer();  
         }
+
         if(firstCustomerSpawned && customerSpawnCooldownTimer>0){
             customerSpawnCooldownTimer -= Time.deltaTime;
-        }else if(firstCustomerSpawned){
+        }
+
+        if (firstCustomerSpawned && customerSpawnCooldownTimer < 0) {
             tryToSpawnARoundLoadedCustomer();
             resetCustomerSpawnCooldownTimer();
         }
@@ -199,10 +211,21 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         {
             if ((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerWaitingHandlerScript.waitingForOrderCustomerQueue.Count) < thisGamesOverallInstance.ReturnMaxBobaShopLineQueue())
             {
-                GameObject customerPlannedToSpawn = customersThatCanSpawnThisRoundScript.LoadRandomCustomerFromList();
-                customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers.Remove(customerPlannedToSpawn);
-                customerQueueHandlerScript.AddCustomerToThisQueue(customerPlannedToSpawn);
-                print("Spawned a customer.");
+                if (customersThatCanSpawnThisRoundScript.useRandomizedCustomerList)
+                {
+                    GameObject customerPlannedToSpawn = customersThatCanSpawnThisRoundScript.LoadRandomCustomerFromList();
+                    customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers.Remove(customerPlannedToSpawn);
+                    customerQueueHandlerScript.AddCustomerToThisQueue(customerPlannedToSpawn);
+                    print("Spawned a customer.");
+                }
+                else
+                {
+                    GameObject customerPlannedToSpawn = customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers[0];
+                    customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers.Remove(customerPlannedToSpawn);
+                    customerQueueHandlerScript.AddCustomerToThisQueue(customerPlannedToSpawn);
+                    print("Spawned the next customer.");
+                }
+                
             }
         }
     }
@@ -534,6 +557,73 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     /* public void getRoundSettingData(){
 
     } */
+
+    // This method ensures that the timers for the queues are managed by an inactavatablie game object (Round Manager)
+    public void EscalateQueueTimers()
+    {
+        if (eCustomerEndTimeAInQO1 > roundTimer)
+        {
+            customerTimerInQO1 = eCustomerEndTimeAInQO1 - roundTimer;
+        }
+        if (eCustomerEndTimeAInQO2 > roundTimer)
+        {
+            customerTimerInQO2 = eCustomerEndTimeAInQO2 - roundTimer;
+        }
+        if (eCustomerEndTimeAInQO3 > roundTimer)
+        {
+            customerTimerInQO3 = eCustomerEndTimeAInQO3 - roundTimer;
+        }
+        if (eCustomerEndTimeAInDO1 > roundTimer)
+        {
+            customerTimerInDO1 = eCustomerEndTimeAInDO1 - roundTimer;
+        }
+        if (eCustomerEndTimeAInDO2 > roundTimer)
+        {
+            customerTimerInDO2 = eCustomerEndTimeAInDO2 - roundTimer;
+        }
+        if (eCustomerEndTimeAInDO3 > roundTimer)
+        {
+            customerTimerInDO3 = eCustomerEndTimeAInDO3 - roundTimer;
+        }
+        if (eCustomerEndTimeAInSO1 > roundTimer)
+        {
+            customerTimerInSO1 = eCustomerEndTimeAInSO1 - roundTimer;
+        }
+    }
+
+    //customerWaitingInQO1, customerWaitingInQO2, customerWaitingInQO3, customerWaitingInDO1, customerWaitingInDO2, customerWaitingInDO3, customerWaitingInSO1;
+    //// This method ensures that the timers are reset depending on i input
+    //public void ResetTimerofQueueN(int Index1to7)
+    //{
+    //    switch (Index1to7)
+    //    {
+    //        case 0:
+    //            return;
+    //        case 1:
+    //            return;
+    //        case 2:
+    //            return;
+    //    }
+    //}
+
+    //Chattiness adds (x * 2) seconds to 5 second buffer when talking with front customers.
+    public void CustomerInterationAddsPatienceToFrontCustomer(float chattiness)
+    {
+        if (eCustomerEndTimeAInQO1 >= roundTimer)
+        {
+            eCustomerEndTimeAInQO1 = (chattiness * 2f) + eCustomerEndTimeAInQO1 + 5f;
+        }
+
+        if (eCustomerEndTimeAInDO1 >= roundTimer)
+        {
+            eCustomerEndTimeAInDO1 = (chattiness * 2f) + eCustomerEndTimeAInDO1 + 5f;
+        }
+
+        if (eCustomerEndTimeAInSO1 >= roundTimer)
+        {
+            eCustomerEndTimeAInSO1 = (chattiness * 2f) + eCustomerEndTimeAInSO1 + 5f;
+        }
+    }
 
     public IEnumerator TurnOffInGameUIAfterNSeconds(float num)
     {

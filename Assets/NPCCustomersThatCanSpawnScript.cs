@@ -9,6 +9,9 @@ public class NPCCustomersThatCanSpawnScript : MonoBehaviour
     // Usefull to determine the player stats for what drinks they unlocked.
     BobaShopRoundManagerScript currentRoundManagerInstance;
 
+    //This is a developer bool to enable pre-defined lists or not.
+    public bool useRandomizedCustomerList;
+
     // This GameObject list is for the all the possible customers that can spawn, after the start() method scans.
     [SerializeField]
     [Tooltip("Generated of customers for this round.")]

@@ -525,7 +525,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chattiness: 1
-  basePatience: 5
   customerDialogueBoxObject: {fileID: 1736861010266249296}
   customerDialogueBox: {fileID: 4795642463837031892}
   characterFavoriteBobaDrinks:
@@ -581,7 +580,18 @@ MonoBehaviour:
   customerPatiencMehIcoMeter: {fileID: 313210674605466997}
   customerPatiencSadLayerMeter: {fileID: 6518001686776081561}
   customerPatiencSadIcoMeter: {fileID: 4526252709348210233}
+  customerHasInfinitePatience: 0
+  customerStartedWaitingAt: 0
+  customerWaitingInBeginningLineTime: 10
+  customerOrderWaitingTime: 30
+  customerDrinkWaitingTime: 10
+  customerSpecialWaitingTime: 10
   patienceOver100: 1
+  customerHadOrderTaken: 0
+  customerIsAtFront: 0
+  customerIsWaitingForDrinks: 0
+  customerIsWaitingForSomethingElse: 0
+  customerIsInWaitingInALineNotAtFront: 0
 --- !u!114 &6832437386072738729
 MonoBehaviour:
   m_ObjectHideFlags: 0

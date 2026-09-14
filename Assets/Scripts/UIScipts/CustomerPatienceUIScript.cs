@@ -75,13 +75,27 @@ public class CustomerPatienceUIScript : MonoBehaviour
     [Tooltip("Drag and drop the SadIco UI Object here.")]
     Image customerPatiencSadIcoMeter;
 
-    //This saves the last time for an order for patience meter evaluation.
-    private float customerStartedWaitingAt = 0f;
+    public bool customerHasInfinitePatience;
 
-    //This is the patience meter over 100%
+    //This saves the last time for an order for patience meter evaluation.
+    public float customerStartedWaitingAt = 0f;
+
+    //This saves the customer patience meter evaluation for Order queue. (Default 60s)
+    public float customerWaitingInBeginningLineTime = 30f;
+
+    //This saves the customer patience meter evaluation for Order queue. (Default 20s)
+    public float customerOrderWaitingTime = 20f;
+
+    //This saves the customer patience meter evaluation for Drink queue. (Default 10s)
+    public float customerDrinkWaitingTime = 10f;
+
+    //This saves the customer patience meter evaluation for Special queue. (Default 10s)
+    public float customerSpecialWaitingTime = 10f;
+
+    //This is the patience meter over 100% (0.0f->1f)
     public float patienceOver100 = 1;
 
-    public bool customerIsAtFront = false;
+    public bool customerHadOrderTaken ,customerIsAtFront, customerIsWaitingForDrinks, customerIsWaitingForSomethingElse, customerIsInWaitingInALineNotAtFront;
 
     //This ensures that the customer timer is only started when a customer enteres the line and is clickable(from other scripts).
     //public bool timerHasStarted = false;
@@ -112,10 +126,13 @@ public class CustomerPatienceUIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CustomerDrinkWaitQueueHandlerScript.CustomerIsWaiting)
-        {
-            patienceOver100 = (1.0f - (thisRoundOverallInstanceScript.roundTimer - (customerStartedWaitingAt - 0.5f)) / (CustomerDrinkWaitQueueHandlerScript.baseOrderQueuePatienceTimeout - customerStartedWaitingAt));
-            Debug.Log("Patience Val: " +  patienceOver100);
+
+        //Updates the viewable patience timer if the customer is at the foreground, check the timer in round manager for generating these patience items.
+        if (!customerHasInfinitePatience && customerIsAtFront) {
+            
+            //Evaluate the patience level according to round manager.
+            patienceOver100 = (1.0f - (thisRoundOverallInstanceScript.roundTimer - (thisRoundOverallInstanceScript.customerStartingTimeInQO1 - 0.5f)) / (thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 - thisRoundOverallInstanceScript.customerStartingTimeInQO1));
+            Debug.Log("Patience Val: " + patienceOver100);
 
             customerPatiencBottomLayerMeter.enabled = true;
 
@@ -174,8 +191,12 @@ public class CustomerPatienceUIScript : MonoBehaviour
 
     public void CustomerStartedWaitingForOrderTaking()
     {
-        customerStartedWaitingAt = thisRoundOverallInstanceScript.roundTimer + 0.5f;
-        customerIsAtFront = true;
+        if (thisRoundOverallInstanceScript != null)
+        {
+            thisRoundOverallInstanceScript.customerStartingTimeInQO1 = thisRoundOverallInstanceScript.roundTimer + 0.5f;
+            customerIsAtFront = true;
+        }
+        
     }
 
     public bool CheckIfCustomerHasBeenFlaggedAsFront()

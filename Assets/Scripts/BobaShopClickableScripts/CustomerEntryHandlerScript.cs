@@ -22,11 +22,6 @@ public class CustomerHandlerScript : MonoBehaviour
     [SerializeField]
     public List<GameObject> toOrderCustomerQueue;
 
-    // Float counter of the current customer's patience (The customers in the queue don't drop patience until this customer leaves at this time)
-    public float baseOrderQueuePatienceTimeout;
-
-    public bool CustomerIsWaiting = false;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created.
     void Start()
     {
@@ -37,21 +32,61 @@ public class CustomerHandlerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //FIXME: ADD PATIENCE ANIMATION! ADD PATIENCE PER INTERACTION CLICK
-        //Timer that checks off the round time to evaluate if the customer in front of this queue looses patience. +5s Patience is added for each dialogue order taken interaction. 
-        if (baseOrderQueuePatienceTimeout <= thisRoundOverallInstanceScript.roundTimer && CustomerIsWaiting)
+        //FIXME: Patience is acting wonky
+        //Timer that checks off the round time to evaluate if the customer in front of this queue looses patience. +5s Patience is added for each dialogue order taken interaction at position 0. 
+        if (thisRoundOverallInstanceScript.customerTimerInQO1 < 0.1 && this.gameObject.transform.childCount > 0)
         {
-            CustomerIsWaiting = false;
-            CustomerRunsOutOfPatienceForOderTaken();
-            baseOrderQueuePatienceTimeout = Mathf.Round(thisRoundOverallInstanceScript.roundTimer + thisRoundOverallInstanceScript.customerOverallPatienceThisRound);
+            if (toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>() != null)
+            {
+                if (toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
+                {
+                    thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
+                    CustomerRunsOutOfPatienceForOderTaken(0);
+                }
+            }
+        }
+        if (thisRoundOverallInstanceScript.customerTimerInQO2 < 0.1 && this.gameObject.transform.childCount > 1)
+        {
+            if (this.gameObject.transform.childCount > 1 && toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>() != null)
+            {
+                if (toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
+                {
+                    thisRoundOverallInstanceScript.customerTimerInQO2 = 0.1f;
+                    CustomerRunsOutOfPatienceForOderTaken(1);
+                }
+            }
+        }
+        if (thisRoundOverallInstanceScript.customerTimerInQO3 < 0.1 && this.gameObject.transform.childCount > 2)
+        {
+            if (this.gameObject.transform.childCount > 2 && toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>() != null)
+            {
+                if (toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
+                {
+                    thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
+                    CustomerRunsOutOfPatienceForOderTaken(2);
+                }
+            }
         }
 
-        //Counter increases while no customer is in line. This is to ensure the customer patience matches their patience input.
-        if (!CustomerIsWaiting)
+        //Below should be moved to drink handle pickup script.
+        if (thisRoundOverallInstanceScript.customerTimerInDO1 < 0.1 && this.gameObject.transform.childCount > 0)
         {
-            baseOrderQueuePatienceTimeout = Mathf.Round(thisRoundOverallInstanceScript.roundTimer + thisRoundOverallInstanceScript.customerOverallPatienceThisRound);
+            CustomerRunsOutOfPatienceForOderTaken(0);
+        }
+        if (thisRoundOverallInstanceScript.customerTimerInDO2 < 0.1 && this.gameObject.transform.childCount > 1)
+        {
+            CustomerRunsOutOfPatienceForOderTaken(1);
+        }
+        if (thisRoundOverallInstanceScript.customerTimerInDO3 < 0.1 && this.gameObject.transform.childCount > 2)
+        {
+            CustomerRunsOutOfPatienceForOderTaken(2);
         }
 
+        //Below should be moved to special request handle script.
+        if (thisRoundOverallInstanceScript.customerTimerInSO1 < 0.1 && this.gameObject.transform.childCount > 0)
+        {
+            CustomerRunsOutOfPatienceForOderTaken(0);
+        }
     }
 
     // Awake is called when this script is on.
@@ -69,71 +104,137 @@ public class CustomerHandlerScript : MonoBehaviour
         customerObject.transform.SetParent(this.gameObject.transform,false);
         customerObject.transform.localPosition = new Vector3(-1200f,0f,0f);
         customerObject.transform.localScale = new Vector3(0.6f,0.6f,0.6f);
+        customerObject.GetComponent<Image>().color = new Color32(0, 0, 0, 255);
 
         toOrderCustomerQueue.Add(customerObject);
 
-        AdjustRayCasts();
+        AdjustRayCastsAndPatienceTimers();
         AdjustColorNAnimationOfNewCustomer(customerObject);
 
-        if (this.gameObject.transform.childCount > 0)
-        {
-            CustomerIsWaiting = true;
-        }
     }
 
     //FIXME: Add animation to this customer line when a customer's order is taken (After all dialogue has been activated by customer's custom scripts).
+    //ADD LOGIC TO INCREASE POPULARITY BASED OF HOW MUCH PATIENCE WAS LEFT.
     //This method is activated when an order is truly placed by the customer and it pushes all other customers forward and the main customer to the other queue.
     public void TakeCustomerOrderNAnimateAction(){
         //Check the game object that this script is attached to (the "CustomerQueueHandler" GameObject) to move it's customer to the next queue.
         GameObject customerThatOrderedADrink = toOrderCustomerQueue[0];
         CustomerDrinkWaitQueueHandler.GetComponent<CustomerWaitingHandlerScript>().AddCustomerToThisWatingQueue(customerThatOrderedADrink);
         toOrderCustomerQueue.RemoveAt(0);
-        CustomerIsWaiting = false;
+
+        //Does not reset ALL patience, but instead only moves them if nessiscary.
+        MoveOrResetPatience(false);
+
         StartCoroutine(LerpNPCOtherQueuePosition(1200,customerThatOrderedADrink));
         //If the player isn't looking at the front shop, cancel walk in animation.
-        AdjustRayCasts();
+        AdjustRayCastsAndPatienceTimers();
         foreach(GameObject customer in toOrderCustomerQueue){
             AdjustColorNAnimationOfNewCustomer(customer);
         }
     }
 
-    //FIXME: Add animation to this customer line when a customer looses all patience (with dialogue pop up automated).
+    //FIXME: Add animation to this customer line when a customer looses all patience (with dialogue pop up automated). Add logic to decrease popularity too!
     //This method is activated when a customer looses all patience waiting to have their order taken.
-    public void CustomerRunsOutOfPatienceForOderTaken()
+    public void CustomerRunsOutOfPatienceForOderTaken(int lineIndx)
     {
-        //Check the game object that this script is attached to (the "CustomerQueueHandler" GameObject) to move it's customer to the next queue.
-        GameObject customerThatWantedToOrderAndLostPatience = toOrderCustomerQueue[0];
-        toOrderCustomerQueue.RemoveAt(0);
-        StartCoroutine(LerpNPCPatienceDestroyer(-1200, customerThatWantedToOrderAndLostPatience));
-        //If the player isn't looking at the front shop, cancel walk in animation.
-        AdjustRayCasts();
-        foreach (GameObject customer in toOrderCustomerQueue)
-        {
-            AdjustColorNAnimationOfNewCustomer(customer);
+
+        //Check if the customer even exists or left line already
+        if (toOrderCustomerQueue[lineIndx] != null) {
+            //Check if the customer even has patience timer
+            if (toOrderCustomerQueue[lineIndx].GetComponent<CustomerPatienceUIScript>() == null)
+            {
+                //Do nothing, this customer has infinite patience.
+            }
+            else
+            {
+                ResetOrMovePatience(lineIndx);
+
+                //Pull the game object that this script is attached to (the "CustomerQueueHandler" GameObject) to destroy customer and remove from queue.
+                GameObject customerThatWantedToOrderAndLostPatience = toOrderCustomerQueue[lineIndx];
+                    toOrderCustomerQueue.RemoveAt(lineIndx);
+                    customerThatWantedToOrderAndLostPatience.transform.SetParent(null, false);
+                    StartCoroutine(LerpNPCPatienceDestroyer(-3200, customerThatWantedToOrderAndLostPatience));
+                    //If the player isn't looking at the front shop, cancel walk in animation.
+                    AdjustRayCastsAndPatienceTimers();
+                    foreach (GameObject customer in toOrderCustomerQueue)
+                    {
+                        if (customer == toOrderCustomerQueue[0])
+                        {
+                            //Do not alter
+                        }
+                    else
+                    {
+                        AdjustColorNAnimationOfNewCustomer(customer);
+                    }
+                        
+                    }
+            }
         }
     }
 
     //This method adjusts the raycast and color values of the NPC's in this queue.
-    public void AdjustRayCasts(){
-        for(int i = 0; i < toOrderCustomerQueue.Count; i++){
-            if(i == 0){
+    public void AdjustRayCastsAndPatienceTimers(){
+        for (int i = 0; i < toOrderCustomerQueue.Count; i++)
+        {
+            if (i == 0)
+            {
+                //Check if customer has infinite patience
                 toOrderCustomerQueue[i].GetComponent<Image>().raycastTarget = true;
-                if (toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>() == null)
+                if (toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>()==null)
                 {
-                    
+                    //Do not time
                 }
                 else
                 {
-                    //if (!toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().CheckIfCustomerHasBeenFlaggedAsFront())
-                    //{
-                        //Add customer's patience to the patience timer to ensure time after clickable timer sets correctly.
-                        baseOrderQueuePatienceTimeout = Mathf.Round(thisRoundOverallInstanceScript.roundTimer + thisRoundOverallInstanceScript.customerOverallPatienceThisRound);
+                    //Set this customer as the front customer with the patience icon. Pull in customer's patience for giving their order.
+                    if (!toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsAtFront) {
+                        thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 = (toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime + thisRoundOverallInstanceScript.roundTimer);
+                        thisRoundOverallInstanceScript.customerStartingTimeInQO1 = thisRoundOverallInstanceScript.roundTimer;
                         toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().CustomerStartedWaitingForOrderTaking();
-                    //}
+                        toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsAtFront = true;
+                        toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerHadOrderTaken = true;
+                        toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront = false;
+                    }
                 }
-                
+
             }
-            else{
+            else
+            {
+                if (i == 1)
+                {
+                    //Check if customer has infinite patience
+                    if (toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>() == null)
+                    {
+                        //Do not time
+                    }
+                    else
+                    {
+                        if (!toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront) {
+                        //Set this customer's patience for waiting in the initial line.
+                        thisRoundOverallInstanceScript.customerStartingTimeInQO2 = thisRoundOverallInstanceScript.roundTimer;
+                        thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = (toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerWaitingInBeginningLineTime + thisRoundOverallInstanceScript.roundTimer);
+                        toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront = true;
+                        }
+                    }
+                }
+                if (i == 2)
+                {
+                    //Check if customer has infinite patience
+                    if (toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>()== null)
+                    {
+                        //Do not time
+                    }
+                    else
+                    {
+                        if (!toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront) {
+                            //Set this customer's patience for waiting in the initial line.
+                            thisRoundOverallInstanceScript.customerStartingTimeInQO3 = thisRoundOverallInstanceScript.roundTimer;
+                            thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3 = (toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerWaitingInBeginningLineTime + thisRoundOverallInstanceScript.roundTimer);
+                            toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront = true;
+                        }
+                    }
+                }
+
                 toOrderCustomerQueue[i].GetComponent<Image>().raycastTarget = false;
             }
         }
@@ -142,8 +243,14 @@ public class CustomerHandlerScript : MonoBehaviour
     //This method adjusts the animation and color of the new customer coming into the queue.
     public void AdjustColorNAnimationOfNewCustomer(GameObject customer){
         if(toOrderCustomerQueue.Count == 1){
+            //If first position customer is already in fully colored, don't alter them.
+            if (toOrderCustomerQueue[0].GetComponent<Image>().color != new Color32(255, 255, 255, 255))
+            {
+                StartCoroutine(LerpNPCQueueColors(255, toOrderCustomerQueue[0].GetComponent<Image>()));
+                StartCoroutine(LerpNPCQueuePosition(-550, toOrderCustomerQueue[0]));
+            }
             //If the player isn't looking at the front shop, cancel walk in animation.
-            if(gameObject.transform.parent.gameObject.activeSelf){
+            if (gameObject.transform.parent.gameObject.activeSelf){
                 StartCoroutine(LerpNPCQueueColors(255,toOrderCustomerQueue[0].GetComponent<Image>()));
                 StartCoroutine(LerpNPCQueuePosition(-550,toOrderCustomerQueue[0]));
             }else{
@@ -154,8 +261,13 @@ public class CustomerHandlerScript : MonoBehaviour
         if(toOrderCustomerQueue.Count == 2){
             //If the player isn't looking at the front shop, cancel walk in animation.
             if(gameObject.transform.parent.gameObject.activeSelf){
-                StartCoroutine(LerpNPCQueueColors(255,toOrderCustomerQueue[0].GetComponent<Image>()));
-                StartCoroutine(LerpNPCQueuePosition(-550,toOrderCustomerQueue[0]));
+
+                //If first position customer is already in fully colored, don't alter them.
+                if(toOrderCustomerQueue[0].GetComponent<Image>().color != new Color32(255, 255, 255, 255))
+                {
+                    StartCoroutine(LerpNPCQueueColors(255, toOrderCustomerQueue[0].GetComponent<Image>()));
+                    StartCoroutine(LerpNPCQueuePosition(-550, toOrderCustomerQueue[0]));
+                }
                 StartCoroutine(LerpNPCQueueColors(155,toOrderCustomerQueue[1].GetComponent<Image>()));
                 StartCoroutine(LerpNPCQueuePosition(-650,toOrderCustomerQueue[1]));
             }else{
@@ -183,7 +295,6 @@ public class CustomerHandlerScript : MonoBehaviour
     //This method ensures if the object coroutine was interrupted, customers will still load as normal.
     public void RecheckCustomerVisuals(){
         //Reset the list objects positions and colors if there are customers in it.
-        print(toOrderCustomerQueue.Count);
         if(toOrderCustomerQueue.Count == 3){
             for (int i = 0; i < toOrderCustomerQueue.Count; i++){
                 if(i == 2){
@@ -218,10 +329,88 @@ public class CustomerHandlerScript : MonoBehaviour
         } 
     }
 
-    //This method adds patience to the customer in the queue.
-    public void CustomerQueuePatienceAdder(float patienceTimeAdded)
+    //This method resets the patience according to when a customer leaves.
+    public void ResetOrMovePatience(int customerInxThatLeft)
     {
-        baseOrderQueuePatienceTimeout = baseOrderQueuePatienceTimeout + patienceTimeAdded;
+        //Reset or move Patience timers
+        switch (customerInxThatLeft)
+        {
+            case 0:
+                //Reset Q1 timers, as front facing customers have different patience, but reset Q2 as well as future customers need new timers.
+                thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO1 = 0f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 = 0f;
+                thisRoundOverallInstanceScript.customerTimerInQO2 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO2 = 0f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = 0f;
+                return;
+            case 1:
+                float q3TimerToMoveUp = thisRoundOverallInstanceScript.customerTimerInQO3;
+                float q3TimerSToMoveUp = thisRoundOverallInstanceScript.customerStartingTimeInQO3;
+                float q3TimerEToMoveUp = thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3;
+                //Reset Q3 timers, and let Q2 have old Q3 timers.
+                thisRoundOverallInstanceScript.customerTimerInQO2 = q3TimerToMoveUp;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO2 = q3TimerSToMoveUp;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = q3TimerEToMoveUp;
+                thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO3 = 0f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3 = 0f;
+                return;
+            case 2:
+                //Reset Q3 timers
+                thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO3 = 0f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3 = 0f;
+                return;
+        }
+    }
+
+    //Overloaded method resets the patience anytime the queue changes.
+    public void MoveOrResetPatience(bool resetAllPatienceInThisQueue)
+    {
+        if (resetAllPatienceInThisQueue)
+        {
+            //Resets ALL Patience timers
+            thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
+            thisRoundOverallInstanceScript.customerStartingTimeInQO1 = 0f;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 = 0f;
+            thisRoundOverallInstanceScript.customerTimerInQO2 = 0.1f;
+            thisRoundOverallInstanceScript.customerStartingTimeInQO2 = 0f;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = 0f;
+            thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
+            thisRoundOverallInstanceScript.customerStartingTimeInQO3 = 0f;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3 = 0f;
+        }
+        else
+        {
+            if (toOrderCustomerQueue.Count == 1)
+            {
+                thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO1 = 0f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 = 0f;
+                thisRoundOverallInstanceScript.customerTimerInQO2 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO2 = 0f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = 0f;
+            }
+
+            if (toOrderCustomerQueue.Count == 2)
+            {
+                thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO1 = 0f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 = 0f;
+                float q3TimerToMoveUp = thisRoundOverallInstanceScript.customerTimerInQO3;
+                float q3TimerSToMoveUp = thisRoundOverallInstanceScript.customerStartingTimeInQO3;
+                float q3TimerEToMoveUp = thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3;
+                //Reset Q3 timers, and let Q2 have old Q3 timers.
+                thisRoundOverallInstanceScript.customerTimerInQO2 = q3TimerToMoveUp;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO2 = q3TimerSToMoveUp;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = q3TimerEToMoveUp;
+                thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO3 = 0f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3 = 0f;
+            }
+        }
+
     }
 
     //This enum is a lerp for the NPC's color.
@@ -230,7 +419,7 @@ public class CustomerHandlerScript : MonoBehaviour
         float timeElapsed = 0;
         float valueToLerp = 0f;
 
-        while (timeElapsed < 1.5f)
+        while (timeElapsed < 0.5f)
         {
             imageToChange.GetComponent<Image>().color = new Color32(((byte)valueToLerp),((byte)valueToLerp),((byte)valueToLerp),255);
             valueToLerp = Mathf.Lerp(0, colorTarget, timeElapsed / 1.5f);
@@ -264,7 +453,7 @@ public class CustomerHandlerScript : MonoBehaviour
     {
         float timeElapsed = 0;
 
-        while (timeElapsed < 5)
+        while (timeElapsed < 1.5)
         {
             float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
             NPCToMove.transform.localPosition = new Vector3(valueToLerp,math.sin(valueToLerp*math.PI)-55,0);
@@ -281,7 +470,7 @@ public class CustomerHandlerScript : MonoBehaviour
     {
         float timeElapsed = 0;
 
-        while (timeElapsed < 5)
+        while (timeElapsed < 1.5)
         {
             float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
             NPCToMove.transform.localPosition = new Vector3(valueToLerp, math.sin(valueToLerp * math.PI) - 55, 0);

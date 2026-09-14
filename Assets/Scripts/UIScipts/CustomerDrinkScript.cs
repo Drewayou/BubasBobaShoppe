@@ -12,16 +12,14 @@ public class CustomerDrinkScript : MonoBehaviour
     // Usefull to determine the player stats for what drinks they unlocked.
     GameManagerScript thisGamesOverallInstanceScript;
 
+    BobaShopRoundManagerScript thisRoundOverallInstanceScript;
+
     // This chattiness number depends on the customer if they want to pre-talk before ordering a drink or not.
     // The player's relationship score with the NPC also alters this score.
     // Default is 1, ergo one dialogue before ordering.
-    // Chattiness is also equivalent to base patience multipler.
     // The TEXT of the dialogue is handled by the custom customer script.
+    // Also alters seconds of patience added (5f + (chattiness x 2))
     public float chattiness = 1f;
-
-    // This is the base patience of the customer when doing special interactions (Default 5).
-    [Tooltip("This is the base patience of the customer when doing special interactions (Default 5s).")]
-    public float basePatience = 5f;
 
     // The script that pulls the basic customer dialogue from Json files and/or hardcoded basic replies.
     CustomerDialogueScript customerDialogue;
@@ -91,6 +89,8 @@ public class CustomerDrinkScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //Find and load the BobaShopRound data.
+        thisRoundOverallInstanceScript = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
         thisGamesOverallInstanceScript = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
         customerDialogue = this.gameObject.GetComponent<CustomerDialogueScript>();
         drinkOrderStandardDialogue = this.gameObject.GetComponent<StandardDrinkNameDialogueGenerator>();
@@ -119,7 +119,7 @@ public class CustomerDrinkScript : MonoBehaviour
             }  
         }
         //Tell customer handler to add customer patience if possible.
-        CustomerInterationAddsXPatience();
+        thisRoundOverallInstanceScript.CustomerInterationAddsPatienceToFrontCustomer(chattiness);
 
         //Make a random drink with player's available ingredients if above checks fail.
         return GenerateRandomDrinkUIDWithIngredients();
@@ -475,25 +475,5 @@ public class CustomerDrinkScript : MonoBehaviour
             drinksThisNPCOrdered.Add(CharacterOrdersDrink());
             customerVerballyOrderedNDrinks = 3;
         }
-    }
-
-    //This method handles how much patience a customer gains per interaction with the player while taking orders/recieving their orders/special patience interactions.
-    //Interaction means initial click for taking the customer's order/giving their first drink/ect.
-    public float calculateAdditionalPatience()
-    {
-        Debug.Log(Mathf.Round((basePatience + chattiness) * 10) / 10);
-        float customerSpecificPatienceNumber = Mathf.Round((basePatience + chattiness) * 10) / 10;
-        return customerSpecificPatienceNumber;
-    }
-    
-    //Normal method to add patience + overloaded method for special interactions.
-    public void CustomerInterationAddsXPatience()
-    {
-        customerHandlerScriptProcessor.CustomerQueuePatienceAdder(calculateAdditionalPatience());
-    }
-
-    public void CustomerInterationAddsXPatience(float extraXPatience)
-    {
-        customerHandlerScriptProcessor.CustomerQueuePatienceAdder(calculateAdditionalPatience() + extraXPatience);
     }
 }
