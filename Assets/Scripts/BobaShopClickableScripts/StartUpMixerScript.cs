@@ -16,6 +16,8 @@ public class StartUpMixerScript : MonoBehaviour
     [Tooltip("Drag the mixer's \"Prefab\" object here (The main prefab object).")]
     public GameObject mixerOverallPrefabObject;
 
+    private bool hasMixerRendered = false;
+
     //Get the animator from this gameobject.
     Animator thisBobaMixerAnimator;
 
@@ -64,6 +66,33 @@ public class StartUpMixerScript : MonoBehaviour
     [SerializeField]
     [Tooltip("Drag the mixer spill prefab object here.")]
     public GameObject mixerSpillObject;
+    
+    void Awake()
+    {
+        //Get the mixer doors in this prefab.
+        mixerDoorsObject = gameObject.transform.parent.transform.GetChild(2).gameObject;
+
+        //Get the animator from this gameobject.
+        thisBobaMixerAnimator = gameObject.transform.parent.GetComponent<Animator>();
+        hasMixerRendered = true;
+    }
+
+    void OnEnable()
+    {
+        if (!hasMixerRendered)
+        {
+            return;
+        }
+
+        if (drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing)
+        {
+            mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsChurn");
+        }
+        else
+        {
+            mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsOpen");
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -71,12 +100,6 @@ public class StartUpMixerScript : MonoBehaviour
         //Finds the Game Manager in this instance.
         currentGameManagerInstance = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
         currentRoundManagerInstance = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
-
-        //Get the mixer doors in this prefab.
-        mixerDoorsObject = gameObject.transform.parent.transform.GetChild(2).gameObject;
-
-        //Get the animator from this gameobject.
-        thisBobaMixerAnimator = gameObject.transform.parent.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -93,18 +116,6 @@ public class StartUpMixerScript : MonoBehaviour
                 //Dispense thedrink made from the ingredients.
                 DispenseDrinkMade();
             }
-        }
-    }
-
-    private void OnEnable()
-    {
-        if (drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing)
-        {
-            mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsChurn");
-        }
-        else
-        {
-            mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsOpen");
         }
     }
 
@@ -624,18 +635,6 @@ public class StartUpMixerScript : MonoBehaviour
             return BobaToppingsInDrinkOverlay1;
         }
         return BobaToppingsInDrinkOverlay2;
-    }
-
-    IEnumerator MixerWait(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-
-        //PLay the door opening animation.
-        mixerDoorsObject.GetComponent<Animator>().Play("MixerDoorsOpen");
-        //Dispense thedrink made from the ingredients.
-        DispenseDrinkMade();
-        //Allow the mixer cup area to be clickable again.
-        drinkInMixerClickableArea.GetComponent<MixerCupAreaScript>().mixerIsMixing = false;
     }
 
 }

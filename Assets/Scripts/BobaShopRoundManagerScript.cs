@@ -123,6 +123,11 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [Tooltip("Used count how many customers are spawned in the world currently. Does not record any enemies pre-placed into the world!")]
     public int customersSpawned = 0;
 
+    //Saves the base stat of how long a customer would wait on an action (Base of 10seconds)
+    [Header("Customer Patience")]
+    [Tooltip("This is base patience for customers and should be modulated against other factors.")]
+    public float customerOverallPatienceThisRound = 10f;
+
     //NOTE : Player ALWAYS starts with 3 lives!
     public int playerLives;
 
@@ -133,6 +138,9 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         overallGameManager = GameObject.Find("GameManagerObject");
         thisGamesOverallInstance = overallGameManager.GetComponent<GameManagerScript>();
         customersThatCanSpawnThisRoundScript = this.gameObject.GetComponent<NPCCustomersThatCanSpawnScript>();
+
+        //FIXME: Patience may change due to game events (Like Rain, Storms, Cold, Heat, Festivites, Ect.)
+        customerOverallPatienceThisRound = thisGamesOverallInstance.ReturnBobaShopCustomerPatience();
 
         //Make Sure the ENDOFGAME UI isn't on and the INGAME UI is.
         EndOfRoundUIObject.SetActive(false);
@@ -185,7 +193,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         return roundTimer;
     }
 
-    //FIXME: A method to attempt to spawn a new customer according to shop popularity and if queue line (Order & Waiting queue) is full.
+    //FIXME: A method to attempt to spawn a new customer according to shop popularity and if queue line (Order & Waiting queue) is full. Need to add popularity.
     public void tryToSpawnARoundLoadedCustomer(){
         if(customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers.Count!=0)
         {
@@ -197,6 +205,12 @@ public class BobaShopRoundManagerScript : MonoBehaviour
                 print("Spawned a customer.");
             }
         }
+    }
+
+    //A method to adjust how long a customer would wait in line for various reasons.
+    public void setCustomerWaitingSpeeds()
+    {
+        thisGamesOverallInstance.ReturnBobaShopCustomerPatience();
     }
 
     //For used by customer scripts to keep track of how many customers are in this round

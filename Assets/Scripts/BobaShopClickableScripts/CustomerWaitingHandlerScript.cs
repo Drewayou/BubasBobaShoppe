@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class CustomerWaitingHandlerScript : MonoBehaviour
 {
     // This script handles the player interaction and a couple UI tabs to recieve orders from the customer and move them to the waiting handler game object.
-    // CONNECTED TO "CustomerDrinkWaitQueueHandler" Game Object.
+    // CONNECTED TO "CustomerQueueHandler" Game Object.
 
     // Get the boba shop game manager script to pull data from.
     BobaShopRoundManagerScript thisRoundOverallInstanceScript;
@@ -15,7 +15,10 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     public List<GameObject> waitingForOrderCustomerQueue;
 
     // Timer for customers picking up their order (Their walk speed and aimations for them "picking up" their boba order at the sell mat).
-    public float customerWalkingTimer = 0f; 
+    public float customerWalkingTimer = 0f;
+
+    // Timer for customers in order queue (Generally double the base time in player stats)
+    public float customerPatienceForGettingOrder;
 
     // Script for the drink mat to be pulled.
     [SerializeField]
@@ -35,6 +38,7 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     {
         //Find and load the BobaShopRound data.
         thisRoundOverallInstanceScript = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
+        customerPatienceForGettingOrder = thisRoundOverallInstanceScript.customerOverallPatienceThisRound * 2;
     }
 
     // Update is called once per frame

@@ -170,7 +170,8 @@ public class GameManagerScript : MonoBehaviour
         playerStats.shopCupHoldersAvailableRightSide = 3; // (Max 3)
         playerStats.shopCupHoldersAvailableLeftSide = 3; // (Max 6)
         playerStats.shopToppingJarsAvailable = 3; // (Max 3)
-        playerStats.shopPopularity = 4.0f;
+        playerStats.shopPopularity = 0.0f;
+        playerStats.customerPatience = 10f;
         playerStats.mixerAvailable = 1;
 
         //bools for shop unlocks
@@ -223,7 +224,7 @@ public class GameManagerScript : MonoBehaviour
         playerStats.maxBobaShopLineQueue = 3;
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Below are shop data sets for player-related stats of un-lockable boba shop items!
-        
+        #region ShopAndSpawnStats
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -286,6 +287,8 @@ public class GameManagerScript : MonoBehaviour
         drinkMultiplier.StrawberryMultiplier = 2.00f;
         drinkMultiplier.MangoMultiplier = 3.00f;
         drinkMultiplier.UbeMultiplier = 3.00f;
+
+        #endregion
 
         //Default Basic boss level
         cassavaBossLevel.WorldName = "CassavaCastle";
@@ -747,6 +750,16 @@ public class GameManagerScript : MonoBehaviour
 
     public void UpdateMaxBobaShopLineQueue(int newQueueLimit){
         playerStats.maxBobaShopLineQueue = newQueueLimit;
+    }
+
+    public float ReturnBobaShopCustomerPatience()
+    {
+        return PlayerStatsThisInstance.customerPatience;
+    }
+
+    public void UpdateBobaShopCustomerPatience(float newCustomerPatience)
+    {
+        playerStats.customerPatience = newCustomerPatience;
     }
 
     public ShopCostsNEarnings ReturnCurrentShopInstance(){

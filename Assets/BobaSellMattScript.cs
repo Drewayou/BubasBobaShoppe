@@ -118,12 +118,12 @@ public class BobaSellMattScript : MonoBehaviour
             PopSellableBobaDrinks();
         }
 
-        //Player interaction if they interacted wrongly with the cup holder.
-        if(!interactedCorrectly){
+        //Player interaction if they interacted wrongly with the sell mat.
+        if (!interactedCorrectly){
             //Play wrong interaction hand animation.
             Animator itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
             itemInHandInventoryAnimator.Play("IncorrectInteraction");
-            print("You can't place other items into the cup holder!");
+            print("You can't place other items into the sell mat!");
         }
     }
 

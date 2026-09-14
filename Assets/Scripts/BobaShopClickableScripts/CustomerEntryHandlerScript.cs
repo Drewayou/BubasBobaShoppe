@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,11 @@ public class CustomerHandlerScript : MonoBehaviour
     [SerializeField]
     public List<GameObject> toOrderCustomerQueue;
 
+    // Float counter of the current customer's patience (The customers in the queue don't drop patience until this customer leaves at this time)
+    public float baseOrderQueuePatienceTimeout;
+
+    public bool CustomerIsWaiting = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created.
     void Start()
     {
@@ -31,7 +37,21 @@ public class CustomerHandlerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //FIXME: ADD PATIENCE ANIMATION! ADD PATIENCE PER INTERACTION CLICK
+        //Timer that checks off the round time to evaluate if the customer in front of this queue looses patience. +5s Patience is added for each dialogue order taken interaction. 
+        if (baseOrderQueuePatienceTimeout <= thisRoundOverallInstanceScript.roundTimer && CustomerIsWaiting)
+        {
+            CustomerIsWaiting = false;
+            CustomerRunsOutOfPatienceForOderTaken();
+            baseOrderQueuePatienceTimeout = Mathf.Round(thisRoundOverallInstanceScript.roundTimer + thisRoundOverallInstanceScript.customerOverallPatienceThisRound);
+        }
+
+        //Counter increases while no customer is in line. This is to ensure the customer patience matches their patience input.
+        if (!CustomerIsWaiting)
+        {
+            baseOrderQueuePatienceTimeout = Mathf.Round(thisRoundOverallInstanceScript.roundTimer + thisRoundOverallInstanceScript.customerOverallPatienceThisRound);
+        }
+
     }
 
     // Awake is called when this script is on.
@@ -54,6 +74,11 @@ public class CustomerHandlerScript : MonoBehaviour
 
         AdjustRayCasts();
         AdjustColorNAnimationOfNewCustomer(customerObject);
+
+        if (this.gameObject.transform.childCount > 0)
+        {
+            CustomerIsWaiting = true;
+        }
     }
 
     //FIXME: Add animation to this customer line when a customer's order is taken (After all dialogue has been activated by customer's custom scripts).
@@ -63,10 +88,27 @@ public class CustomerHandlerScript : MonoBehaviour
         GameObject customerThatOrderedADrink = toOrderCustomerQueue[0];
         CustomerDrinkWaitQueueHandler.GetComponent<CustomerWaitingHandlerScript>().AddCustomerToThisWatingQueue(customerThatOrderedADrink);
         toOrderCustomerQueue.RemoveAt(0);
+        CustomerIsWaiting = false;
         StartCoroutine(LerpNPCOtherQueuePosition(1200,customerThatOrderedADrink));
         //If the player isn't looking at the front shop, cancel walk in animation.
         AdjustRayCasts();
         foreach(GameObject customer in toOrderCustomerQueue){
+            AdjustColorNAnimationOfNewCustomer(customer);
+        }
+    }
+
+    //FIXME: Add animation to this customer line when a customer looses all patience (with dialogue pop up automated).
+    //This method is activated when a customer looses all patience waiting to have their order taken.
+    public void CustomerRunsOutOfPatienceForOderTaken()
+    {
+        //Check the game object that this script is attached to (the "CustomerQueueHandler" GameObject) to move it's customer to the next queue.
+        GameObject customerThatWantedToOrderAndLostPatience = toOrderCustomerQueue[0];
+        toOrderCustomerQueue.RemoveAt(0);
+        StartCoroutine(LerpNPCPatienceDestroyer(-1200, customerThatWantedToOrderAndLostPatience));
+        //If the player isn't looking at the front shop, cancel walk in animation.
+        AdjustRayCasts();
+        foreach (GameObject customer in toOrderCustomerQueue)
+        {
             AdjustColorNAnimationOfNewCustomer(customer);
         }
     }
@@ -76,7 +118,22 @@ public class CustomerHandlerScript : MonoBehaviour
         for(int i = 0; i < toOrderCustomerQueue.Count; i++){
             if(i == 0){
                 toOrderCustomerQueue[i].GetComponent<Image>().raycastTarget = true;
-            }else{
+                if (toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>() == null)
+                {
+                    
+                }
+                else
+                {
+                    //if (!toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().CheckIfCustomerHasBeenFlaggedAsFront())
+                    //{
+                        //Add customer's patience to the patience timer to ensure time after clickable timer sets correctly.
+                        baseOrderQueuePatienceTimeout = Mathf.Round(thisRoundOverallInstanceScript.roundTimer + thisRoundOverallInstanceScript.customerOverallPatienceThisRound);
+                        toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().CustomerStartedWaitingForOrderTaking();
+                    //}
+                }
+                
+            }
+            else{
                 toOrderCustomerQueue[i].GetComponent<Image>().raycastTarget = false;
             }
         }
@@ -161,6 +218,12 @@ public class CustomerHandlerScript : MonoBehaviour
         } 
     }
 
+    //This method adds patience to the customer in the queue.
+    public void CustomerQueuePatienceAdder(float patienceTimeAdded)
+    {
+        baseOrderQueuePatienceTimeout = baseOrderQueuePatienceTimeout + patienceTimeAdded;
+    }
+
     //This enum is a lerp for the NPC's color.
     public IEnumerator LerpNPCQueueColors(float colorTarget, Image imageToChange)
     {
@@ -211,6 +274,24 @@ public class CustomerHandlerScript : MonoBehaviour
         }
 
         NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x,-55,0);
+    }
+
+    //This enum is a lerp for the NPC's position "walking" into the other animation and destroys the NPC.
+    public IEnumerator LerpNPCPatienceDestroyer(float newPositionDesired, GameObject NPCToMove)
+    {
+        float timeElapsed = 0;
+
+        while (timeElapsed < 5)
+        {
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
+            NPCToMove.transform.localPosition = new Vector3(valueToLerp, math.sin(valueToLerp * math.PI) - 55, 0);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x, -55, 0);
+        Destroy(NPCToMove);
     }
 
     //This method adjusts the animation of the NPC's that enter the scene and makes it so that they appeart to be walking into line.

@@ -84,7 +84,7 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!95 &137420003037514009
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -98,6 +98,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -249,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixerOverallPrefabObject: {fileID: 222731893582085095}
+  mixerTimeToFinishMix: 0
   drinkInMixerClickableArea: {fileID: 4013593641409908029}
   mixerIngredientInput: {fileID: 6309678420819104852}
   mixerFlavorLevel: {fileID: 1436455972896777504}
@@ -268,6 +270,8 @@ MonoBehaviour:
   StrawberryBase: {fileID: 2456794447616925271, guid: 1e32f7ca366aee24695f6383f2bf162c, type: 3}
   MangoBase: {fileID: 2456794447616925271, guid: d5ae9d8803aa08e4c9b199452e4e1f86, type: 3}
   UbeBase: {fileID: 2456794447616925271, guid: 6b64c8146d934344ebc46cc061638415, type: 3}
+  drinkTempMixSetting: 0
+  drinkSweetness: 0
   BobaToppingsInDrinkOverlay1: {fileID: 2456794447616925271, guid: d0ed2c8efd5040e4c9d95c0eecdf03f9, type: 3}
   BobaToppingsInDrinkOverlay2: {fileID: 2456794447616925271, guid: aeb100f2b4f3c994492663b1211a2ca9, type: 3}
   BobaToppingsInDrinkOverlay3: {fileID: 2456794447616925271, guid: 16d68a064e8c45d4d8e0df485075f424, type: 3}
@@ -507,6 +511,7 @@ MonoBehaviour:
   mixerCupHasBaseInIt: 0
   mixerCupHasAddOnInIt: 0
   mixerHasIngredientPlacedInMixer: 0
+  mixerIsMixing: 0
 --- !u!1 &6309678420819104852
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,7 +746,7 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!95 &4822585089474414245
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -755,6 +760,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d7938f58aeb58ec41bcdc5ce6d8817b6
+guid: f1339d2e24ecfd74ea7f3197576f356c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3176169221423456353
-    second: PopUpsChatBox_0
+      213: 7823790373244399200
+    second: PatienceMeterRedBck_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -56,7 +56,9 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationMethod: 0
   spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -109,17 +111,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PopUpsChatBox_0
+      name: PatienceMeterRedBck_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 49
-        height: 25
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +143,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f9f9682dbeafbe3d0800000000000000
-      internalID: -3176169221423456353
+      spriteID: 06e6a5a64efa39c60800000000000000
+      internalID: 7823790373244399200
       vertices: []
       indices: 
       edges: []
@@ -148,7 +163,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PopUpsChatBox_0: -3176169221423456353
+      PatienceMeterRedBck_0: 7823790373244399200
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

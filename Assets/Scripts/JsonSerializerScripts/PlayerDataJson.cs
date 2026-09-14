@@ -67,6 +67,9 @@ public class PlayerDataJson
     // This data value is important for setting the popularity of the 
     public float shopPopularity { get; set; }
 
+    // This data value is important for setting the base on how long customers will wait in the shop for specific actions (float = seconds)
+    public float customerPatience { get; set; }
+
     // This data list is for the items selected to be in the trays of the shop. This is usually set before a boba shop round.
     public List<int> shopTraysItemListArray { get; set; }
 
@@ -109,5 +112,4 @@ public class PlayerDataJson
     // This data value dictates how many cusomters the player can deal with at a time during a boba shop round. Maximum of 6 (3 waiting to order and 3 already ordered).
     // Customer Queue max size is dictated by the ammount of tables/chairs the player has bought & boba shop popularity. Again, This INCLUDES customers waiting for their order to be done.
     public int maxBobaShopLineQueue { get; set; }
-
 }
