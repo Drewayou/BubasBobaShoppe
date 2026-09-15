@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 02c94b52e8e25aa4cbae5dcd1ade7522
+guid: 12925d2a29b316a429f4b7085b9f1ddc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8383804687643458279
-    second: SlowsaNPCNormal_0
+      213: -5871459312121414610
+    second: AddiNPC8_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -128,13 +128,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SlowsaNPCNormal_0
+      name: AddiNPC8_0
       rect:
         serializedVersion: 2
-        x: 67
+        x: 168
         y: 0
-        width: 947
-        height: 878
+        width: 744
+        height: 862
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,8 +143,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 915c1ce4e0eb6ab80800000000000000
-      internalID: -8383804687643458279
+      spriteID: e2cf7db2dd2648ea0800000000000000
+      internalID: -5871459312121414610
       vertices: []
       indices: 
       edges: []
@@ -163,7 +163,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SlowsaNPCNormal_0: -8383804687643458279
+      AddiNPC8_0: -5871459312121414610
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

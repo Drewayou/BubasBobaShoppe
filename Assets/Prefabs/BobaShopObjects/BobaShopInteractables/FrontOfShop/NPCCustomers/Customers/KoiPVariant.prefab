@@ -10,23 +10,51 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1828780778983151550, guid: c2843eed209b96d4ca82f247db525216, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 728
+      value: 761
+      objectReference: {fileID: 0}
+    - target: {fileID: 1828780778983151550, guid: c2843eed209b96d4ca82f247db525216, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1047
       objectReference: {fileID: 0}
     - target: {fileID: 2401313020969091386, guid: c2843eed209b96d4ca82f247db525216, type: 3}
       propertyPath: chanceOfFavoriteDrink
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2401313020969091386, guid: c2843eed209b96d4ca82f247db525216, type: 3}
       propertyPath: chanceOfMultpileDrinks
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2401313020969091386, guid: c2843eed209b96d4ca82f247db525216, type: 3}
+      propertyPath: characterFavoriteBobaDrinks.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2401313020969091386, guid: c2843eed209b96d4ca82f247db525216, type: 3}
       propertyPath: 'characterFavoriteBobaDrinks.Array.data[0]'
-      value: --GBM*B--
+      value: BNBBM*B--
+      objectReference: {fileID: 0}
+    - target: {fileID: 2401313020969091386, guid: c2843eed209b96d4ca82f247db525216, type: 3}
+      propertyPath: 'characterFavoriteBobaDrinks.Array.data[1]'
+      value: MBOBM*B--
+      objectReference: {fileID: 0}
+    - target: {fileID: 2401313020969091386, guid: c2843eed209b96d4ca82f247db525216, type: 3}
+      propertyPath: 'characterFavoriteBobaDrinks.Array.data[2]'
+      value: MBOBM*B--
+      objectReference: {fileID: 0}
+    - target: {fileID: 4013449781459886331, guid: c2843eed209b96d4ca82f247db525216, type: 3}
+      propertyPath: customerIsAtFront
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4013449781459886331, guid: c2843eed209b96d4ca82f247db525216, type: 3}
+      propertyPath: customerOrderWaitingTime
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4013449781459886331, guid: c2843eed209b96d4ca82f247db525216, type: 3}
+      propertyPath: customerIsWaitingForSomethingElse
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4013449781459886331, guid: c2843eed209b96d4ca82f247db525216, type: 3}
       propertyPath: customerWaitingInBeginningLineTime
-      value: 30
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4651098272768287430, guid: c2843eed209b96d4ca82f247db525216, type: 3}
       propertyPath: m_Pivot.x
@@ -111,10 +139,10 @@ PrefabInstance:
     - target: {fileID: 5825363618719171419, guid: c2843eed209b96d4ca82f247db525216, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3432723584769145447, guid: 8b243d910b578544f8b2eeea7994204c, type: 3}
+      objectReference: {fileID: -6818845206537310235, guid: f211bc1947e705049a3021d91f54d1f9, type: 3}
     - target: {fileID: 6532027010211178319, guid: c2843eed209b96d4ca82f247db525216, type: 3}
       propertyPath: m_Name
-      value: KristiPVariant
+      value: KoiPVariant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
