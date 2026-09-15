@@ -12,7 +12,7 @@ public class CustomerIdleBobAnimation : MonoBehaviour
 
     void Start()
     {   
-        characterBobingSpeedMultiplier = gameObject.GetComponent<CustomerDrinkScript>().characterShopSpeed;
+        characterBobingSpeedMultiplier = this.gameObject.GetComponentInParent<CustomerDrinkScript>().characterShopSpeed;
     }
 
     // Update is called once per frame

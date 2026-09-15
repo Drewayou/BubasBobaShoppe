@@ -95,7 +95,7 @@ public class CustomerPatienceUIScript : MonoBehaviour
     //This is the patience meter over 100% (0.0f->1f)
     public float patienceOver100 = 1;
 
-    public bool customerHadOrderTaken ,customerIsAtFront, customerIsWaitingForDrinks, customerIsWaitingForSomethingElse, customerIsInWaitingInALineNotAtFront;
+    public bool customerHadOrderTaken ,customerIsAtFront, customerIsWaitingForDrinks, customerIsWaitingForSomethingElse, customerIsInWaitingInALineNotAtFront, customerIsWalking;
 
     //This ensures that the customer timer is only started when a customer enteres the line and is clickable(from other scripts).
     //public bool timerHasStarted = false;
@@ -141,9 +141,9 @@ public class CustomerPatienceUIScript : MonoBehaviour
                 //Disable the default knob.
                 customerPatiencDefaultIco.enabled = false;
 
-                //Enable Dark patience layer and lag behind the loading by .05
+                //Enable Dark patience layer and lag behind the loading by .02
                 customerPatiencDarkerLayerMeter.enabled = true;
-                customerPatiencDarkerLayerMeter.fillAmount = (float)(patienceOver100 + .05);
+                customerPatiencDarkerLayerMeter.fillAmount = (float)(patienceOver100 + .02);
 
                 //Enable Happy patience layer the loading
                 customerPatiencHappyLayerMeter.enabled = true;
@@ -154,8 +154,8 @@ public class CustomerPatienceUIScript : MonoBehaviour
             }
             if (patienceOver100 > .25 && patienceOver100 < .50)
             {
-                //Have Dark patience lag behind the loading by .05
-                customerPatiencDarkerLayerMeter.fillAmount = (float)(patienceOver100 + .05);
+                //Have Dark patience lag behind the loading by .02
+                customerPatiencDarkerLayerMeter.fillAmount = (float)(patienceOver100 + .02);
 
                 //Disable the Happy layer.
                 customerPatiencHappyLayerMeter.enabled = false;
@@ -171,8 +171,8 @@ public class CustomerPatienceUIScript : MonoBehaviour
             }
             if (patienceOver100 <= .25)
             {
-                //Have Dark patience lag behind the loading by .05
-                customerPatiencDarkerLayerMeter.fillAmount = (float)(patienceOver100 + .05);
+                //Have Dark patience lag behind the loading by .02
+                customerPatiencDarkerLayerMeter.fillAmount = (float)(patienceOver100 + .02);
 
                 //Disable the Meh layer.
                 customerPatiencMehLayerMeter.enabled = false;
@@ -202,5 +202,28 @@ public class CustomerPatienceUIScript : MonoBehaviour
     public bool CheckIfCustomerHasBeenFlaggedAsFront()
     {
         return customerIsAtFront;
+    }
+
+    //Method to reset the customer's patience and icons if needed.
+    public void ResetThisCustomersPatienceAndFrontStatus()
+    {
+        customerIsAtFront = false;
+
+        //Disable the other patience layers.
+        customerPatiencDarkerLayerMeter.enabled = false;
+        customerPatiencBottomLayerMeter.enabled = false;
+        customerPatiencDefaultIco.enabled = false;
+        //Disable the Happy layer.
+        customerPatiencHappyLayerMeter.enabled = false;
+        //Disable the Happy knob.
+        customerPatiencHappyIcoMeter.enabled = false;
+        //Disable the Meh layer.
+        customerPatiencMehLayerMeter.enabled = false;
+        //Disable the Meh knob.
+        customerPatiencMehLayerMeter.enabled = false;
+        //Disable the Sad layer.
+        customerPatiencSadLayerMeter.enabled = false;
+        //Disable the Sad knob.
+        customerPatiencSadLayerMeter.enabled = false;
     }
 }
