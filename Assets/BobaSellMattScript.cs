@@ -37,7 +37,7 @@ public class BobaSellMattScript : MonoBehaviour
 
     //Straws get removed in the same order that the drinks do.
     public void SubtractStrawFromTheMat(){
-        strawsOnTheMat++;
+        strawsOnTheMat--;
     }
 
     public void PopSellableBobaDrinks(){

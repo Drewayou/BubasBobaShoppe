@@ -215,15 +215,13 @@ public class CustomerPatienceUIScript : MonoBehaviour
         customerPatiencDefaultIco.enabled = false;
         //Disable the Happy layer.
         customerPatiencHappyLayerMeter.enabled = false;
-        //Disable the Happy knob.
-        customerPatiencHappyIcoMeter.enabled = false;
         //Disable the Meh layer.
-        customerPatiencMehLayerMeter.enabled = false;
-        //Disable the Meh knob.
         customerPatiencMehLayerMeter.enabled = false;
         //Disable the Sad layer.
         customerPatiencSadLayerMeter.enabled = false;
-        //Disable the Sad knob.
-        customerPatiencSadLayerMeter.enabled = false;
+
+        //Whatever Knob the customer had will be kept to show the player how much patience the customer had left.
+        //The happier the knob, the better the rating increases!
+        //Red/Sad faces have a 1/4 chance to nagatively decrease rating of restaurant, 2/4 no change (but still gives money with no tip chance), or 1/4 acts like a "meh" customer.
     }
 }

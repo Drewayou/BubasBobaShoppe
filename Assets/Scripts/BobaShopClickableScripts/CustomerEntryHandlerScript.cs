@@ -113,8 +113,6 @@ public class CustomerHandlerScript : MonoBehaviour
 
     }
 
-    //FIXME: Add animation to this customer line when a customer's order is taken (After all dialogue has been activated by customer's custom scripts).
-    //ADD LOGIC TO INCREASE POPULARITY BASED OF HOW MUCH PATIENCE WAS LEFT.
     //This method is activated when an order is truly placed by the customer and it pushes all other customers forward and the main customer to the other queue.
     public void TakeCustomerOrderNAnimateAction(){
         //Check the game object that this script is attached to (the "CustomerQueueHandler" GameObject) to move it's customer to the next queue.
