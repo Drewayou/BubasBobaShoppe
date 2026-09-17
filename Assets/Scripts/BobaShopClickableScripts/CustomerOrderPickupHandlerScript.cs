@@ -32,6 +32,7 @@ public class CustomerOrderPickupScript : MonoBehaviour
     {
         if (this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue.Count > 0)
         {
+
             //FIXME: Customer starts patience and it runs all over again.
             //Patience will run until they see ALL their drinks in the drink mat.
             //If patience runs out while they're at the mat, they will take (up to their order limit) as many drinks on the mat as possible.

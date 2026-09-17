@@ -341,15 +341,10 @@ public class CustomerHandlerScript : MonoBehaviour
         switch (customerInxThatLeft)
         {
             case 0:
-                //Reset Q1 timers, as front facing customers have different patience, but reset Q2 as well as future customers need new timers.
+                //Reset Q1 timers, as front facing customers have different patience, but reset Q2/Q3 as well as future customers need new timers.
                 thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInQO1 = 0f;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 = 0f;
-                thisRoundOverallInstanceScript.customerTimerInQO2 = 0.1f;
-                thisRoundOverallInstanceScript.customerStartingTimeInQO2 = 0f;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = 0f;
-                return;
-            case 1:
                 float q3TimerToMoveUp = thisRoundOverallInstanceScript.customerTimerInQO3;
                 float q3TimerSToMoveUp = thisRoundOverallInstanceScript.customerStartingTimeInQO3;
                 float q3TimerEToMoveUp = thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3;
@@ -357,6 +352,16 @@ public class CustomerHandlerScript : MonoBehaviour
                 thisRoundOverallInstanceScript.customerTimerInQO2 = q3TimerToMoveUp;
                 thisRoundOverallInstanceScript.customerStartingTimeInQO2 = q3TimerSToMoveUp;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = q3TimerEToMoveUp;
+
+                return;
+            case 1:
+                float q3TimerToMoveUp2 = thisRoundOverallInstanceScript.customerTimerInQO3;
+                float q3TimerSToMoveUp2 = thisRoundOverallInstanceScript.customerStartingTimeInQO3;
+                float q3TimerEToMoveUp2 = thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3;
+                //Reset Q3 timers, and let Q2 have old Q3 timers.
+                thisRoundOverallInstanceScript.customerTimerInQO2 = q3TimerToMoveUp2;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO2 = q3TimerSToMoveUp2;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = q3TimerEToMoveUp2;
                 thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInQO3 = 0f;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3 = 0f;

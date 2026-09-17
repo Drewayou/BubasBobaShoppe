@@ -16,6 +16,9 @@ public class RingShopBellScripts : MonoBehaviour
     //Gets Game Manager Script.
     GameManagerScript currentGameManagerInstance;
 
+    // Get the boba shop game manager script to pull data from.
+    BobaShopRoundManagerScript thisRoundOverallInstanceScript;
+
     //Gets game Object to check what the player is currently holding.
     [SerializeField]
     [Tooltip("Drag the \"itemInHandInventory\" object in here.")]
@@ -41,6 +44,10 @@ public class RingShopBellScripts : MonoBehaviour
         //Get the game manager objects & round manager objects.
         gameManagerObject = GameObject.Find("GameManagerObject");
         currentGameManagerInstance = gameManagerObject.GetComponent<GameManagerScript>();
+
+        //Find and load the BobaShopRound data.
+        thisRoundOverallInstanceScript = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
+
 
         //Gets the item in hand animator to let the player know if they're doing the right interaction or not.
         //(Bell cannot be rung unless empty handed).
@@ -77,7 +84,13 @@ public class RingShopBellScripts : MonoBehaviour
     //This method contacts OrderPickupHandler script to start the customer drink pickup process.
     public void CallCustomer()
     {
-        customerWait4DrinkHandler.GetComponent<CustomerOrderPickupScript>().CheckIfCustomersAreWaitingForDrinks();
+        if (thisRoundOverallInstanceScript.bellTimer < 0)
+        {
+            //Restart cooldown to call customer timer by 3 sec.
+            customerWait4DrinkHandler.GetComponent<CustomerOrderPickupScript>().CheckIfCustomersAreWaitingForDrinks();
+            thisRoundOverallInstanceScript.bellTimer = 3f;
+        }
+        
     }
     
 }

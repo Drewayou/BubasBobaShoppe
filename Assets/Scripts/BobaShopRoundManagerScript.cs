@@ -129,9 +129,10 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     public float customerOverallPatienceThisRound = 10f;
 
     //Special flags for customer order patience counters.
-    public float customerTimerInQO1 = .01f, customerTimerInQO2, customerTimerInQO3, customerTimerInDO1, customerTimerInDO2, customerTimerInDO3, customerTimerInSO1;
-    public float customerStartingTimeInQO1, customerStartingTimeInQO2, customerStartingTimeInQO3, customerStartingTimeInDO1, customerStartingTimeInDO2, customerStartingTimeInDO3, customerStartingTimeInSO1;
-    public float eCustomerEndTimeAInQO1, eCustomerEndTimeAInQO2, eCustomerEndTimeAInQO3, eCustomerEndTimeAInDO1, eCustomerEndTimeAInDO2, eCustomerEndTimeAInDO3, eCustomerEndTimeAInSO1;
+    public float customerTimerInQO1 = .01f, customerTimerInQO2, customerTimerInQO3, customerTimerInDO1, customerTimerInDO2, customerTimerInDO3, customerTimerInDO4, customerTimerInDO5, customerTimerInDO6, customerTimerInSO1;
+    public float customerStartingTimeInQO1, customerStartingTimeInQO2, customerStartingTimeInQO3, customerStartingTimeInDO1, customerStartingTimeInDO2, customerStartingTimeInDO3, customerStartingTimeInDO4, customerStartingTimeInDO5, customerStartingTimeInDO6, customerStartingTimeInSO1;
+    public float eCustomerEndTimeAInQO1, eCustomerEndTimeAInQO2, eCustomerEndTimeAInQO3, eCustomerEndTimeAInDO1, eCustomerEndTimeAInDO2, eCustomerEndTimeAInDO3, eCustomerEndTimeAInDO4, eCustomerEndTimeAInDO5, eCustomerEndTimeAInDO6, eCustomerEndTimeAInSO1;
+    public float bellTimer = 0f;
 
     //NOTE : Player ALWAYS starts with 3 lives!
     public int playerLives;
@@ -585,9 +586,25 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         {
             customerTimerInDO3 = eCustomerEndTimeAInDO3 - roundTimer;
         }
+        if (eCustomerEndTimeAInDO4 > roundTimer)
+        {
+            customerTimerInDO4 = eCustomerEndTimeAInDO4 - roundTimer;
+        }
+        if (eCustomerEndTimeAInDO5 > roundTimer)
+        {
+            customerTimerInDO5 = eCustomerEndTimeAInDO5 - roundTimer;
+        }
+        if (eCustomerEndTimeAInDO6 > roundTimer)
+        {
+            customerTimerInDO6 = eCustomerEndTimeAInDO6 - roundTimer;
+        }
         if (eCustomerEndTimeAInSO1 > roundTimer)
         {
             customerTimerInSO1 = eCustomerEndTimeAInSO1 - roundTimer;
+        }
+        if (bellTimer > 0)
+        {
+            bellTimer = bellTimer - roundTimer;
         }
     }
 
