@@ -188,106 +188,129 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO2 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO2 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO2 = tempT3S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = tempT3E;
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO3 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO3 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO3 = tempT4S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = tempT4E;
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO4 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO4 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO4 = tempT5S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = tempT5E;
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO5 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO5 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO5 = tempT6S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = tempT6E;
 
+                thisRoundOverallInstanceScript.customerTimerInDO6 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO6 = 0f;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = 0f;
             }
+
             if (indexForTheCustomer == 1)
             {
                 //Resets ALL Patience timers
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO2 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO2 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO2 = tempT3S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = tempT3E;
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO3 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO3 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO3 = tempT4S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = tempT4E;
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO4 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO4 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO4 = tempT5S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = tempT5E;
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO5 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO5 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO5 = tempT6S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = tempT6E;
 
+                thisRoundOverallInstanceScript.customerTimerInDO6 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO6 = 0f;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = 0f;
             }
+
             if (indexForTheCustomer == 2)
             {
                 //Resets ALL Patience timers
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO3 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO3 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO3 = tempT4S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = tempT4E;
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO4 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO4 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO4 = tempT5S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = tempT5E;
 
                 thisRoundOverallInstanceScript.customerStartingTimeInDO5 = 0;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = 0;
+                thisRoundOverallInstanceScript.customerTimerInDO5 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO5 = tempT6S;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = tempT6E;
 
+                thisRoundOverallInstanceScript.customerTimerInDO6 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO6 = 0f;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = 0f;
             }
+            
             if (indexForTheCustomer == 3)
             {
-                //Resets ALL Patience timers
+            //Resets ALL Patience timers
 
-                thisRoundOverallInstanceScript.customerStartingTimeInDO4 = 0;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = 0;
-                thisRoundOverallInstanceScript.customerStartingTimeInDO4 = tempT5S;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = tempT5E;
+            thisRoundOverallInstanceScript.customerStartingTimeInDO4 = 0;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = 0;
+            thisRoundOverallInstanceScript.customerTimerInDO4 = 0.1f;
+            thisRoundOverallInstanceScript.customerStartingTimeInDO4 = tempT5S;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = tempT5E;
 
-                thisRoundOverallInstanceScript.customerStartingTimeInDO5 = 0;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = 0;
-                thisRoundOverallInstanceScript.customerStartingTimeInDO5 = tempT6S;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = tempT6E;
+            thisRoundOverallInstanceScript.customerStartingTimeInDO5 = 0;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = 0;
+            thisRoundOverallInstanceScript.customerTimerInDO5 = 0.1f;
+            thisRoundOverallInstanceScript.customerStartingTimeInDO5 = tempT6S;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = tempT6E;
 
-
-                thisRoundOverallInstanceScript.customerStartingTimeInDO6 = 0f;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = 0f;
+            thisRoundOverallInstanceScript.customerTimerInDO6 = 0.1f;
+            thisRoundOverallInstanceScript.customerStartingTimeInDO6 = 0f;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = 0f;
             }
+
             if (indexForTheCustomer == 4)
             {
-                //Resets ALL Patience timers
+            //Resets ALL Patience timers
 
-                thisRoundOverallInstanceScript.customerStartingTimeInDO5 = 0;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = 0;
-                thisRoundOverallInstanceScript.customerStartingTimeInDO5 = tempT6S;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = tempT6E;
+            thisRoundOverallInstanceScript.customerStartingTimeInDO5 = 0;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = 0;
+            thisRoundOverallInstanceScript.customerTimerInDO5 = 0.1f;
+            thisRoundOverallInstanceScript.customerStartingTimeInDO5 = tempT6S;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = tempT6E;
 
-                thisRoundOverallInstanceScript.customerStartingTimeInDO6 = 0f;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = 0f;
+            thisRoundOverallInstanceScript.customerTimerInDO6 = 0.1f;
+            thisRoundOverallInstanceScript.customerStartingTimeInDO6 = 0f;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = 0f;
             }
+
             if (indexForTheCustomer == 5)
             {
                 //Resets ALL Patience timers
