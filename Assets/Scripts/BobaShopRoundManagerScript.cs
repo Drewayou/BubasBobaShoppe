@@ -153,7 +153,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         //FIXME:inGameUIObject.SetActive(true);
 
         //Set all customer timers to .1
-        customerTimerInQO1 = customerTimerInQO2 = customerTimerInQO3 = customerTimerInDO1 = customerTimerInDO2 = customerTimerInDO3 = customerTimerInSO1 = 0.1f;
+        customerTimerInQO1 = customerTimerInQO2 = customerTimerInQO3 = customerTimerInDO1 = customerTimerInDO2 = customerTimerInDO3 = customerTimerInDO4 = customerTimerInDO5 = customerTimerInDO6 = customerTimerInSO1 = 0.1f;
 
         //Get the drink demand from this game's manager and apply them to this round
         //whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();

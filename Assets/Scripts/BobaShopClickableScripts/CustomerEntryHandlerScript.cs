@@ -469,7 +469,7 @@ public class CustomerHandlerScript : MonoBehaviour
     {
         float timeElapsed = 0;
 
-        while (timeElapsed < 10f)
+        while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
         {
             float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
             NPCToMove.transform.localPosition = new Vector3(valueToLerp,NPCToMove.transform.localPosition.y, 0);

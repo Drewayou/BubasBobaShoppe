@@ -132,7 +132,6 @@ public class CustomerPatienceUIScript : MonoBehaviour
             
             //Evaluate the patience level according to round manager.
             patienceOver100 = (1.0f - (thisRoundOverallInstanceScript.roundTimer - (thisRoundOverallInstanceScript.customerStartingTimeInQO1 - 0.5f)) / (thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 - thisRoundOverallInstanceScript.customerStartingTimeInQO1));
-            Debug.Log("Patience Val: " + patienceOver100);
 
             customerPatiencBottomLayerMeter.enabled = true;
 
