@@ -13,6 +13,9 @@ public class CustomerHandlerScript : MonoBehaviour
     // Get the boba shop game manager script to pull data from.
     BobaShopRoundManagerScript thisRoundOverallInstanceScript;
 
+    //The Gameobject that allows rendering customers leaving out of patience (Customer Patience Removal Object Handler).
+    GameObject CPROH;
+
     // Gameobject list that holds the CustomerWaitingHandlerScript.
     [SerializeField]
     [Tooltip("Drag and drop the \"CustomerDrinkWaitQueueHandler\" game object here.")]
@@ -27,6 +30,7 @@ public class CustomerHandlerScript : MonoBehaviour
     {
         //Find and load the BobaShopRound data.
         thisRoundOverallInstanceScript = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
+        CPROH = GameObject.Find("CPROH");
     }
 
     // Update is called once per frame
@@ -157,22 +161,26 @@ public class CustomerHandlerScript : MonoBehaviour
                 //Pull the game object that this script is attached to (the "CustomerQueueHandler" GameObject) to destroy customer and remove from queue.
                 GameObject customerThatWantedToOrderAndLostPatience = toOrderCustomerQueue[lineIndx];
                     toOrderCustomerQueue.RemoveAt(lineIndx);
-                    customerThatWantedToOrderAndLostPatience.transform.SetParent(null, false);
-                    StartCoroutine(LerpNPCPatienceDestroyer(-3200, customerThatWantedToOrderAndLostPatience));
+                    customerThatWantedToOrderAndLostPatience.transform.SetParent(CPROH.transform, false);
+
+                //If this gameobject script is actve, animate, otherwise auto destroy customer.
+                if (gameObject.transform.parent.gameObject.activeSelf)
+                {
+                    StartCoroutine(LerpNPCPatienceDestroyer(-1400, customerThatWantedToOrderAndLostPatience));
                     //If the player isn't looking at the front shop, cancel walk in animation.
                     AdjustRayCastsAndPatienceTimers();
                     foreach (GameObject customer in toOrderCustomerQueue)
                     {
-                        if (customer == toOrderCustomerQueue[0])
-                        {
-                            //Do not alter
-                        }
-                    else
-                    {
                         AdjustColorNAnimationOfNewCustomer(customer);
                     }
-                        
-                    }
+                }
+                else
+                {
+                    Destroy(customerThatWantedToOrderAndLostPatience);
+                }
+
+
+                
             }
         }
     }
@@ -345,10 +353,14 @@ public class CustomerHandlerScript : MonoBehaviour
                 thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInQO1 = 0f;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 = 0f;
+
+                //Reset Q3 timers, and let Q2 have old Q3 timers.
                 float q3TimerToMoveUp = thisRoundOverallInstanceScript.customerTimerInQO3;
                 float q3TimerSToMoveUp = thisRoundOverallInstanceScript.customerStartingTimeInQO3;
                 float q3TimerEToMoveUp = thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3;
-                //Reset Q3 timers, and let Q2 have old Q3 timers.
+                thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO3 = 0f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3 = 0f;
                 thisRoundOverallInstanceScript.customerTimerInQO2 = q3TimerToMoveUp;
                 thisRoundOverallInstanceScript.customerStartingTimeInQO2 = q3TimerSToMoveUp;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = q3TimerEToMoveUp;
@@ -359,12 +371,13 @@ public class CustomerHandlerScript : MonoBehaviour
                 float q3TimerSToMoveUp2 = thisRoundOverallInstanceScript.customerStartingTimeInQO3;
                 float q3TimerEToMoveUp2 = thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3;
                 //Reset Q3 timers, and let Q2 have old Q3 timers.
-                thisRoundOverallInstanceScript.customerTimerInQO2 = q3TimerToMoveUp2;
-                thisRoundOverallInstanceScript.customerStartingTimeInQO2 = q3TimerSToMoveUp2;
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = q3TimerEToMoveUp2;
                 thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInQO3 = 0f;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInQO3 = 0f;
+                thisRoundOverallInstanceScript.customerTimerInQO2 = q3TimerToMoveUp2;
+                thisRoundOverallInstanceScript.customerStartingTimeInQO2 = q3TimerSToMoveUp2;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInQO2 = q3TimerEToMoveUp2;
+                
                 return;
             case 2:
                 //Reset Q3 timers
@@ -486,7 +499,7 @@ public class CustomerHandlerScript : MonoBehaviour
     {
         float timeElapsed = 0;
 
-        while (timeElapsed < 1.5)
+        while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
         {
             float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
             NPCToMove.transform.localPosition = new Vector3(valueToLerp, math.sin(valueToLerp * math.PI) - 55, 0);
@@ -495,8 +508,8 @@ public class CustomerHandlerScript : MonoBehaviour
             yield return null;
         }
 
-        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x, -55, 0);
-        Destroy(NPCToMove);
+        NPCToMove.transform.localPosition = new Vector3(-1400, -55, 0);
+        Destroy( NPCToMove );
     }
 
     //This method adjusts the animation of the NPC's that enter the scene and makes it so that they appeart to be walking into line.
