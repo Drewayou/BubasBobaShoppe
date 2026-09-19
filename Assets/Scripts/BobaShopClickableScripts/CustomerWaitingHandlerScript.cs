@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +16,9 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     // ACTIVE List that holds the waiting-for-order customer Queue. Or customers waiting for their finished drink/product.
     [SerializeField]
     public List<GameObject> waitingForOrderCustomerQueue;
+
+    //The Gameobject that allows rendering customers leaving out of patience (Customer Patience Removal Object Handler).
+    GameObject CPROH;
 
     // Timer for customers picking up their order (Their walk speed and aimations for them "picking up" their boba order at the sell mat).
     public float customerWalkingTimer = 0f;
@@ -40,6 +45,9 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
         //Find and load the BobaShopRound data.
         thisRoundOverallInstanceScript = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
         customerPatienceForGettingOrder = thisRoundOverallInstanceScript.customerOverallPatienceThisRound * 2;
+
+        //Find the queue to animate customers leaving.
+        CPROH = GameObject.Find("CPROH");
     }
 
     // Update is called once per frame
@@ -103,27 +111,27 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
         switch (waitingForOrderCustomerQueue.Count)
         {
             case 1:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime * 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO1 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 2:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime * 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO2 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 3:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime * 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO3 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 4:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime * 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO4 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 5:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime * 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO5 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 6:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime * 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO6 = thisRoundOverallInstanceScript.roundTimer;
                 return;
         }
@@ -162,6 +170,9 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     //Remove customer from the queue with their order.
     public void RemoveImpatienceCustomer(int indexForTheCustomer)
     {
+        //Save Customer to remove object.
+        GameObject customerToRemove = waitingForOrderCustomerQueue[indexForTheCustomer];
+
         //SaveQ1Q2AndResetAllPatience.
         float tempT2E = thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2;
         float tempT2S = thisRoundOverallInstanceScript.customerStartingTimeInDO2;
@@ -177,7 +188,7 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
         //Check if there's anyone in the queue at all.
         if (waitingForOrderCustomerQueue.Count > 0) {
             //FIXME:Add animations for customers already at the front.
-            endCustomer(indexForTheCustomer);
+            endCustomer(indexForTheCustomer, customerToRemove);
 
             //This updates timers by moving them n+1. This coud 100% be optimized.
             if (indexForTheCustomer == 0)
@@ -318,13 +329,24 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
                 thisRoundOverallInstanceScript.customerStartingTimeInDO6 = 0f;
                 thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = 0f;
             }
-            Destroy(this.gameObject.transform.GetChild(indexForTheCustomer).gameObject);
-            Debug.Log("Killed a customer");
+
+            //Move the customer game object to the leaving queue due to patience handler.
+            customerToRemove.transform.SetParent(CPROH.transform, false);
+
+            //If the player is watching this queue canvas, anmimate the customer leaving, else allow the customer to self delete.
+            if (CPROH.activeSelf)
+            {
+                StartCoroutine(LerpNPCPatienceDestroyerO(-1600, customerToRemove));
+            }
+            else
+            {
+                Destroy(customerToRemove);
+            }
         }
     }
 
     //This actually removes the customer from the list and destroys them
-    public void endCustomer(int customerToEnd)
+    public void endCustomer(int customerToEnd, GameObject customerGameObject)
     {
         //Remove the customer and reset it's timers.
         switch (customerToEnd)
@@ -367,5 +389,22 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
                 return;
 
         }
+    }
+    //This enum is a lerp for the NPC's position "walking" into void and destroys the NPC for having no more patience.
+    public IEnumerator LerpNPCPatienceDestroyerO(float newPositionDesired, GameObject NPCToMove)
+    {
+        float timeElapsed = 0;
+
+        while (timeElapsed < 5f)
+        {
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
+            NPCToMove.transform.localPosition = new Vector3(valueToLerp, math.sin(valueToLerp * math.PI) - 55, 0);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        NPCToMove.transform.localPosition = new Vector3(newPositionDesired, -55, 0);
+        Destroy(NPCToMove); 
     }
 }

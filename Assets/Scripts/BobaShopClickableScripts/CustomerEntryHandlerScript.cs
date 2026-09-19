@@ -467,7 +467,7 @@ public class CustomerHandlerScript : MonoBehaviour
 
         while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
         {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
             NPCToMove.transform.localPosition = new Vector3(valueToLerp,math.sin(valueToLerp*math.PI)-55,0);
             timeElapsed += Time.deltaTime;
 
@@ -484,7 +484,7 @@ public class CustomerHandlerScript : MonoBehaviour
 
         while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
         {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
             NPCToMove.transform.localPosition = new Vector3(valueToLerp,NPCToMove.transform.localPosition.y, 0);
             timeElapsed += Time.deltaTime;
 

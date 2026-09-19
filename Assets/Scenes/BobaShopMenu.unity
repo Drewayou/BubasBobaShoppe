@@ -263,6 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CustomerLeavingHandlerObject: {fileID: 192196096}
+  DrinkPlacementMat: {fileID: 0}
 --- !u!1 &86863919
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,7 +883,7 @@ GameObject:
   - component: {fileID: 146500740}
   - component: {fileID: 146500741}
   m_Layer: 5
-  m_Name: ItemInHand
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1800,6 +1801,7 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 820305979}
+  - {fileID: 461426354}
   - {fileID: 668586578}
   - {fileID: 85980984}
   - {fileID: 192196097}
@@ -1958,6 +1960,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7074007c578695048a0a51983c90154d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &461426353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 461426354}
+  m_Layer: 5
+  m_Name: CPROH
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &461426354
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461426353}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 363006804}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &469900890
 GameObject:
   m_ObjectHideFlags: 0
@@ -2559,7 +2596,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &628109133
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4289,7 +4326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &925818635
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5425,6 +5462,9 @@ MonoBehaviour:
   customerTimerInDO1: 0
   customerTimerInDO2: 0
   customerTimerInDO3: 0
+  customerTimerInDO4: 0
+  customerTimerInDO5: 0
+  customerTimerInDO6: 0
   customerTimerInSO1: 0
   customerStartingTimeInQO1: 0
   customerStartingTimeInQO2: 0
@@ -5432,6 +5472,9 @@ MonoBehaviour:
   customerStartingTimeInDO1: 0
   customerStartingTimeInDO2: 0
   customerStartingTimeInDO3: 0
+  customerStartingTimeInDO4: 0
+  customerStartingTimeInDO5: 0
+  customerStartingTimeInDO6: 0
   customerStartingTimeInSO1: 0
   eCustomerEndTimeAInQO1: 0
   eCustomerEndTimeAInQO2: 0
@@ -5439,7 +5482,11 @@ MonoBehaviour:
   eCustomerEndTimeAInDO1: 0
   eCustomerEndTimeAInDO2: 0
   eCustomerEndTimeAInDO3: 0
+  eCustomerEndTimeAInDO4: 0
+  eCustomerEndTimeAInDO5: 0
+  eCustomerEndTimeAInDO6: 0
   eCustomerEndTimeAInSO1: 0
+  bellTimer: 0
   playerLives: 0
 --- !u!114 &1178439968
 MonoBehaviour:
@@ -6401,7 +6448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1358154832
 RectTransform:
   m_ObjectHideFlags: 0

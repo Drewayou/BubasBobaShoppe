@@ -68,7 +68,7 @@ public class CustomerOrderPickupScript : MonoBehaviour
 
         while (timeElapsed < NPCToMove.GetComponentInParent<CustomerDrinkScript>().characterShopSpeed)
         {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
             NPCToMove.transform.localPosition = new Vector3(valueToLerp,-55,0);
             timeElapsed += Time.deltaTime;
 
