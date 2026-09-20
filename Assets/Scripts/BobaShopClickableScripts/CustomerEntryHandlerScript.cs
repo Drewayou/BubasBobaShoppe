@@ -35,47 +35,7 @@ public class CustomerHandlerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //FIXME: Patience is acting wonky
-        //Timer that checks off the round time to evaluate if the customer in front of this queue looses patience. +5s Patience is added for each dialogue order taken interaction at position 0. 
-        //if (thisRoundOverallInstanceScript.customerTimerInQO1 < 0.1 && this.gameObject.transform.childCount > 0)
-        //{
-        //    if (toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>() != null)
-        //    {
-        //        if (toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
-        //        {
-        //            thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
-        //            CustomerRunsOutOfPatienceForOderTaken(0);
-        //        }
-        //    }
-        //}
-        //if (thisRoundOverallInstanceScript.customerTimerInQO2 < 0.1 && this.gameObject.transform.childCount > 1)
-        //{
-        //    if (this.gameObject.transform.childCount > 1 && toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>() != null)
-        //    {
-        //        if (toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
-        //        {
-        //            thisRoundOverallInstanceScript.customerTimerInQO2 = 0.1f;
-        //            CustomerRunsOutOfPatienceForOderTaken(1);
-        //        }
-        //    }
-        //}
-        //if (thisRoundOverallInstanceScript.customerTimerInQO3 < 0.1 && this.gameObject.transform.childCount > 2)
-        //{
-        //    if (this.gameObject.transform.childCount > 2 && toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>() != null)
-        //    {
-        //        if (toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
-        //        {
-        //            thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
-        //            CustomerRunsOutOfPatienceForOderTaken(2);
-        //        }
-        //    }
-        //}
-
-        //Below should be moved to special request handle script.
-        //if (thisRoundOverallInstanceScript.customerTimerInSO1 < 0.1 && this.gameObject.transform.childCount > 0)
-        //{
-        //    CustomerRunsOutOfPatienceForOderTaken(0);
-        //}
+        
     }
 
     // Awake is called when this script is on.

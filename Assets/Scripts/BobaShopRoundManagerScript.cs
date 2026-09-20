@@ -688,22 +688,22 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //    }
     //}
 
-    //Chattiness adds (x * 2) seconds to 5 second buffer when talking with front customers.
-    public void CustomerInterationAddsPatienceToFrontCustomer(float chattiness)
+    //Chattiness adds (x * 5) seconds buffer when talking with front customers.
+    public void CustomerInterationAddsPatienceToFrontCustomer(float chattiness,string QueueOfInteraction)
     {
-        if (eCustomerEndTimeAInQO1 >= roundTimer)
+        if (eCustomerEndTimeAInQO1 >= roundTimer && QueueOfInteraction == "CustomerQueueHandler")
         {
-            eCustomerEndTimeAInQO1 = (chattiness * 2f) + eCustomerEndTimeAInQO1 + 5f;
+            eCustomerEndTimeAInQO1 = (chattiness * 5f) + eCustomerEndTimeAInQO1;
         }
 
-        if (eCustomerEndTimeAInDO1 >= roundTimer)
+        if (eCustomerEndTimeAInDO1 >= roundTimer && QueueOfInteraction == "CustomerDrinkWaitQueueHandler")
         {
-            eCustomerEndTimeAInDO1 = (chattiness * 2f) + eCustomerEndTimeAInDO1 + 5f;
+            eCustomerEndTimeAInDO1 = (chattiness * 5f) + eCustomerEndTimeAInDO1;
         }
 
-        if (eCustomerEndTimeAInSO1 >= roundTimer)
+        if (eCustomerEndTimeAInSO1 >= roundTimer && QueueOfInteraction == "CustomerSpecialWaitQueueHandler")
         {
-            eCustomerEndTimeAInSO1 = (chattiness * 2f) + eCustomerEndTimeAInSO1 + 5f;
+            eCustomerEndTimeAInSO1 = (chattiness * 5f) + eCustomerEndTimeAInSO1;
         }
     }
 

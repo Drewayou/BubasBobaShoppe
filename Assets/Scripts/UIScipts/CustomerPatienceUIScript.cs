@@ -126,12 +126,102 @@ public class CustomerPatienceUIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdatePatienceUIInOQueue();
 
-        //Updates the viewable patience timer if the customer is at the foreground, check the timer in round manager for generating these patience items.
-        if (!customerHasInfinitePatience && customerIsAtFront) {
-            
+        UpdatePatienceUIInDQueue();
+    }
+
+    public void UpdatePatienceUIInOQueue()
+    {
+        //Updates the viewable patience timer if the customer is at the foreground in first queue, check the timer in round manager for generating these patience items.
+        if (!customerHasInfinitePatience && customerIsAtFront && this.gameObject.transform.parent.name == "CustomerQueueHandler")
+        {
+
             //Evaluate the patience level according to round manager.
             patienceOver100 = (1.0f - (thisRoundOverallInstanceScript.roundTimer - (thisRoundOverallInstanceScript.customerStartingTimeInQO1 - 0.5f)) / (thisRoundOverallInstanceScript.eCustomerEndTimeAInQO1 - thisRoundOverallInstanceScript.customerStartingTimeInQO1));
+
+            customerPatiencBottomLayerMeter.enabled = true;
+
+            if (patienceOver100 >= .5)
+            {
+                //Disable the default knob.
+                customerPatiencDefaultIco.enabled = false;
+
+                //Enable Dark patience layer and lag behind the loading by .02
+                customerPatiencDarkerLayerMeter.enabled = true;
+                customerPatiencDarkerLayerMeter.fillAmount = (float)(patienceOver100 + .02);
+
+                //Enable Happy patience layer the loading
+                customerPatiencHappyLayerMeter.enabled = true;
+                customerPatiencHappyLayerMeter.fillAmount = patienceOver100;
+
+                //Enable Happy Knob
+                customerPatiencHappyIcoMeter.enabled = true;
+
+                //Disable the Meh layer.
+                customerPatiencMehLayerMeter.enabled = false;
+                //Disable the Meh knob.
+                customerPatiencMehLayerMeter.enabled = false;
+                //Disable the Sad layer.
+                customerPatiencSadLayerMeter.enabled = false;
+                //Disable Sad Knob
+                customerPatiencSadIcoMeter.enabled = false;
+            }
+            if (patienceOver100 > .25 && patienceOver100 < .50)
+            {
+                //Have Dark patience lag behind the loading by .02
+                customerPatiencDarkerLayerMeter.fillAmount = (float)(patienceOver100 + .02);
+
+                //Disable the Happy layer.
+                customerPatiencHappyLayerMeter.enabled = false;
+                //Disable the Happy knob.
+                customerPatiencHappyIcoMeter.enabled = false;
+
+                //Enable Meh patience layer the loading
+                customerPatiencMehLayerMeter.enabled = true;
+                customerPatiencMehLayerMeter.fillAmount = patienceOver100;
+
+                //Enable Meh Knob
+                customerPatiencMehIcoMeter.enabled = true;
+
+                //Disable the Sad layer.
+                customerPatiencSadLayerMeter.enabled = false;
+                //Disable Sad Knob
+                customerPatiencSadIcoMeter.enabled = false;
+            }
+            if (patienceOver100 <= .25)
+            {
+                //Have Dark patience lag behind the loading by .02
+                customerPatiencDarkerLayerMeter.fillAmount = (float)(patienceOver100 + .02);
+
+                //Disable the Meh layer.
+                customerPatiencMehLayerMeter.enabled = false;
+                //Disable the Meh knob.
+                customerPatiencMehLayerMeter.enabled = false;
+
+                //Enable Sad patience layer the loading
+                customerPatiencSadLayerMeter.enabled = true;
+                customerPatiencSadLayerMeter.fillAmount = patienceOver100;
+
+                //Enable Sad Knob
+                customerPatiencSadIcoMeter.enabled = true;
+
+                //Disable the Happy layer.
+                customerPatiencHappyLayerMeter.enabled = false;
+                //Disable the Happy knob.
+                customerPatiencHappyLayerMeter.enabled = false;
+            }
+        }
+    }
+
+    public void UpdatePatienceUIInDQueue()
+    {
+        //Updates the viewable patience timer if the customer is at the foreground in first queue, check the timer in round manager for generating these patience items.
+        if (!customerHasInfinitePatience && customerIsAtFront && this.gameObject.transform.parent.name == "CustomerDrinkWaitQueueHandler")
+        {
+
+            //Evaluate the patience level according to round manager.
+            patienceOver100 = (1.0f - (thisRoundOverallInstanceScript.roundTimer - (thisRoundOverallInstanceScript.customerStartingTimeInDO1 - 0.5f)) / (thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 - thisRoundOverallInstanceScript.customerStartingTimeInDO1));
 
             customerPatiencBottomLayerMeter.enabled = true;
 
@@ -217,6 +307,16 @@ public class CustomerPatienceUIScript : MonoBehaviour
         
     }
 
+    public void CustomerStartedWaitingForPickingUpOrder()
+    {
+        if (thisRoundOverallInstanceScript != null)
+        {
+            thisRoundOverallInstanceScript.customerStartingTimeInDO1 = thisRoundOverallInstanceScript.roundTimer + 0.5f;
+            customerIsAtFront = true;
+        }
+
+    }
+
     public bool CheckIfCustomerHasBeenFlaggedAsFront()
     {
         return customerIsAtFront;
@@ -226,6 +326,7 @@ public class CustomerPatienceUIScript : MonoBehaviour
     public void ResetThisCustomersPatienceAndFrontStatus()
     {
         customerIsAtFront = false;
+        customerIsInWaitingInALineNotAtFront = false;
 
         //Disable the other patience layers.
         customerPatiencDarkerLayerMeter.enabled = false;

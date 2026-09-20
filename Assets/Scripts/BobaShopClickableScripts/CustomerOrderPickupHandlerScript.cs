@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CustomerOrderPickupScript : MonoBehaviour
 {
@@ -17,6 +18,12 @@ public class CustomerOrderPickupScript : MonoBehaviour
     [Tooltip("Drag and drop the \"CustomerLeavingHandlerObject\" game object here.")]
     GameObject CustomerLeavingHandlerObject;
 
+    //The queue list for "CustomerWaitingHandlerScript"
+    List<GameObject> thisOrderCustomerQueue;
+
+    //The script for "CustomerWaitingHandlerScript"
+    CustomerWaitingHandlerScript thisOrderCustomerOtherScript;
+
     //This is for where the customers stop to pick up the order. Generally the position of the boba sell mat.
     float positionOfSellMatt = 477f;
 
@@ -29,6 +36,8 @@ public class CustomerOrderPickupScript : MonoBehaviour
     {
         //Find and load the BobaShopRound data.
         thisRoundOverallInstanceScript = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
+        thisOrderCustomerQueue = this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue;
+        thisOrderCustomerOtherScript = this.gameObject.GetComponent<CustomerWaitingHandlerScript>();
     }
 
     //FIXME : IF CUSTOMERS are NOT in the queue and are off screen waiting for the bell to be rung, have their timer match the "Waiting in line".
@@ -39,7 +48,43 @@ public class CustomerOrderPickupScript : MonoBehaviour
     //Checks if there's customers waiting to pick up their drink orders to start VISUAL patience and sell off processes.
     public void CheckIfCustomersAreWaitingForDrinks()
     {
-        if (this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue.Count > 0)
+        bool calledNextOrder = false;
+
+        foreach (Transform customer in this.gameObject.transform)
+        {
+            if (!calledNextOrder) { 
+                calledNextOrder = true;
+                for (int i = 0; i < this.gameObject.transform.childCount; i++)
+                {
+                    if (i == 0)
+                    {
+                        //Check if customer has infinite patience
+                        thisOrderCustomerQueue[i].GetComponent<Image>().raycastTarget = true;
+                        if (thisOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>() == null)
+                        {
+                            //Do not time
+                        }
+                        else
+                        {
+                            //Set this customer as the front customer with the patience icon. Pull in customer's patience for giving their order.
+                            if (!thisOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
+                            {
+                                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 = (thisOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerDrinkWaitingTime + thisRoundOverallInstanceScript.roundTimer);
+                                thisRoundOverallInstanceScript.customerStartingTimeInDO1 = thisRoundOverallInstanceScript.roundTimer;
+                                thisOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().CustomerStartedWaitingForPickingUpOrder();
+                                thisOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsAtFront = true;
+                                thisOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerHadOrderTaken = true;
+                                thisOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront = false;
+                                StartCoroutine(thisRoundOverallInstanceScript.LerpNPCPositionAnimation(positionOfSellMatt, this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue[0]));
+                            }
+                        }
+                    }
+                    Debug.Log("Lots more customers waiting for a drink pickup!");
+                }
+            }
+        }
+
+        if (this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue.Count == 1)
         {
 
             //FIXME: Customer starts patience and it runs all over again.
@@ -54,7 +99,7 @@ public class CustomerOrderPickupScript : MonoBehaviour
         }
         else
         {
-            Debug.Log("No customer is waiting for a drink!");
+            Debug.Log("No customers are waiting for a drink!");
         }
     }
 
@@ -64,10 +109,10 @@ public class CustomerOrderPickupScript : MonoBehaviour
     {
         StartCoroutine(thisRoundOverallInstanceScript.LerpNPCPositionAnimation(positionOfSellMatt, this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue[0]));
         // Check the script list and remove the customer up next to move up the "line".
-        this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue.RemoveAt(0);
+        // this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue.RemoveAt(0);
         // Move the game object itself into the handler object to ensure the next customer waiting for their drink is up next.
-        GameObject CustomerInQueue = this.gameObject.transform.GetChild(0).gameObject;
-        CustomerInQueue.transform.SetParent(CustomerLeavingHandlerObject.gameObject.transform, false);
+        //GameObject CustomerInQueue = this.gameObject.transform.GetChild(0).gameObject;
+        //CustomerInQueue.transform.SetParent(CustomerLeavingHandlerObject.gameObject.transform, false);
     }
     
     

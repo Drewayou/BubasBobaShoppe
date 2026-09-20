@@ -84,7 +84,7 @@ public class RingShopBellScripts : MonoBehaviour
     //This method contacts OrderPickupHandler script to start the customer drink pickup process.
     public void CallCustomer()
     {
-        if (thisRoundOverallInstanceScript.bellTimer < 0)
+        if (thisRoundOverallInstanceScript.bellTimer <= 0)
         {
             //Restart cooldown to call customer timer by 3 sec.
             customerWait4DrinkHandler.GetComponent<CustomerOrderPickupScript>().CheckIfCustomersAreWaitingForDrinks();

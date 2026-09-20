@@ -119,7 +119,7 @@ public class CustomerDrinkScript : MonoBehaviour
             }  
         }
         //Tell customer handler to add customer patience if possible.
-        thisRoundOverallInstanceScript.CustomerInterationAddsPatienceToFrontCustomer(chattiness);
+        thisRoundOverallInstanceScript.CustomerInterationAddsPatienceToFrontCustomer(chattiness,this.gameObject.transform.parent.name);
 
         //Make a random drink with player's available ingredients if above checks fail.
         return GenerateRandomDrinkUIDWithIngredients();

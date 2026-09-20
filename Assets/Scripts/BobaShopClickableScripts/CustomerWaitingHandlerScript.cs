@@ -116,8 +116,16 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     //Place all the customers in this queue off screen.
     public void RecheckCustomerVisuals(){
         foreach(GameObject customer in waitingForOrderCustomerQueue){
-            Vector3 offScreenParams = new Vector3(1600f,-55f,0f);
-            customer.transform.localPosition = offScreenParams;
+            if (!customer.GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
+            {
+                Vector3 offScreenParams = new Vector3(1600f, -55f, 0f);
+                customer.transform.localPosition = offScreenParams;
+            }
+            else
+            {
+                Vector3 offScreenParams = new Vector3(477f, -55f, 0f);
+                customer.transform.localPosition = offScreenParams;
+            }
         }
     }
 
@@ -127,27 +135,27 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
         switch (waitingForOrderCustomerQueue.Count)
         {
             case 1:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerWaitingInBeginningLineTime * 2) + thisRoundOverallInstanceScript.customerOverallPatienceThisRound + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO1 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 2:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerWaitingInBeginningLineTime * 2) + thisRoundOverallInstanceScript.customerOverallPatienceThisRound + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO2 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 3:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerWaitingInBeginningLineTime * 2) + thisRoundOverallInstanceScript.customerOverallPatienceThisRound + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO3 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 4:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerWaitingInBeginningLineTime * 2) + thisRoundOverallInstanceScript.customerOverallPatienceThisRound + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO4 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 5:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerWaitingInBeginningLineTime * 2) + thisRoundOverallInstanceScript.customerOverallPatienceThisRound + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO5 = thisRoundOverallInstanceScript.roundTimer;
                 return;
             case 6:
-                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerOrderWaitingTime / 2) + thisRoundOverallInstanceScript.roundTimer;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = (customerToAdjustTimer.GetComponent<CustomerPatienceUIScript>().customerWaitingInBeginningLineTime * 2) + thisRoundOverallInstanceScript.customerOverallPatienceThisRound + thisRoundOverallInstanceScript.roundTimer;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO6 = thisRoundOverallInstanceScript.roundTimer;
                 return;
         }
