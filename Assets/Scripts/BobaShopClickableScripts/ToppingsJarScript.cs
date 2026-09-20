@@ -42,6 +42,7 @@ public class ToppingsJarScript : MonoBehaviour
     {
         //Finds the Inventory object in this instance & it's animator.
         itemInHandInventory = GameObject.Find("ItemInHand");
+        
         itemInHandInventoryAnimator = itemInHandInventory.GetComponent<Animator>();
 
         //Finds the Game Manager in this instance.

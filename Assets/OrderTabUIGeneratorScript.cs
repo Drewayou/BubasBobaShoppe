@@ -10,7 +10,7 @@ public class OrderTabUIGeneratorScript : MonoBehaviour
     // This script pulls data from what customers are in the list to get their desired drink UID's.
     [SerializeField]
     [Tooltip("Drag and drop the CustomerWaitingHandlerScript from the waiting for ordered drink queue gameobject.")]
-    CustomerWaitingHandlerScript customerWaitingDrinkQueue;
+    CustomerWaitingForDrinkHandlerScript customerWaitingDrinkQueue;
 
     // These gameobjects are the ingredient Icons to populate the drink tabs.
     [SerializeField]

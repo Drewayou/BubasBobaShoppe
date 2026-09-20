@@ -307,7 +307,7 @@ public class CustomerPatienceUIScript : MonoBehaviour
         
     }
 
-    public void CustomerStartedWaitingForPickingUpOrder()
+    public void TimerStartedWaitingForPickingUpOrder()
     {
         if (thisRoundOverallInstanceScript != null)
         {

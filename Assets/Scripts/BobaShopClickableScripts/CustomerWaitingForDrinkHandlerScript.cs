@@ -6,7 +6,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CustomerWaitingHandlerScript : MonoBehaviour
+public class CustomerWaitingForDrinkHandlerScript : MonoBehaviour
 {
     // This script handles the player interaction and a couple UI tabs to recieve orders from the customer and move them to the waiting handler game object.
     // CONNECTED TO "CustomerQueueHandler" Game Object.
@@ -17,6 +17,11 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     // ACTIVE List that holds the waiting-for-order customer Queue. Or customers waiting for their finished drink/product.
     [SerializeField]
     public List<GameObject> waitingForOrderCustomerQueue;
+
+    // Script for customer waiting to pickup drinks.
+    [SerializeField]
+    [Tooltip("Drag and drop the \"CustomerOrderPickupScript\" from the \"CustomerDrinkWaitQueueHandler\" game object here.")]
+    public CustomerOrderPickupScript customerWaitingOrderPickupScript;
 
     //The Gameobject that allows rendering customers leaving out of patience (Customer Patience Removal Object Handler).
     GameObject CPROH;
@@ -30,7 +35,7 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     // Script for the drink mat to be pulled.
     [SerializeField]
     [Tooltip("Drag and drop the boba sell mat here to get it's script code.")]
-    private BobaSellMattScript bobaSellMatScript;
+    public BobaSellMattScript bobaSellMatScript;
 
     [SerializeField]
     [Tooltip("Drag and drop the order tabs to use their scripts and populate the order tabs.")]
@@ -97,31 +102,48 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
         }
         if (waitingForOrderCustomerQueue.Count == 1){
             OrderTab1GameObject.SetActive(true);
-            OrderTab1Script.GenerateDrinkTabUI();
 
             OrderTab2GameObject.SetActive(false);
             OrderTab3GameObject.SetActive(false);
         }
         if(waitingForOrderCustomerQueue.Count == 2){
             OrderTab2GameObject.SetActive(true);
-            OrderTab2Script.GenerateDrinkTabUI();
             OrderTab3GameObject.SetActive(false);
         }
         if(waitingForOrderCustomerQueue.Count == 3){
             OrderTab3GameObject.SetActive(true);
-            OrderTab3Script.GenerateDrinkTabUI();
         }
+        OrderTab1Script.GenerateDrinkTabUI();
+        OrderTab2Script.GenerateDrinkTabUI();
+        OrderTab3Script.GenerateDrinkTabUI();
     }
 
     //Place all the customers in this queue off screen.
     public void RecheckCustomerVisuals(){
         foreach(GameObject customer in waitingForOrderCustomerQueue){
-            if (!customer.GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
+
+            if (!customer.GetComponent<CustomerPatienceUIScript>().customerIsAtFront && !customer.GetComponent<CustomerPatienceUIScript>().customerIsWaitingForDrinks)
             {
                 Vector3 offScreenParams = new Vector3(1600f, -55f, 0f);
                 customer.transform.localPosition = offScreenParams;
             }
-            else
+            
+            if(customerWaitingOrderPickupScript.customerIsPickingUpDrinks && customer.GetComponent<CustomerPatienceUIScript>().customerIsWaitingForDrinks && !customer.GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
+            {
+                if (customer.GetComponent<CustomerPatienceUIScript>() != null)
+                {
+                    thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 = customer.GetComponent<CustomerPatienceUIScript>().customerDrinkWaitingTime + thisRoundOverallInstanceScript.roundTimer;
+                    thisRoundOverallInstanceScript.customerStartingTimeInDO1 = thisRoundOverallInstanceScript.roundTimer;
+                    customer.GetComponent<CustomerPatienceUIScript>().TimerStartedWaitingForPickingUpOrder();
+                    customer.GetComponent<CustomerPatienceUIScript>().customerIsAtFront = true;
+                    customer.GetComponent<CustomerPatienceUIScript>().customerHadOrderTaken = true;
+                    customer.GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront = false;
+                    Vector3 offScreenParams = new Vector3(477f, -55f, 0f);
+                    customer.transform.localPosition = offScreenParams;
+                }
+            }
+
+            if (customer.GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
             {
                 Vector3 offScreenParams = new Vector3(477f, -55f, 0f);
                 customer.transform.localPosition = offScreenParams;
@@ -378,6 +400,10 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
         switch (customerToEnd)
         {
             case 0:
+                if (customerWaitingOrderPickupScript.customerIsPickingUpDrinks)
+                {
+                    customerWaitingOrderPickupScript.CustomerWaitingForDrinksLeft();
+                }
                 waitingForOrderCustomerQueue.RemoveAt(0);
                 thisRoundOverallInstanceScript.customerTimerInDO1 = 0.1f;
                 thisRoundOverallInstanceScript.customerStartingTimeInDO1 = 0.1f;

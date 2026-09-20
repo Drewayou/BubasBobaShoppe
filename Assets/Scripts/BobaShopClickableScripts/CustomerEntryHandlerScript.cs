@@ -71,7 +71,7 @@ public class CustomerHandlerScript : MonoBehaviour
     public void TakeCustomerOrderNAnimateAction(){
         //Check the game object that this script is attached to (the "CustomerQueueHandler" GameObject) to move it's customer to the next queue.
         GameObject customerThatOrderedADrink = toOrderCustomerQueue[0];
-        CustomerDrinkWaitQueueHandler.GetComponent<CustomerWaitingHandlerScript>().AddCustomerToThisWatingQueue(customerThatOrderedADrink);
+        CustomerDrinkWaitQueueHandler.GetComponent<CustomerWaitingForDrinkHandlerScript>().AddCustomerToThisWatingQueue(customerThatOrderedADrink);
 
         //If customer has limited patience, reset it for the next timer.
         if (customerThatOrderedADrink.GetComponent<CustomerPatienceUIScript>()!=null)

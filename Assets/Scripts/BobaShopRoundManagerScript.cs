@@ -19,13 +19,13 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //The Game's OverallManager SCRIPT to pull/put scripts and values from. Gets established automatically from above object.
     [Header("GameManagerSCRIPT")]
     [Tooltip("Pull Values from this script")]
-    GameManagerScript thisGamesOverallInstance;
+    GameManagerScript thisGamesOverallInstanceScript;
 
     //Drink rate demands DrinkMultiplierScripts, which in turn is pulled from the GameManager.
-    private DrinkMultiplierScripts whatDrinksArePopular;
+    public DrinkMultiplierScripts whatDrinksArePopular;
 
     //The stats of this players shop is pulled from the GameManager.
-    private ShopCostsNEarnings playersCurrentShopStats;
+    public ShopCostsNEarnings playersCurrentShopStats;
 
     //The Customer queue handler gameObject pulled from the Gameobjects and queue holders.
     [SerializeField]
@@ -42,12 +42,17 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [SerializeField]  
     [Header("Drink pending queue GAMEOBJECT")]
     [Tooltip("Put the game's \"CustomerDrinkWaitQueueHandler\" game object to access transform properties of this object.")] 
-    public GameObject customerWaitingHandlerGameObject;
+    public GameObject customerWaitingDrinkHandlerGameObject;
 
     [SerializeField]  
     [Header("Drink pending queue")]
     [Tooltip("Put the game's \"CustomerDrinkWaitQueueHandler\" game object to access the customer queue of people waiting for their drinks.")] 
-    CustomerWaitingHandlerScript customerWaitingHandlerScript;
+    CustomerWaitingForDrinkHandlerScript customerWaitingDrinkHandlerScript;
+
+    [SerializeField]
+    [Header("Customer pending drink pickup script")]
+    [Tooltip("Put the game's \"CustomerOrderPickupScript\" script to access the customer queue of people waiting for their drinks (also found in customerWaitingDrinkHandlerGameObject).")]
+    CustomerOrderPickupScript customerOrderPickupHandlerScript;
 
     //The script attached to this game object that programs what customers can spawn.
     //Gets set via the Start() method.
@@ -150,11 +155,11 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     { 
         playerLives = 3;
         overallGameManager = GameObject.Find("GameManagerObject");
-        thisGamesOverallInstance = overallGameManager.GetComponent<GameManagerScript>();
+        thisGamesOverallInstanceScript = overallGameManager.GetComponent<GameManagerScript>();
         customersThatCanSpawnThisRoundScript = this.gameObject.GetComponent<NPCCustomersThatCanSpawnScript>();
 
         //FIXME: Patience may change due to game events (Like Rain, Storms, Cold, Heat, Festivites, Ect.)
-        customerOverallPatienceThisRound = thisGamesOverallInstance.ReturnBobaShopCustomerPatience();
+        customerOverallPatienceThisRound = thisGamesOverallInstanceScript.ReturnBobaShopCustomerPatience();
 
         //Make Sure the ENDOFGAME UI isn't on and the INGAME UI is.
         EndOfRoundUIObject.SetActive(false);
@@ -207,7 +212,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
     //Sets the customer cooldown timer for the CHANCE to spawn another NPC at the boba shop to a formula including shop popularity.
     public void resetCustomerSpawnCooldownTimer(){
-        customerSpawnCooldownTimer = 25.5f - Mathf.RoundToInt(thisGamesOverallInstance.ReturnPlayerStats().shopPopularity) * 5;
+        customerSpawnCooldownTimer = 25.5f - Mathf.RoundToInt(thisGamesOverallInstanceScript.ReturnPlayerStats().shopPopularity) * 5;
     }
 
     public float getRoundTime(){
@@ -218,7 +223,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     public void tryToSpawnARoundLoadedCustomer(){
         if(customersThatCanSpawnThisRoundScript.thisRoundOfPossibleCustomers.Count!=0)
         {
-            if ((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerWaitingHandlerScript.waitingForOrderCustomerQueue.Count) < thisGamesOverallInstance.ReturnMaxBobaShopLineQueue())
+            if ((customerQueueHandlerScript.toOrderCustomerQueue.Count + customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue.Count) < thisGamesOverallInstanceScript.ReturnMaxBobaShopLineQueue())
             {
                 if (customersThatCanSpawnThisRoundScript.useRandomizedCustomerList)
                 {
@@ -240,9 +245,9 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     }
 
     //A method to adjust how long a customer would wait in line for various reasons.
-    public void setCustomerWaitingSpeeds()
+    public void SetCustomerWaitingSpeeds()
     {
-        thisGamesOverallInstance.ReturnBobaShopCustomerPatience();
+        thisGamesOverallInstanceScript.ReturnBobaShopCustomerPatience();
     }
 
     //For used by customer scripts to keep track of how many customers are in this round
@@ -367,21 +372,21 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         //Debug.Log(playerEarnedCoins);
 
         */
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~NEW LOGIC : Shop was overturned!~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~NEW LOGIC : Shop was revised!~~~~~~~~~~~~~~~~~~~~~~~~~~
         
     }
 
     private void UpdateAndSaveBobaShopInventory(){
-        thisGamesOverallInstance.UpdatePlayerHuntInventoryGain(CassavaSlimeBalls, PandanLeaves, BananaMinis, StrawberryMinis, MangoMinis, UbeMinis);
+        thisGamesOverallInstanceScript.UpdatePlayerHuntInventoryGain(CassavaSlimeBalls, PandanLeaves, BananaMinis, StrawberryMinis, MangoMinis, UbeMinis);
     }
 
     private void UpdateThisRoundDrinksDemand(){
-        baseDrinkMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().OolongMultiplier;
-        PandanMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().PandanMultiplier;
-        BananaMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().BananaMultiplier;
-        StrawberryMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().StrawberryMultiplier;
-        MangoMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().MangoMultiplier;
-        UbeMultiplier = thisGamesOverallInstance.ReturnDrinkRatesThisRound().UbeMultiplier;
+        baseDrinkMultiplier = thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound().OolongMultiplier;
+        PandanMultiplier = thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound().PandanMultiplier;
+        BananaMultiplier = thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound().BananaMultiplier;
+        StrawberryMultiplier = thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound().StrawberryMultiplier;
+        MangoMultiplier = thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound().MangoMultiplier;
+        UbeMultiplier = thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound().UbeMultiplier;
     }
 
     private void UpdateEndRoundUI(){
@@ -397,8 +402,8 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         MangoSoldTxt.text = "x" +MangoSold.ToString(); 
         UbeFlexTxt.text = UbeMultiplier.ToString("F2"); 
         UbeSoldTxt.text = "x" +UbeSold.ToString();
-        ShopLevelNMultiplier.text = "Lvl" +thisGamesOverallInstance.ReturnCurrentShopInstance().shopLevelAt.ToString() 
-        + " x " +thisGamesOverallInstance.ReturnCurrentShopInstance().playerShopDrinkSellAmmount.ToString("F2");
+        ShopLevelNMultiplier.text = "Lvl" +thisGamesOverallInstanceScript.ReturnCurrentShopInstance().shopLevelAt.ToString() 
+        + " x " +thisGamesOverallInstanceScript.ReturnCurrentShopInstance().playerShopDrinkSellAmmount.ToString("F2");
         TotalNewGoldTxt.text = playerEarnedCoins.ToString("F2");
 
     //Notify the player if they forgot to hunt cassava slimes for this round!
@@ -548,18 +553,18 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //This will be connected to the button for the "Continue" at the end of game UI.
     public void saveBeforeContinuingBackToMainMenuButton(){
 
-        thisGamesOverallInstance.ReturnPlayerStats().onDayNumber += 1;
+        thisGamesOverallInstanceScript.ReturnPlayerStats().onDayNumber += 1;
 
         UpdateAndSaveBobaShopInventory();
 
         //Update overall coin stats
-        thisGamesOverallInstance.UpdatePlayerCoinStats((int)playerEarnedCoins);
+        thisGamesOverallInstanceScript.UpdatePlayerCoinStats((int)playerEarnedCoins);
 
         //Call GameManager to change spawn rates for next round
         //FIXME:thisGamesOverallInstance.SetNewWorldSpawnRatesState(whichWorldWasSelected);
 
         //Call GameManager to change drink demand rates for next round
-        thisGamesOverallInstance.SetNewDrinkDemandRates(thisGamesOverallInstance.ReturnDrinkRatesThisRound());
+        thisGamesOverallInstanceScript.SetNewDrinkDemandRates(thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound());
     }
 
     //FIXME: Make the method to pull scripts / data rom JSON serialized object? This is for the current round level, spawner settings / availability, etc.
@@ -621,7 +626,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         }
         else
         {
-            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
+            customerWaitingDrinkHandlerScript.CheckPatienceOfWaitingCustomers();
         }
         if (eCustomerEndTimeAInDO2 > roundTimer)
         {
@@ -629,7 +634,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         }
         else
         {
-            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
+            customerWaitingDrinkHandlerScript.CheckPatienceOfWaitingCustomers();
         }
         if (eCustomerEndTimeAInDO3 > roundTimer)
         {
@@ -637,7 +642,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         }
         else
         {
-            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
+            customerWaitingDrinkHandlerScript.CheckPatienceOfWaitingCustomers();
         }
         if (eCustomerEndTimeAInDO4 > roundTimer)
         {
@@ -645,7 +650,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         }
         else
         {
-            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
+            customerWaitingDrinkHandlerScript.CheckPatienceOfWaitingCustomers();
         }
         if (eCustomerEndTimeAInDO5 > roundTimer)
         {
@@ -653,7 +658,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         }
         else
         {
-            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
+            customerWaitingDrinkHandlerScript.CheckPatienceOfWaitingCustomers();
         }
         if (eCustomerEndTimeAInDO6 > roundTimer)
         {
@@ -661,7 +666,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         }
         else
         {
-            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
+            customerWaitingDrinkHandlerScript.CheckPatienceOfWaitingCustomers();
         }
         if (eCustomerEndTimeAInSO1 > roundTimer)
         {
@@ -727,12 +732,26 @@ public class BobaShopRoundManagerScript : MonoBehaviour
             yield return null;
         }
 
-        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x, -55, 0);
+        NPCToMove.transform.localPosition = new Vector3(newPositionDesired, -55, 0);
+
+        //If this NPC being moved is the customer picking up drinks and the boba mat movement is the new position, add the Patience timer if the customer has one.
+        if (customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0] == NPCToMove && newPositionDesired == 477f)
+        {
+            if (NPCToMove.GetComponent<CustomerPatienceUIScript>() != null)
+            {
+                eCustomerEndTimeAInDO1 = NPCToMove.GetComponent<CustomerPatienceUIScript>().customerDrinkWaitingTime + roundTimer;
+                customerStartingTimeInDO1 = roundTimer;
+                NPCToMove.GetComponent<CustomerPatienceUIScript>().TimerStartedWaitingForPickingUpOrder();
+                NPCToMove.GetComponent<CustomerPatienceUIScript>().customerIsAtFront = true;
+                NPCToMove.GetComponent<CustomerPatienceUIScript>().customerHadOrderTaken = true;
+                NPCToMove.GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront = false;
+            }
+        }
     }
 
     public IEnumerator LerpNPCPatienceDestroyerO(float newPositionDesired, GameObject NPCToMove)
     {
-        if (customerWaitingHandlerScript.isActiveAndEnabled)
+        if (customerWaitingDrinkHandlerScript.isActiveAndEnabled)
         {
             float timeElapsed = 0;
 
