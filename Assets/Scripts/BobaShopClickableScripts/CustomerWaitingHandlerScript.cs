@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Mathematics;
 using UnityEngine;
@@ -53,13 +54,18 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckPatienceOfWaitingCustomers();
+        
     }
 
     // This is called when this script is on. Makes sure the customers in this queue are off screen.
     void OnEnable()
     {
         RecheckCustomerVisuals();
+    }
+
+    void OnDisable()
+    {
+       
     }
 
     //This method is used by the customer handler script to put the customers into this queue.
@@ -83,13 +89,23 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
 
     //Trigger the order tabs to update.
     public void UpdateOrderTabs(){
-        if(waitingForOrderCustomerQueue.Count == 1){
+        if (waitingForOrderCustomerQueue.Count == 0)
+        {
+            OrderTab1GameObject.SetActive(false);
+            OrderTab2GameObject.SetActive(false);
+            OrderTab3GameObject.SetActive(false);
+        }
+        if (waitingForOrderCustomerQueue.Count == 1){
             OrderTab1GameObject.SetActive(true);
             OrderTab1Script.GenerateDrinkTabUI();
+
+            OrderTab2GameObject.SetActive(false);
+            OrderTab3GameObject.SetActive(false);
         }
         if(waitingForOrderCustomerQueue.Count == 2){
             OrderTab2GameObject.SetActive(true);
             OrderTab2Script.GenerateDrinkTabUI();
+            OrderTab3GameObject.SetActive(false);
         }
         if(waitingForOrderCustomerQueue.Count == 3){
             OrderTab3GameObject.SetActive(true);
@@ -100,7 +116,7 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
     //Place all the customers in this queue off screen.
     public void RecheckCustomerVisuals(){
         foreach(GameObject customer in waitingForOrderCustomerQueue){
-            Vector3 offScreenParams = new Vector3(-1200f,0f,0f);
+            Vector3 offScreenParams = new Vector3(1600f,-55f,0f);
             customer.transform.localPosition = offScreenParams;
         }
     }
@@ -334,13 +350,15 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
             customerToRemove.transform.SetParent(CPROH.transform, false);
 
             //If the player is watching this queue canvas, anmimate the customer leaving, else allow the customer to self delete.
-            if (CPROH.activeSelf)
+            if (gameObject.transform.parent.gameObject.activeSelf)
             {
-                StartCoroutine(LerpNPCPatienceDestroyerO(-1600, customerToRemove));
+                StartCoroutine(thisRoundOverallInstanceScript.LerpNPCPatienceDestroyerO(-1600, customerToRemove));
+                UpdateOrderTabs();
             }
             else
             {
                 Destroy(customerToRemove);
+                UpdateOrderTabs();
             }
         }
     }
@@ -390,21 +408,5 @@ public class CustomerWaitingHandlerScript : MonoBehaviour
 
         }
     }
-    //This enum is a lerp for the NPC's position "walking" into void and destroys the NPC for having no more patience.
-    public IEnumerator LerpNPCPatienceDestroyerO(float newPositionDesired, GameObject NPCToMove)
-    {
-        float timeElapsed = 0;
 
-        while (timeElapsed < 5f)
-        {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
-            NPCToMove.transform.localPosition = new Vector3(valueToLerp, math.sin(valueToLerp * math.PI) - 55, 0);
-            timeElapsed += Time.deltaTime;
-
-            yield return null;
-        }
-
-        NPCToMove.transform.localPosition = new Vector3(newPositionDesired, -55, 0);
-        Destroy(NPCToMove); 
-    }
 }

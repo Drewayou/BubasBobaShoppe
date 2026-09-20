@@ -9,6 +9,9 @@ public class CustomerOrderPickupScript : MonoBehaviour
     // This script handles what happens if the bell is rung and there's a customer in the waiting queue wanting to pick up their order.
     // CONNECTED TO "CustomerDrinkWaitQueueHandler" Game Object.
 
+    // Get the boba shop game manager script to pull data from.
+    BobaShopRoundManagerScript thisRoundOverallInstanceScript;
+
     // Gameobject list that holds the Customers who picked up their order before deleting them.
     [SerializeField]
     [Tooltip("Drag and drop the \"CustomerLeavingHandlerObject\" game object here.")]
@@ -21,6 +24,12 @@ public class CustomerOrderPickupScript : MonoBehaviour
     [SerializeField]
     [Tooltip("Drag and drop the \"DrinkPlacementMat\" game object here.")]
     GameObject DrinkPlacementMat;
+
+    void Start()
+    {
+        //Find and load the BobaShopRound data.
+        thisRoundOverallInstanceScript = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
+    }
 
     //FIXME : IF CUSTOMERS are NOT in the queue and are off screen waiting for the bell to be rung, have their timer match the "Waiting in line".
     //If their timer runs out, remove their order from the list of order tabs on the screen. First 3 order tabs are shown, while the next ones in queue (Max depending on player upgrades),
@@ -53,7 +62,7 @@ public class CustomerOrderPickupScript : MonoBehaviour
     // This method does the UI interactions and initiates the "CustomerPays4Drink" Script.
     public void NextCustomerPicksUpOrder()
     {
-        StartCoroutine(LerpNPCPositionAnimation(positionOfSellMatt, this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue[0]));
+        StartCoroutine(thisRoundOverallInstanceScript.LerpNPCPositionAnimation(positionOfSellMatt, this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue[0]));
         // Check the script list and remove the customer up next to move up the "line".
         this.gameObject.GetComponent<CustomerWaitingHandlerScript>().waitingForOrderCustomerQueue.RemoveAt(0);
         // Move the game object itself into the handler object to ensure the next customer waiting for their drink is up next.
@@ -61,20 +70,5 @@ public class CustomerOrderPickupScript : MonoBehaviour
         CustomerInQueue.transform.SetParent(CustomerLeavingHandlerObject.gameObject.transform, false);
     }
     
-    //This enum is a lerp for the NPC's position from the right side of the screen to pick up thier drink.
-    public IEnumerator LerpNPCPositionAnimation(float newPositionDesired, GameObject NPCToMove)
-    {
-        float timeElapsed = 0;
-
-        while (timeElapsed < NPCToMove.GetComponentInParent<CustomerDrinkScript>().characterShopSpeed)
-        {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
-            NPCToMove.transform.localPosition = new Vector3(valueToLerp,-55,0);
-            timeElapsed += Time.deltaTime;
-
-            yield return null;
-        }
-
-        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x,-55,0);
-    }
+    
 }

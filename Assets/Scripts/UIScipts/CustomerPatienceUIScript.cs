@@ -150,6 +150,15 @@ public class CustomerPatienceUIScript : MonoBehaviour
 
                 //Enable Happy Knob
                 customerPatiencHappyIcoMeter.enabled = true;
+
+                //Disable the Meh layer.
+                customerPatiencMehLayerMeter.enabled = false;
+                //Disable the Meh knob.
+                customerPatiencMehLayerMeter.enabled = false;
+                //Disable the Sad layer.
+                customerPatiencSadLayerMeter.enabled = false;
+                //Disable Sad Knob
+                customerPatiencSadIcoMeter.enabled = false;
             }
             if (patienceOver100 > .25 && patienceOver100 < .50)
             {
@@ -167,6 +176,11 @@ public class CustomerPatienceUIScript : MonoBehaviour
 
                 //Enable Meh Knob
                 customerPatiencMehIcoMeter.enabled = true;
+
+                //Disable the Sad layer.
+                customerPatiencSadLayerMeter.enabled = false;
+                //Disable Sad Knob
+                customerPatiencSadIcoMeter.enabled = false;
             }
             if (patienceOver100 <= .25)
             {
@@ -184,6 +198,11 @@ public class CustomerPatienceUIScript : MonoBehaviour
 
                 //Enable Sad Knob
                 customerPatiencSadIcoMeter.enabled = true;
+
+                //Disable the Happy layer.
+                customerPatiencHappyLayerMeter.enabled = false;
+                //Disable the Happy knob.
+                customerPatiencHappyLayerMeter.enabled = false;
             }
         }
     }

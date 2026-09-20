@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,65 +37,56 @@ public class CustomerHandlerScript : MonoBehaviour
     {
         //FIXME: Patience is acting wonky
         //Timer that checks off the round time to evaluate if the customer in front of this queue looses patience. +5s Patience is added for each dialogue order taken interaction at position 0. 
-        if (thisRoundOverallInstanceScript.customerTimerInQO1 < 0.1 && this.gameObject.transform.childCount > 0)
-        {
-            if (toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>() != null)
-            {
-                if (toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
-                {
-                    thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
-                    CustomerRunsOutOfPatienceForOderTaken(0);
-                }
-            }
-        }
-        if (thisRoundOverallInstanceScript.customerTimerInQO2 < 0.1 && this.gameObject.transform.childCount > 1)
-        {
-            if (this.gameObject.transform.childCount > 1 && toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>() != null)
-            {
-                if (toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
-                {
-                    thisRoundOverallInstanceScript.customerTimerInQO2 = 0.1f;
-                    CustomerRunsOutOfPatienceForOderTaken(1);
-                }
-            }
-        }
-        if (thisRoundOverallInstanceScript.customerTimerInQO3 < 0.1 && this.gameObject.transform.childCount > 2)
-        {
-            if (this.gameObject.transform.childCount > 2 && toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>() != null)
-            {
-                if (toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
-                {
-                    thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
-                    CustomerRunsOutOfPatienceForOderTaken(2);
-                }
-            }
-        }
-
-        //Below should be moved to drink handle pickup script.
-        if (thisRoundOverallInstanceScript.customerTimerInDO1 < 0.1 && this.gameObject.transform.childCount > 0)
-        {
-            CustomerRunsOutOfPatienceForOderTaken(0);
-        }
-        if (thisRoundOverallInstanceScript.customerTimerInDO2 < 0.1 && this.gameObject.transform.childCount > 1)
-        {
-            CustomerRunsOutOfPatienceForOderTaken(1);
-        }
-        if (thisRoundOverallInstanceScript.customerTimerInDO3 < 0.1 && this.gameObject.transform.childCount > 2)
-        {
-            CustomerRunsOutOfPatienceForOderTaken(2);
-        }
+        //if (thisRoundOverallInstanceScript.customerTimerInQO1 < 0.1 && this.gameObject.transform.childCount > 0)
+        //{
+        //    if (toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>() != null)
+        //    {
+        //        if (toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
+        //        {
+        //            thisRoundOverallInstanceScript.customerTimerInQO1 = 0.1f;
+        //            CustomerRunsOutOfPatienceForOderTaken(0);
+        //        }
+        //    }
+        //}
+        //if (thisRoundOverallInstanceScript.customerTimerInQO2 < 0.1 && this.gameObject.transform.childCount > 1)
+        //{
+        //    if (this.gameObject.transform.childCount > 1 && toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>() != null)
+        //    {
+        //        if (toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
+        //        {
+        //            thisRoundOverallInstanceScript.customerTimerInQO2 = 0.1f;
+        //            CustomerRunsOutOfPatienceForOderTaken(1);
+        //        }
+        //    }
+        //}
+        //if (thisRoundOverallInstanceScript.customerTimerInQO3 < 0.1 && this.gameObject.transform.childCount > 2)
+        //{
+        //    if (this.gameObject.transform.childCount > 2 && toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>() != null)
+        //    {
+        //        if (toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
+        //        {
+        //            thisRoundOverallInstanceScript.customerTimerInQO3 = 0.1f;
+        //            CustomerRunsOutOfPatienceForOderTaken(2);
+        //        }
+        //    }
+        //}
 
         //Below should be moved to special request handle script.
-        if (thisRoundOverallInstanceScript.customerTimerInSO1 < 0.1 && this.gameObject.transform.childCount > 0)
-        {
-            CustomerRunsOutOfPatienceForOderTaken(0);
-        }
+        //if (thisRoundOverallInstanceScript.customerTimerInSO1 < 0.1 && this.gameObject.transform.childCount > 0)
+        //{
+        //    CustomerRunsOutOfPatienceForOderTaken(0);
+        //}
     }
 
     // Awake is called when this script is on.
     void OnEnable()
     {
         RecheckCustomerVisuals();
+    }
+
+    void OnDisable()
+    {
+        
     }
 
     //This method Adds and organizes the visual placement of the customers on the screen and sets their clickable mask on/off depending what place they get in line.
@@ -106,7 +96,7 @@ public class CustomerHandlerScript : MonoBehaviour
         GameObject customerObject = Instantiate(customerToAdd);
         customerObject.name = customerToAdd.name;
         customerObject.transform.SetParent(this.gameObject.transform,false);
-        customerObject.transform.localPosition = new Vector3(-1200f,0f,0f);
+        customerObject.transform.localPosition = new Vector3(-1200f,-55f,0f);
         customerObject.transform.localScale = new Vector3(0.6f,0.6f,0.6f);
         customerObject.transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>().color = new Color32(0, 0, 0, 0);
 
@@ -134,7 +124,7 @@ public class CustomerHandlerScript : MonoBehaviour
         //Does not reset ALL patience, but instead only moves them if nessiscary.
         MoveOrResetPatience(false);
 
-        StartCoroutine(MoveNPCOtherQueuePosition(1200,customerThatOrderedADrink));
+        StartCoroutine(thisRoundOverallInstanceScript.MoveNPCOtherQueuePosition(1600,customerThatOrderedADrink));
         //If the player isn't looking at the front shop, cancel walk in animation.
         AdjustRayCastsAndPatienceTimers();
         foreach(GameObject customer in toOrderCustomerQueue){
@@ -166,17 +156,22 @@ public class CustomerHandlerScript : MonoBehaviour
                 //If this gameobject script is actve, animate, otherwise auto destroy customer.
                 if (gameObject.transform.parent.gameObject.activeSelf)
                 {
-                    StartCoroutine(LerpNPCPatienceDestroyer(-1400, customerThatWantedToOrderAndLostPatience));
-                    //If the player isn't looking at the front shop, cancel walk in animation.
+                    StartCoroutine(thisRoundOverallInstanceScript.LerpNPCPatienceDestroyer(-1600, customerThatWantedToOrderAndLostPatience));
                     AdjustRayCastsAndPatienceTimers();
                     foreach (GameObject customer in toOrderCustomerQueue)
                     {
                         AdjustColorNAnimationOfNewCustomer(customer);
                     }
                 }
+                //If the player isn't looking at the front shop, cancel walk out animation, destroy customer, adjust others.
                 else
                 {
                     Destroy(customerThatWantedToOrderAndLostPatience);
+                    AdjustRayCastsAndPatienceTimers();
+                    foreach (GameObject customer in toOrderCustomerQueue)
+                    {
+                        AdjustColorNAnimationOfNewCustomer(customer);
+                    }
                 }
 
 
@@ -205,7 +200,7 @@ public class CustomerHandlerScript : MonoBehaviour
                         thisRoundOverallInstanceScript.customerStartingTimeInQO1 = thisRoundOverallInstanceScript.roundTimer;
                         toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().CustomerStartedWaitingForOrderTaking();
                         toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsAtFront = true;
-                        toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerHadOrderTaken = true;
+                        toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerHadOrderTaken = false;
                         toOrderCustomerQueue[i].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront = false;
                     }
                 }
@@ -256,16 +251,20 @@ public class CustomerHandlerScript : MonoBehaviour
     //This method adjusts the animation and color of the new customer coming into the queue.
     public void AdjustColorNAnimationOfNewCustomer(GameObject customer){
         if(toOrderCustomerQueue.Count == 1){
-            //If first position customer is already in fully colored, don't alter them.
-            if (toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>().color != new Color32(255, 255, 255, 255))
+            //If the player isn't looking at the front shop, cancel color in animation.
+            if (gameObject.transform.parent.gameObject.activeSelf)
             {
-                StartCoroutine(LerpNPCQueueColors(255, toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
-                StartCoroutine(LerpNPCQueuePosition(-550, toOrderCustomerQueue[0]));
+                //If first position customer is already in fully colored, don't alter them.
+                if (toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>().color != new Color32(255, 255, 255, 255))
+                {
+                    StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueueColors(255, toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
+                    StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueuePosition(-550, toOrderCustomerQueue[0]));
+                }
             }
             //If the player isn't looking at the front shop, cancel walk in animation.
             if (gameObject.transform.parent.gameObject.activeSelf){
-                StartCoroutine(LerpNPCQueueColors(255,toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
-                StartCoroutine(LerpNPCQueuePosition(-550,toOrderCustomerQueue[0]));
+                StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueueColors(255,toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
+                StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueuePosition(-550,toOrderCustomerQueue[0]));
             }else{
                 customer.transform.localPosition = new Vector3(-550,-55,0);
                 customer.transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>().color = new Color32(255,255,255,255);
@@ -278,11 +277,11 @@ public class CustomerHandlerScript : MonoBehaviour
                 //If first position customer is already in fully colored, don't alter them.
                 if(toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>().color != new Color32(255, 255, 255, 255))
                 {
-                    StartCoroutine(LerpNPCQueueColors(255, toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
-                    StartCoroutine(LerpNPCQueuePosition(-550, toOrderCustomerQueue[0]));
+                    StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueueColors(255, toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
+                    StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueuePosition(-550, toOrderCustomerQueue[0]));
                 }
-                StartCoroutine(LerpNPCQueueColors(155,toOrderCustomerQueue[1].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
-                StartCoroutine(LerpNPCQueuePosition(-650,toOrderCustomerQueue[1]));
+                StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueueColors(155,toOrderCustomerQueue[1].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
+                StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueuePosition(-650,toOrderCustomerQueue[1]));
             }else{
                 toOrderCustomerQueue[0].transform.localPosition = new Vector3(-550,-55,0);
                 toOrderCustomerQueue[0].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>().color = new Color32(255,255,255,255);
@@ -294,8 +293,8 @@ public class CustomerHandlerScript : MonoBehaviour
         if(toOrderCustomerQueue.Count == 3){
             //If the player isn't looking at the front shop, cancel walk in animation.
             if(gameObject.transform.parent.gameObject.activeSelf){
-                StartCoroutine(LerpNPCQueueColors(75,toOrderCustomerQueue[2].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
-                StartCoroutine(LerpNPCQueuePosition(-750,toOrderCustomerQueue[2]));
+                StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueueColors(75,toOrderCustomerQueue[2].transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>()));
+                StartCoroutine(thisRoundOverallInstanceScript.LerpNPCQueuePosition(-750,toOrderCustomerQueue[2]));
             }else{
                 customer.transform.localPosition = new Vector3(-750,-55,0);
                 customer.transform.Find("BobaShopCharacterSprite").GetComponentInChildren<Image>().color = new Color32(75,75,75,255);
@@ -441,77 +440,4 @@ public class CustomerHandlerScript : MonoBehaviour
         }
 
     }
-
-    //This enum is a lerp for the NPC's color.
-    public IEnumerator LerpNPCQueueColors(float colorTarget, Image imageToChange)
-    {
-        float timeElapsed = 0;
-        float valueToLerp = 0f;
-
-        while (timeElapsed < 0.5f)
-        {
-            imageToChange.color = new Color32(((byte)valueToLerp),((byte)valueToLerp),((byte)valueToLerp),255);
-            valueToLerp = Mathf.Lerp(0, colorTarget, timeElapsed / 1.5f);
-            timeElapsed += Time.deltaTime;
-
-            yield return null;
-        }
-
-        imageToChange.color = new Color32(((byte)colorTarget),((byte)colorTarget),((byte)colorTarget),255);
-    }
-
-    //This enum is a lerp for the NPC's position coming into the line creating the "walking" into the queue animation.
-    public IEnumerator LerpNPCQueuePosition(float newPositionDesired, GameObject NPCToMove)
-    {
-        float timeElapsed = 0;
-
-        while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
-        {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
-            NPCToMove.transform.localPosition = new Vector3(valueToLerp,math.sin(valueToLerp*math.PI)-55,0);
-            timeElapsed += Time.deltaTime;
-
-            yield return null;
-        }
-
-        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x,-55,0);
-    }
-
-    //This enum is a lerp for the NPC's position "walking" into the other animation.
-    public IEnumerator MoveNPCOtherQueuePosition(float newPositionDesired, GameObject NPCToMove)
-    {
-        float timeElapsed = 0;
-
-        while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
-        {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
-            NPCToMove.transform.localPosition = new Vector3(valueToLerp,NPCToMove.transform.localPosition.y, 0);
-            timeElapsed += Time.deltaTime;
-
-            yield return null;
-        }
-
-        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x,-55,0);
-    }
-
-    //This enum is a lerp for the NPC's position "walking" into the other animation and destroys the NPC.
-    public IEnumerator LerpNPCPatienceDestroyer(float newPositionDesired, GameObject NPCToMove)
-    {
-        float timeElapsed = 0;
-
-        while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
-        {
-            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
-            NPCToMove.transform.localPosition = new Vector3(valueToLerp, math.sin(valueToLerp * math.PI) - 55, 0);
-            timeElapsed += Time.deltaTime;
-
-            yield return null;
-        }
-
-        NPCToMove.transform.localPosition = new Vector3(-1400, -55, 0);
-        Destroy( NPCToMove );
-    }
-
-    //This method adjusts the animation of the NPC's that enter the scene and makes it so that they appeart to be walking into line.
-    //This furthermore adjusts the color values.
 }

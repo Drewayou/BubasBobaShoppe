@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Unity.Mathematics;
 using System;
 using TMPro;
 
@@ -24,6 +26,12 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
     //The stats of this players shop is pulled from the GameManager.
     private ShopCostsNEarnings playersCurrentShopStats;
+
+    //The Customer queue handler gameObject pulled from the Gameobjects and queue holders.
+    [SerializeField]
+    [Header("Waiting queue")]
+    [Tooltip("Put the game's \"CustomerQueueHandler\" game object to access the customer queue of people waiting to make orders.")]
+    public GameObject customerQueueHandlerGameObject;
 
     //The Customer queue handler scripts pulled from the Gameobjects and queue holders.
     [SerializeField]
@@ -566,37 +574,94 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         {
             customerTimerInQO1 = eCustomerEndTimeAInQO1 - roundTimer;
         }
+        else if(customerQueueHandlerGameObject.transform.childCount > 0)
+        {
+            if (customerQueueHandlerScript.toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>() != null)
+            {
+                if (customerQueueHandlerScript.toOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsAtFront)
+                {
+                    customerTimerInQO1 = 0.1f;
+                    customerQueueHandlerScript.CustomerRunsOutOfPatienceForOderTaken(0);
+                }
+            }
+        }
         if (eCustomerEndTimeAInQO2 > roundTimer)
         {
             customerTimerInQO2 = eCustomerEndTimeAInQO2 - roundTimer;
+        }
+        else if (customerQueueHandlerGameObject.transform.childCount > 1)
+        {
+            if (customerQueueHandlerScript.toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>() != null)
+            {
+                if (customerQueueHandlerScript.toOrderCustomerQueue[1].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
+                {
+                    customerTimerInQO2 = 0.1f;
+                    customerQueueHandlerScript.CustomerRunsOutOfPatienceForOderTaken(1);
+                }
+            }
         }
         if (eCustomerEndTimeAInQO3 > roundTimer)
         {
             customerTimerInQO3 = eCustomerEndTimeAInQO3 - roundTimer;
         }
+        else if (customerQueueHandlerGameObject.transform.childCount > 2)
+        {
+            if (customerQueueHandlerScript.toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>() != null)
+            {
+                if (customerQueueHandlerScript.toOrderCustomerQueue[2].GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront)
+                {
+                    customerTimerInQO3 = 0.1f;
+                    customerQueueHandlerScript.CustomerRunsOutOfPatienceForOderTaken(2);
+                }
+            }
+        }
         if (eCustomerEndTimeAInDO1 > roundTimer)
         {
             customerTimerInDO1 = eCustomerEndTimeAInDO1 - roundTimer;
+        }
+        else
+        {
+            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
         }
         if (eCustomerEndTimeAInDO2 > roundTimer)
         {
             customerTimerInDO2 = eCustomerEndTimeAInDO2 - roundTimer;
         }
+        else
+        {
+            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
+        }
         if (eCustomerEndTimeAInDO3 > roundTimer)
         {
             customerTimerInDO3 = eCustomerEndTimeAInDO3 - roundTimer;
+        }
+        else
+        {
+            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
         }
         if (eCustomerEndTimeAInDO4 > roundTimer)
         {
             customerTimerInDO4 = eCustomerEndTimeAInDO4 - roundTimer;
         }
+        else
+        {
+            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
+        }
         if (eCustomerEndTimeAInDO5 > roundTimer)
         {
             customerTimerInDO5 = eCustomerEndTimeAInDO5 - roundTimer;
         }
+        else
+        {
+            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
+        }
         if (eCustomerEndTimeAInDO6 > roundTimer)
         {
             customerTimerInDO6 = eCustomerEndTimeAInDO6 - roundTimer;
+        }
+        else
+        {
+            customerWaitingHandlerScript.CheckPatienceOfWaitingCustomers();
         }
         if (eCustomerEndTimeAInSO1 > roundTimer)
         {
@@ -646,5 +711,112 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(num);
     
+    }
+
+    //This enum is a lerp for the NPC's position from the right side of the screen to pick up thier drink.
+    public IEnumerator LerpNPCPositionAnimation(float newPositionDesired, GameObject NPCToMove)
+    {
+        float timeElapsed = 0;
+
+        while (timeElapsed < NPCToMove.GetComponentInParent<CustomerDrinkScript>().characterShopSpeed)
+        {
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
+            NPCToMove.transform.localPosition = new Vector3(valueToLerp, -55, 0);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x, -55, 0);
+    }
+
+    public IEnumerator LerpNPCPatienceDestroyerO(float newPositionDesired, GameObject NPCToMove)
+    {
+        if (customerWaitingHandlerScript.isActiveAndEnabled)
+        {
+            float timeElapsed = 0;
+
+            while (timeElapsed < 5f)
+            {
+                float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
+                NPCToMove.transform.localPosition = new Vector3(valueToLerp, NPCToMove.transform.localPosition.y, 0);
+                timeElapsed += Time.deltaTime;
+
+                yield return null;
+            }
+        }
+
+        NPCToMove.transform.localPosition = new Vector3(newPositionDesired, -55, 0);
+        Destroy(NPCToMove);
+    }
+
+    //This enum is a lerp for the NPC's position coming into the line creating the "walking" into the queue animation.
+    public IEnumerator LerpNPCQueuePosition(float newPositionDesired, GameObject NPCToMove)
+    {
+        float timeElapsed = 0;
+
+        while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
+        {
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
+            NPCToMove.transform.localPosition = new Vector3(valueToLerp, NPCToMove.transform.localPosition.y, 0);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x, -55, 0);
+    }
+
+    //This enum is a lerp for the NPC's position "walking" into the other animation.
+    public IEnumerator MoveNPCOtherQueuePosition(float newPositionDesired, GameObject NPCToMove)
+    {
+        float timeElapsed = 0;
+
+        while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
+        {
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / 100f);
+            NPCToMove.transform.localPosition = new Vector3(valueToLerp, NPCToMove.transform.localPosition.y, 0);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        NPCToMove.transform.localPosition = new Vector3(NPCToMove.transform.localPosition.x, -55, 0);
+    }
+
+    //This enum is a lerp for the NPC's position "walking" into the other animation and destroys the NPC.
+    public IEnumerator LerpNPCPatienceDestroyer(float newPositionDesired, GameObject NPCToMove)
+    {
+        float timeElapsed = 0;
+
+        while (timeElapsed < NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed)
+        {
+            float valueToLerp = Mathf.Lerp(NPCToMove.transform.localPosition.x, newPositionDesired, timeElapsed / NPCToMove.GetComponent<CustomerDrinkScript>().characterShopSpeed);
+            NPCToMove.transform.localPosition = new Vector3(valueToLerp, NPCToMove.transform.localPosition.y, 0);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        NPCToMove.transform.localPosition = new Vector3(-1400, -55, 0);
+        Destroy(NPCToMove);
+    }
+
+    //This enum is a lerp for the NPC's color.
+    public IEnumerator LerpNPCQueueColors(float colorTarget, Image imageToChange)
+    {
+        float timeElapsed = 0;
+        float valueToLerp = 0f;
+
+        while (timeElapsed < 0.5f)
+        {
+            imageToChange.color = new Color32(((byte)valueToLerp), ((byte)valueToLerp), ((byte)valueToLerp), 255);
+            valueToLerp = Mathf.Lerp(0, colorTarget, timeElapsed / 1.5f);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        imageToChange.color = new Color32(((byte)colorTarget), ((byte)colorTarget), ((byte)colorTarget), 255);
     }
 }
