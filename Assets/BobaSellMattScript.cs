@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class BobaSellMattScript : MonoBehaviour
@@ -142,9 +143,30 @@ public class BobaSellMattScript : MonoBehaviour
         }
     }
 
-    public void ShowCustomerTakesDrinkInDrinkMat(GameObject DrinkTaken, GameObject customer){
+    public void ShowCustomerTakesDrinkInDrinkMat(GameObject DrinkTaken, GameObject customer, int transformIndex){
         DrinkTaken.transform.SetParent(customer.transform,false);
-        DrinkTaken.transform.localPosition = new Vector3(250,-250,0);
+
+        switch (transformIndex)
+        {
+            case 0:
+                DrinkTaken.transform.localPosition = new Vector3(250, -250, 0);
+                return;
+            case 1:
+                DrinkTaken.transform.localPosition = new Vector3(-250, -250, 0);
+                return;
+            case 2:
+                int leftOrRight = UnityEngine.Random.Range(0, 2);
+                if (leftOrRight == 1)
+                {
+                    DrinkTaken.transform.localPosition = new Vector3(350, -250, 0);
+                }
+                else
+                {
+                    DrinkTaken.transform.localPosition = new Vector3(-350, -250, 0);
+                }
+                return;
+        }
+
         DrinkTaken.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
         GenerateProperDrinkVisuals();
     }

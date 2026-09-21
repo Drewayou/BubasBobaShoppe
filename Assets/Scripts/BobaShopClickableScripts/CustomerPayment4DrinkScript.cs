@@ -61,52 +61,47 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
     //This method simply checks if the customer has matching drinks in the boba mat, along with other checks.
     public void AttemptToPerformPurchase()
     {
-        Debug.LogWarning("Test3");
         totalPayment = 0f;
         
         // Iterate through the related customer waiting for drink queue if they exist.
         if (customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0] != null && customerIsTryingToPay)
         {
             GameObject customerToSellDrinkTo = customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0];
-            if (bobaSellMattScript.sellableBobaDrinksStrings.Count >0)
-            {
-                Debug.LogWarning("Test4 Value Mat : " + bobaSellMattScript.sellableBobaDrinksStrings[0].ToString());
-            }
-            
-            Debug.LogWarning("Test4 Value Drink : " + customerToSellDrinkTo.GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered[0].ToString());
-            Debug.LogWarning("Test4 Is this true : " + bobaSellMattScript.sellableBobaDrinksStrings.SequenceEqual(customerToSellDrinkTo.GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered));
+
             //checks if the customer has the exact drinks in the mat they requested.
             if (customerToSellDrinkTo.GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered.All(drinkUID => bobaSellMattScript.sellableBobaDrinksStrings.Contains(drinkUID)))
             {
-                Debug.LogWarning("Attempted to sell");
                 List<string> uidsOrdered = customerToSellDrinkTo.GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered;
 
                 //If the boba mat has the same ammount of drinks in the order.
                 if (uidsOrdered.Count == bobaSellMattScript.sellableBobaDrinksStrings.Count)
                 {
-                    //Itereate through each drink this co-responding customer ordered and sell as intended. Order does not matter.
-                    foreach (GameObject drink in bobaSellMattScript.sellableBobaDrinks)
+                    //Itereate through each drink the customer wanted
+                    for (int i = 0; i < uidsOrdered.Count; i++)
                     {
-                        bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(drink, customerToSellDrinkTo);
+                        //Get the gameobject that matches the UID being ordered.
+                        GameObject drinkThatMatchesInMat = bobaSellMattScript.sellableBobaDrinks.Find(obj => obj.GetComponent<BobaCupUIDSettingsScript>().drinkUID == uidsOrdered[i]);
+                        bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(drinkThatMatchesInMat, customerToSellDrinkTo, i);
 
                         //FIXME: Still need to make payments go through.
                         totalPayment += 10;
-                        //AttemptToPerformPatienceRanOutPurchase();
+                        bobaSellMattScript.sellableBobaDrinks.Remove(drinkThatMatchesInMat);
                     }
                     bobaSellMattScript.sellableBobaDrinksStrings.Clear();
                 }
                 else
                 {
                     //Itereate through each drink the customer wanted
-                    foreach (string drink in uidsOrdered)
+                    for (int i = 0; i < uidsOrdered.Count; i++)
                     {
                         //Get the gameobject that matches the UID being ordered.
-                        GameObject drinkThatMatchesInMat = bobaSellMattScript.sellableBobaDrinks.Find(obj => obj.GetComponent<BobaCupUIDSettingsScript>().drinkUID == drink);
-                        bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(drinkThatMatchesInMat, customerToSellDrinkTo);
+                        GameObject drinkThatMatchesInMat = bobaSellMattScript.sellableBobaDrinks.Find(obj => obj.GetComponent<BobaCupUIDSettingsScript>().drinkUID == uidsOrdered[i]);
+                        bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(drinkThatMatchesInMat, customerToSellDrinkTo, i);
 
                         //FIXME: Still need to make payments go through.
                         totalPayment += 10;
-                        //AttemptToPerformPatienceRanOutPurchase();
+                        bobaSellMattScript.sellableBobaDrinks.Remove(drinkThatMatchesInMat);
+                        bobaSellMattScript.sellableBobaDrinksStrings.Remove(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
                     }
                 }
 
@@ -126,21 +121,51 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
     {
         totalPayment = 0f;
         // Iterate through the related customer waiting for drink queue if they exist.
-        if (customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0] != null)
+        if (customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0] != null && customerIsTryingToPay)
         {
-            //Itereate through each drink this co-responding customer ordered and sell as intended.
-            foreach (string drinkUIDToScan in customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0].GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered)
+            GameObject customerToSellDrinkTo = customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0];
+
+            List<string> uidsOrdered = customerToSellDrinkTo.GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered;
+
+            //If the boba mat has the same ammount of drinks in the order.
+            if (uidsOrdered.Count == bobaSellMattScript.sellableBobaDrinksStrings.Count)
             {
-                //checks if the customer has an exact drink they requested in the mat to get first.
-                if (bobaSellMattScript.sellableBobaDrinksStrings.Contains(drinkUIDToScan))
+                //Itereate through each drink the customer wanted
+                for (int i = 0; i < uidsOrdered.Count; i++)
                 {
-                    //Sell at that drink's value.
+                    //Get the next drink in the mat.
+                    GameObject nextDrinkInMat = bobaSellMattScript.sellableBobaDrinks[0];
+                    bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(nextDrinkInMat, customerToSellDrinkTo, i);
+
+                    //FIXME: Still need to make payments go through.
+                    totalPayment += 10;
+                    bobaSellMattScript.sellableBobaDrinks.RemoveAt(0);
                 }
-                else
+                bobaSellMattScript.sellableBobaDrinksStrings.Clear();
+            }
+            else
+            {
+                //Itereate through each drink the customer wanted
+                for (int i = 0; i < uidsOrdered.Count; i++)
                 {
-                    //Sell at different drink's value.
+                    //Get the gameobject that matches the UID being ordered.
+                    GameObject nextDrinkInMat = bobaSellMattScript.sellableBobaDrinks[0];
+                    bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(nextDrinkInMat, customerToSellDrinkTo, i);
+
+                    //FIXME: Still need to make payments go through.
+                    totalPayment += 10;
+                    bobaSellMattScript.sellableBobaDrinks.Remove(nextDrinkInMat);
+                    bobaSellMattScript.sellableBobaDrinksStrings.Remove(nextDrinkInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
                 }
             }
+
+            customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue.Remove(customerToSellDrinkTo);
+            thisRoundOverallInstanceScript.customerTimerInDO1 = 0.1f;
+            thisRoundOverallInstanceScript.customerStartingTimeInDO1 = 0.1f;
+            thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 = 0.1f;
+
+            customerWaitingDrinkHandlerScript.RemoveCustomerWithDrinks(customerToSellDrinkTo);
+            customerIsTryingToPay = false;
         }
     }
 

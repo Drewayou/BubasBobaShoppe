@@ -215,7 +215,14 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         }
 
         //This calls the script to attempt a customer to pickup their drinks to pay.
-        customerOrderPickupHandlerScript.AttemptCustomerTakesDrinksAndPays();
+        if (eCustomerEndTimeAInDO1 > roundTimer + 1.1f)
+        {
+            customerOrderPickupHandlerScript.AttemptCustomerTakesDrinksAndPays();
+        }
+        else
+        {
+            customerOrderPickupHandlerScript.AttemptCustomerLoosingPatienceButGrabbingDrinks();
+        } 
     }
 
     //Sets the customer cooldown timer for the CHANCE to spawn another NPC at the boba shop to a formula including shop popularity.

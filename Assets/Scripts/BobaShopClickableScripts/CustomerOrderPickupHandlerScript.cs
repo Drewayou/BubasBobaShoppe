@@ -35,7 +35,7 @@ public class CustomerOrderPickupScript : MonoBehaviour
     GameObject CustomerLeavingHandlerObject;
 
     //The queue list for "CustomerWaitingHandlerScript"
-    List<GameObject> thisOrderCustomerQueue;
+    public List<GameObject> thisOrderCustomerQueue;
 
     //The script for "CustomerWaitingHandlerScript"
     CustomerWaitingForDrinkHandlerScript thisOrderCustomerOtherScript;
@@ -61,19 +61,30 @@ public class CustomerOrderPickupScript : MonoBehaviour
 
     private void Update()
     {
-        
+        if (customerIsPickingUpDrinks && thisOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsAtFront && thisOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsWaitingForDrinks)
+        {
+            customerPayment4DrinkScript.customerIsTryingToPay = true;
+        }
     }
 
     public void AttemptCustomerTakesDrinksAndPays()
     {
-        Debug.LogWarning("Test1");
+        Debug.LogWarning("Customer will try to grab RIGHT drinks!");
         if (thisOrderCustomerQueue.Count > 0)
         {
             if (customerIsPickingUpDrinks && thisOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsAtFront && thisOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsWaitingForDrinks)
             {
-                Debug.LogWarning("Test2");
-                thisBobaMatScript.GetComponent<CustomerPayment4DrinkScript>().AttemptToPerformPurchase();
+               thisBobaMatScript.GetComponent<CustomerPayment4DrinkScript>().AttemptToPerformPurchase();
             }
+        }
+    }
+
+    public void AttemptCustomerLoosingPatienceButGrabbingDrinks()
+    {
+        Debug.LogWarning("Customer will try to grab ANY AND ALL drinks! RAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+        if (customerIsPickingUpDrinks && thisOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsAtFront && thisOrderCustomerQueue[0].GetComponent<CustomerPatienceUIScript>().customerIsWaitingForDrinks)
+        {
+            thisBobaMatScript.GetComponent<CustomerPayment4DrinkScript>().AttemptToPerformPatienceRanOutPurchase();
         }
     }
 
