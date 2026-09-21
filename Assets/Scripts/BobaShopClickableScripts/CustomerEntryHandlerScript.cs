@@ -76,6 +76,7 @@ public class CustomerHandlerScript : MonoBehaviour
         //If customer has limited patience, reset it for the next timer.
         if (customerThatOrderedADrink.GetComponent<CustomerPatienceUIScript>()!=null)
         {
+            customerThatOrderedADrink.GetComponent<CustomerPatienceUIScript>().savedPatiencePercentWhenOrderTaken = customerThatOrderedADrink.GetComponent<CustomerPatienceUIScript>().patienceOver100;
             customerThatOrderedADrink.GetComponent<CustomerPatienceUIScript>().ResetThisCustomersPatienceAndFrontStatus();
         }
 

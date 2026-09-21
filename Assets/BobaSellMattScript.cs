@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,10 @@ public class BobaSellMattScript : MonoBehaviour
     GameObject itemInHandInventory;
 
     //List of the game objects in the sell tray.
-    List<GameObject> sellableBobaDrinks = new List<GameObject>();
+    public List<GameObject> sellableBobaDrinks = new List<GameObject>();
+
+    //List of the String UID's in the sell tray.
+    public List<String> sellableBobaDrinksStrings = new List<String>();
 
     //A bool to determine if the interaction was sucessfull and play the animation if not.
     bool interactedCorrectly;
@@ -92,6 +96,17 @@ public class BobaSellMattScript : MonoBehaviour
                 sellableBobaDrinks[2].transform.localPosition = new Vector3(-20f,10f,0f);  
             }
         }
+        GenerateDrinkListStrings();
+    }
+
+    // Ensures that the current drinks in the boba mat area has generated a list of UUID's of the drinks it has.
+    public void GenerateDrinkListStrings()
+    {
+        sellableBobaDrinksStrings.Clear();
+        foreach (GameObject drink in sellableBobaDrinks)
+        {
+            sellableBobaDrinksStrings.Add(drink.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
+        }
     }
 
     public void InteractWithDrinkMat(){
@@ -127,7 +142,10 @@ public class BobaSellMattScript : MonoBehaviour
         }
     }
 
-    public void SellNextDrinkInDrinkMat(){
-        Destroy(sellableBobaDrinks[0].gameObject);
+    public void ShowCustomerTakesDrinkInDrinkMat(GameObject DrinkTaken, GameObject customer){
+        DrinkTaken.transform.SetParent(customer.transform,false);
+        DrinkTaken.transform.localPosition = new Vector3(250,-250,0);
+        DrinkTaken.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
+        GenerateProperDrinkVisuals();
     }
 }

@@ -93,7 +93,10 @@ public class CustomerPatienceUIScript : MonoBehaviour
     public float customerSpecialWaitingTime = 10f;
 
     //This is the patience meter over 100% (0.0f->1f)
-    public float patienceOver100 = 1;
+    public float patienceOver100 = 1f;
+    
+    //This saves how much patience the customer had when waiting for their order to be taken.
+    public float savedPatiencePercentWhenOrderTaken = 1f;
 
     public bool customerHadOrderTaken ,customerIsAtFront, customerIsWaitingForDrinks, customerIsWaitingForSomethingElse, customerIsInWaitingInALineNotAtFront, customerIsWalking;
 

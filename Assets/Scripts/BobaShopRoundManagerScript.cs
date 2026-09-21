@@ -54,6 +54,11 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [Tooltip("Put the game's \"CustomerOrderPickupScript\" script to access the customer queue of people waiting for their drinks (also found in customerWaitingDrinkHandlerGameObject).")]
     CustomerOrderPickupScript customerOrderPickupHandlerScript;
 
+    [SerializeField]
+    [Header("Boba Sell Mat GAMEOBJECT")]
+    [Tooltip("Put the game's \"DrinkPlacementMat\" game object to access transform and script properties of this object.")]
+    public GameObject bobaDrinkMat;
+
     //The script attached to this game object that programs what customers can spawn.
     //Gets set via the Start() method.
     NPCCustomersThatCanSpawnScript customersThatCanSpawnThisRoundScript;
@@ -208,6 +213,9 @@ public class BobaShopRoundManagerScript : MonoBehaviour
             tryToSpawnARoundLoadedCustomer();
             resetCustomerSpawnCooldownTimer();
         }
+
+        //This calls the script to attempt a customer to pickup their drinks to pay.
+        customerOrderPickupHandlerScript.AttemptCustomerTakesDrinksAndPays();
     }
 
     //Sets the customer cooldown timer for the CHANCE to spawn another NPC at the boba shop to a formula including shop popularity.
@@ -744,6 +752,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
                 NPCToMove.GetComponent<CustomerPatienceUIScript>().TimerStartedWaitingForPickingUpOrder();
                 NPCToMove.GetComponent<CustomerPatienceUIScript>().customerIsAtFront = true;
                 NPCToMove.GetComponent<CustomerPatienceUIScript>().customerHadOrderTaken = true;
+                bobaDrinkMat.GetComponent<CustomerPayment4DrinkScript>().customerIsTryingToPay = true;
                 NPCToMove.GetComponent<CustomerPatienceUIScript>().customerIsInWaitingInALineNotAtFront = false;
             }
         }

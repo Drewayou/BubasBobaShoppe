@@ -244,7 +244,7 @@ MonoBehaviour:
   customerWaitingOrderPickupScript: {fileID: 85980986}
   customerWalkingTimer: 0
   customerPatienceForGettingOrder: 0
-  bobaSellMatScript: {fileID: 0}
+  bobaSellMatScript: {fileID: 6079893519306211260}
   OrderTab1Script: {fileID: 1443126981}
   OrderTab2Script: {fileID: 1351914171}
   OrderTab3Script: {fileID: 1081621135}
@@ -263,6 +263,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f6809fcfe7b6e469cf4b2112c7ef04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thisBobaMatGameObject: {fileID: 6079893519306211258}
+  thisBobaMatScript: {fileID: 6079893519306211260}
+  customerPayment4DrinkScript: {fileID: 6079893519306211263}
   CustomerLeavingHandlerObject: {fileID: 192196096}
   xPositionOfSellMatt: 477
   customerIsPickingUpDrinks: 0
@@ -5493,7 +5496,8 @@ MonoBehaviour:
   customerQueueHandlerScript: {fileID: 668586579}
   customerWaitingDrinkHandlerGameObject: {fileID: 85980983}
   customerWaitingDrinkHandlerScript: {fileID: 85980985}
-  customerOrderPickupHandlerScript: {fileID: 0}
+  customerOrderPickupHandlerScript: {fileID: 85980986}
+  bobaDrinkMat: {fileID: 6079893519306211258}
   inGameUIObject: {fileID: 0}
   EndOfRoundUIObject: {fileID: 227311152}
   EndOfRoundToastText: {fileID: 0}
@@ -5727,6 +5731,9 @@ MonoBehaviour:
   customerWaitingDrinkHandlerGameObject: {fileID: 85980983}
   customerWaitingDrinkHandlerScript: {fileID: 85980985}
   customerWaitingOrderPickupScript: {fileID: 85980986}
+  allDrinksMatch: 0
+  totalPayment: 0
+  customerIsTryingToPay: 0
 --- !u!1001 &1220267142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10614,6 +10621,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5828547352455778378, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6079893519306211260}
+    - targetCorrespondingSourceObject: {fileID: 5828547352455778378, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6079893519306211263}
   m_SourcePrefab: {fileID: 100100000, guid: f2059b4fb761eaf41a149e3c66926ee1, type: 3}
 --- !u!224 &6079893519306211257 stripped
 RectTransform:
@@ -10649,6 +10659,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemInHandInventory: {fileID: 146500739}
+  sellableBobaDrinks: []
+  sellableBobaDrinksStrings: []
+--- !u!114 &6079893519306211263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6079893519306211258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 298f2c7ec69ae6940815bccae84f41df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerPayment4DrinkScript
+  customerWaitingDrinkHandlerGameObject: {fileID: 85980983}
+  customerWaitingDrinkHandlerScript: {fileID: 85980985}
+  customerWaitingOrderPickupScript: {fileID: 85980986}
+  allDrinksMatch: 0
+  totalPayment: 0
+  customerIsTryingToPay: 0
 --- !u!1001 &7602529610989836904
 PrefabInstance:
   m_ObjectHideFlags: 0

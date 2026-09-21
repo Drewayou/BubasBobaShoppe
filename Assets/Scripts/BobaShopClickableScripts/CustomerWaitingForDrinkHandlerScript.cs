@@ -183,6 +183,74 @@ public class CustomerWaitingForDrinkHandlerScript : MonoBehaviour
         }
     }
 
+    //Customer left with drinks
+    //ADD TRANSFORM FOR DRINKS TO BE WITH CUSTOMER
+    public void RemoveCustomerWithDrinks(GameObject theCustomerLeavingWithDrinks)
+    {
+
+        //SaveQ1AndResetAllPatience.
+        float tempT2E = thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2;
+        float tempT2S = thisRoundOverallInstanceScript.customerStartingTimeInDO2;
+        float tempT3E = thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3;
+        float tempT3S = thisRoundOverallInstanceScript.customerStartingTimeInDO3;
+        float tempT4E = thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4;
+        float tempT4S = thisRoundOverallInstanceScript.customerStartingTimeInDO4;
+        float tempT5E = thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5;
+        float tempT5S = thisRoundOverallInstanceScript.customerStartingTimeInDO5;
+        float tempT6E = thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6;
+        float tempT6S = thisRoundOverallInstanceScript.customerStartingTimeInDO6;
+
+        //Resets ALL Patience timers
+        thisRoundOverallInstanceScript.customerStartingTimeInDO1 = tempT2S;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 = tempT2E;
+
+        thisRoundOverallInstanceScript.customerStartingTimeInDO2 = 0;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = 0;
+        thisRoundOverallInstanceScript.customerTimerInDO2 = 0.1f;
+        thisRoundOverallInstanceScript.customerStartingTimeInDO2 = tempT3S;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO2 = tempT3E;
+
+        thisRoundOverallInstanceScript.customerStartingTimeInDO3 = 0;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = 0;
+        thisRoundOverallInstanceScript.customerTimerInDO3 = 0.1f;
+        thisRoundOverallInstanceScript.customerStartingTimeInDO3 = tempT4S;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO3 = tempT4E;
+
+        thisRoundOverallInstanceScript.customerStartingTimeInDO4 = 0;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = 0;
+        thisRoundOverallInstanceScript.customerTimerInDO4 = 0.1f;
+        thisRoundOverallInstanceScript.customerStartingTimeInDO4 = tempT5S;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO4 = tempT5E;
+
+        thisRoundOverallInstanceScript.customerStartingTimeInDO5 = 0;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = 0;
+        thisRoundOverallInstanceScript.customerTimerInDO5 = 0.1f;
+        thisRoundOverallInstanceScript.customerStartingTimeInDO5 = tempT6S;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO5 = tempT6E;
+
+        thisRoundOverallInstanceScript.customerTimerInDO6 = 0.1f;
+        thisRoundOverallInstanceScript.customerStartingTimeInDO6 = 0f;
+        thisRoundOverallInstanceScript.eCustomerEndTimeAInDO6 = 0f;
+
+        //Move the customer game object to the leaving queue due to patience handler.
+        theCustomerLeavingWithDrinks.transform.SetParent(CPROH.transform, false);
+
+        //Move the customer game object to the leaving queue due to patience handler.
+        customerWaitingOrderPickupScript.customerIsPickingUpDrinks = false;
+
+        //If the player is watching this queue canvas, anmimate the customer leaving, else allow the customer to self delete.
+        if (gameObject.transform.parent.gameObject.activeSelf)
+        {
+            StartCoroutine(thisRoundOverallInstanceScript.LerpNPCPatienceDestroyerO(-1600, theCustomerLeavingWithDrinks));
+            UpdateOrderTabs();
+        }
+        else
+        {
+            Destroy(theCustomerLeavingWithDrinks);
+            UpdateOrderTabs();
+        }
+    }
+
     //Check the customers patience in this queue
     public void CheckPatienceOfWaitingCustomers()
     {

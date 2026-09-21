@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CustomerPayment4DrinkScript : MonoBehaviour
@@ -23,11 +25,26 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
     [Tooltip("Drag and drop the \"CustomerOrderPickupScript\" from the \"CustomerDrinkWaitQueueHandler\" game object here.")]
     public CustomerOrderPickupScript customerWaitingOrderPickupScript;
 
+    //Script of the sell tray.
+    BobaSellMattScript bobaSellMattScript;
+
+    //List of the game objects in the sell tray.
+    List<GameObject> sellableBobaDrinks;
+
+    // Bool to see if all drinks match the customer's order.
+    public bool allDrinksMatch = false;
+
+    // float for how much the customer will pay.
+    public float totalPayment = 0f;
+
+    public bool customerIsTryingToPay = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         thisGamesOverallInstanceScript = GameObject.Find("GameManagerObject").GetComponent<GameManagerScript>();
         thisRoundOverallInstanceScript = GameObject.Find("BobaShopRoundManager").GetComponent<BobaShopRoundManagerScript>();
+        bobaSellMattScript = this.gameObject.GetComponent<BobaSellMattScript>();
     }
 
     // Update is called once per frame
@@ -36,127 +53,195 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
 
     }
 
+    //Call the purchase timer if there is a customer waiting to pick up drinks.
+    //Wrong drinks per customer causes them to pay WAY less (If if the value of the drink they ordered is higher), or they will pay "At their Order" cost if the taken drink has more value.
+    //Tips are NOT given if customer reaches 0 patience.
+    //Patience should - INCREASE POPULARITY BASED OF HOW MUCH PATIENCE WAS LEFT. Sad->no patience left (1/4th or lower) grants nothing.
+    
+    //This method simply checks if the customer has matching drinks in the boba mat, along with other checks.
     public void AttemptToPerformPurchase()
     {
+        Debug.LogWarning("Test3");
+        totalPayment = 0f;
+        
         // Iterate through the related customer waiting for drink queue if they exist.
-        //if (drinkTabIndexThisIs <= customerWaitingDrinkQueue.waitingForOrderCustomerQueue.Count - 1)
-        //{
-        //    //Itereate through each drink this co-responding customer ordered.
-        //    int drinkIndexNext = 0;
-        //    foreach (string drinkUIDToScan in customerWaitingDrinkQueue.waitingForOrderCustomerQueue[drinkTabIndexThisIs].GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered)
-        //    {
-        //        //Temp index to save the info to make sure it spaces evenly.
-        //        int infoIndexNext = 0;
+        if (customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0] != null && customerIsTryingToPay)
+        {
+            GameObject customerToSellDrinkTo = customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0];
+            if (bobaSellMattScript.sellableBobaDrinksStrings.Count >0)
+            {
+                Debug.LogWarning("Test4 Value Mat : " + bobaSellMattScript.sellableBobaDrinksStrings[0].ToString());
+            }
+            
+            Debug.LogWarning("Test4 Value Drink : " + customerToSellDrinkTo.GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered[0].ToString());
+            Debug.LogWarning("Test4 Is this true : " + bobaSellMattScript.sellableBobaDrinksStrings.SequenceEqual(customerToSellDrinkTo.GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered));
+            //checks if the customer has the exact drinks in the mat they requested.
+            if (customerToSellDrinkTo.GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered.All(drinkUID => bobaSellMattScript.sellableBobaDrinksStrings.Contains(drinkUID)))
+            {
+                Debug.LogWarning("Attempted to sell");
+                List<string> uidsOrdered = customerToSellDrinkTo.GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered;
 
-        //        //Break down each drink UID to populate the tab.
-        //        //Tea Ingredient Base
-        //        GameObject teaIngredientBase;
-        //        switch (drinkUIDToScan.Substring(0, 2))
-        //        {
-        //            case "--":
-        //                //Do Nothing.
-        //                break;
-        //            case "PD":
-        //                teaIngredientBase = Instantiate(pandanIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.55f);
-        //                teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
-        //                infoIndexNext++;
-        //                break;
-        //            case "BN":
-        //                teaIngredientBase = Instantiate(bananaIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.55f);
-        //                teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
-        //                infoIndexNext++;
-        //                break;
-        //            case "SB":
-        //                teaIngredientBase = Instantiate(strawberryIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.25f);
-        //                teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
-        //                infoIndexNext++;
-        //                break;
-        //            case "MB":
-        //                teaIngredientBase = Instantiate(mangoIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.25f);
-        //                teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
-        //                infoIndexNext++;
-        //                break;
-        //            case "UB":
-        //                teaIngredientBase = Instantiate(ubeIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                teaIngredientBase.transform.localScale = new Vector3(0.55f, 0.55f, 0.55f);
-        //                teaIngredientBase.transform.localPosition = new Vector3(0f, 20f, 0f);
-        //                infoIndexNext++;
-        //                break;
-        //        }
-        //        //TeaBase
-        //        GameObject textTeaBase;
-        //        switch (drinkUIDToScan.Substring(2, 2))
-        //        {
-        //            case "--":
-        //                //Do Nothing
-        //                break;
-        //            case "GB":
-        //                textTeaBase = Instantiate(textIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                textTeaBase.GetComponent<TMP_Text>().SetText("G");
-        //                infoIndexNext++;
-        //                break;
-        //            case "BB":
-        //                textTeaBase = Instantiate(textIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                textTeaBase.GetComponent<TMP_Text>().SetText("B");
-        //                infoIndexNext++;
-        //                break;
-        //            case "OB":
-        //                textTeaBase = Instantiate(textIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                textTeaBase.GetComponent<TMP_Text>().SetText("O");
-        //                infoIndexNext++;
-        //                break;
-        //        }
-        //        //Drink overlay
-        //        GameObject textFlavorOverlay;
-        //        switch (drinkUIDToScan.Substring(4, 1))
-        //        {
-        //            case "-":
-        //                //Do Nothing.
-        //                break;
-        //            case "M":
-        //                textFlavorOverlay = Instantiate(textIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                textFlavorOverlay.GetComponent<TMP_Text>().SetText("M");
-        //                infoIndexNext++;
-        //                break;
-        //            case "W":
-        //                textFlavorOverlay = Instantiate(textIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                textFlavorOverlay.GetComponent<TMP_Text>().SetText("W");
-        //                infoIndexNext++;
-        //                break;
-        //        }
-        //        //Toppings
-        //        GameObject bobaToppings;
-        //        switch (drinkUIDToScan.Substring(5, 2))
-        //        {
-        //            case "*-":
-        //                //Do Nothing.
-        //                break;
-        //            case "*B":
-        //                bobaToppings = Instantiate(bobaIco, this.gameObject.transform.GetChild(drinkIndexNext).transform.GetChild(infoIndexNext));
-        //                bobaToppings.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
-        //                infoIndexNext++;
-        //                break;
-        //        }
-        //        //Tempurature
-        //        switch (drinkUIDToScan.Substring(7, 1))
-        //        {
-        //            case "-":
-        //                //Do Nothing.
-        //                break;
-        //        }
-        //        //Sweetness
-        //        switch (drinkUIDToScan.Substring(8, 1))
-        //        {
-        //            case "-":
-        //                //Do Nothing.
-        //                break;
-        //        }
-        //        drinkIndexNext++;
-        //    }
-        //}
+                //If the boba mat has the same ammount of drinks in the order.
+                if (uidsOrdered.Count == bobaSellMattScript.sellableBobaDrinksStrings.Count)
+                {
+                    //Itereate through each drink this co-responding customer ordered and sell as intended. Order does not matter.
+                    foreach (GameObject drink in bobaSellMattScript.sellableBobaDrinks)
+                    {
+                        bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(drink, customerToSellDrinkTo);
+
+                        //FIXME: Still need to make payments go through.
+                        totalPayment += 10;
+                        //AttemptToPerformPatienceRanOutPurchase();
+                    }
+                    bobaSellMattScript.sellableBobaDrinksStrings.Clear();
+                }
+                else
+                {
+                    //Itereate through each drink the customer wanted
+                    foreach (string drink in uidsOrdered)
+                    {
+                        //Get the gameobject that matches the UID being ordered.
+                        GameObject drinkThatMatchesInMat = bobaSellMattScript.sellableBobaDrinks.Find(obj => obj.GetComponent<BobaCupUIDSettingsScript>().drinkUID == drink);
+                        bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(drinkThatMatchesInMat, customerToSellDrinkTo);
+
+                        //FIXME: Still need to make payments go through.
+                        totalPayment += 10;
+                        //AttemptToPerformPatienceRanOutPurchase();
+                    }
+                }
+
+                customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue.Remove(customerToSellDrinkTo);
+                thisRoundOverallInstanceScript.customerTimerInDO1 = 0.1f;
+                thisRoundOverallInstanceScript.customerStartingTimeInDO1 = 0.1f;
+                thisRoundOverallInstanceScript.eCustomerEndTimeAInDO1 = 0.1f;
+
+                customerWaitingDrinkHandlerScript.RemoveCustomerWithDrinks(customerToSellDrinkTo);
+                customerIsTryingToPay = false;
+            }
+        }
     }
+
+    //This method runs if the customer ran out of patience waiting for drinks they ordered at the mat.
+    public void AttemptToPerformPatienceRanOutPurchase()
+    {
+        totalPayment = 0f;
+        // Iterate through the related customer waiting for drink queue if they exist.
+        if (customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0] != null)
+        {
+            //Itereate through each drink this co-responding customer ordered and sell as intended.
+            foreach (string drinkUIDToScan in customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0].GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered)
+            {
+                //checks if the customer has an exact drink they requested in the mat to get first.
+                if (bobaSellMattScript.sellableBobaDrinksStrings.Contains(drinkUIDToScan))
+                {
+                    //Sell at that drink's value.
+                }
+                else
+                {
+                    //Sell at different drink's value.
+                }
+            }
+        }
+    }
+
+    public float CalculateDrinkPriceAtValue(string UUIDOfDrink)
+    {
+        float costOfDrink = 10f;
+
+        Debug.LogWarning("Sold a drink! " + costOfDrink);
+        return costOfDrink;
+    }
+
+    //foreach (string drinkUIDToScan in customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0].GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered)
+    //        {
+    //            //Temp index to save the info to make sure it spaces evenly.
+    //            int totalPayment = 0;
+
+    //            //Break down each drink UID to populate the tab.
+    //            //Tea Ingredient Base
+    //            switch (drinkUIDToScan.Substring(0, 2))
+    //            {
+    //                case "--":
+    //                    //Do Nothing.
+    //                    break;
+    //                case "PD":
+
+
+    //                    break;
+    //                case "BN":
+
+
+    //                    break;
+    //                case "SB":
+
+
+    //                    break;
+    //                case "MB":
+
+
+    //                    break;
+    //                case "UB":
+
+
+    //                    break;
+    //            }
+    //            //TeaBase
+    //            switch (drinkUIDToScan.Substring(2, 2))
+    //            {
+    //                case "--":
+    //                    //Do Nothing
+    //                    break;
+    //                case "GB":
+
+    //                    break;
+    //                case "BB":
+
+
+    //                    break;
+    //                case "OB":
+
+    //                    break;
+    //            }
+    //            //Drink overlay
+    //            switch (drinkUIDToScan.Substring(4, 1))
+    //            {
+    //                case "-":
+    //                    //Do Nothing.
+    //                    break;
+    //                case "M":
+
+
+    //                    break;
+    //                case "W":
+
+
+    //                    break;
+    //            }
+    //            //Toppings
+    //            switch (drinkUIDToScan.Substring(5, 2))
+    //            {
+    //                case "*-":
+    //                    //Do Nothing.
+    //                    break;
+    //                case "*B":
+
+
+    //                    break;
+    //            }
+    //            //Tempurature
+    //            switch (drinkUIDToScan.Substring(7, 1))
+    //            {
+    //                case "-":
+    //                    //Do Nothing.
+    //                    break;
+    //            }
+    //            //Sweetness
+    //            switch (drinkUIDToScan.Substring(8, 1))
+    //            {
+    //                case "-":
+    //                    //Do Nothing.
+    //                    break;
+    //            }
+    //        }
+
 }
