@@ -34,9 +34,6 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
     // Bool to see if all drinks match the customer's order.
     public bool allDrinksMatch = false;
 
-    // float for how much the customer will pay.
-    public float totalPayment = 0f;
-
     public bool customerIsTryingToPay = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -61,8 +58,6 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
     //This method simply checks if the customer has matching drinks in the boba mat, along with other checks.
     public void AttemptToPerformPurchase()
     {
-        totalPayment = 0f;
-        
         // Iterate through the related customer waiting for drink queue if they exist.
         if (customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0] != null && customerIsTryingToPay)
         {
@@ -82,9 +77,8 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
                         //Get the gameobject that matches the UID being ordered.
                         GameObject drinkThatMatchesInMat = bobaSellMattScript.sellableBobaDrinks.Find(obj => obj.GetComponent<BobaCupUIDSettingsScript>().drinkUID == uidsOrdered[i]);
                         bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(drinkThatMatchesInMat, customerToSellDrinkTo, i);
-
-                        //FIXME: Still need to make payments go through.
-                        totalPayment += 10;
+                        Debug.LogWarning("Drink price Calculated: " + CalculateDrinkPriceAtValue(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
+                        thisRoundOverallInstanceScript.thisRoundMoneyJar.AddMoneyThisRound(CalculateDrinkPriceAtValue(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
                         bobaSellMattScript.sellableBobaDrinks.Remove(drinkThatMatchesInMat);
                     }
                     bobaSellMattScript.sellableBobaDrinksStrings.Clear();
@@ -98,8 +92,7 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
                         GameObject drinkThatMatchesInMat = bobaSellMattScript.sellableBobaDrinks.Find(obj => obj.GetComponent<BobaCupUIDSettingsScript>().drinkUID == uidsOrdered[i]);
                         bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(drinkThatMatchesInMat, customerToSellDrinkTo, i);
 
-                        //FIXME: Still need to make payments go through.
-                        totalPayment += 10;
+                        thisRoundOverallInstanceScript.thisRoundMoneyJar.AddMoneyThisRound(CalculateDrinkPriceAtValue(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
                         bobaSellMattScript.sellableBobaDrinks.Remove(drinkThatMatchesInMat);
                         bobaSellMattScript.sellableBobaDrinksStrings.Remove(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
                     }
@@ -119,7 +112,6 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
     //This method runs if the customer ran out of patience waiting for drinks they ordered at the mat.
     public void AttemptToPerformPatienceRanOutPurchase()
     {
-        totalPayment = 0f;
         // Iterate through the related customer waiting for drink queue if they exist.
         if (customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0] != null && customerIsTryingToPay)
         {
@@ -137,8 +129,7 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
                     GameObject nextDrinkInMat = bobaSellMattScript.sellableBobaDrinks[0];
                     bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(nextDrinkInMat, customerToSellDrinkTo, i);
 
-                    //FIXME: Still need to make payments go through.
-                    totalPayment += 10;
+                    thisRoundOverallInstanceScript.thisRoundMoneyJar.AddMoneyThisRound(CalculateAndCompareDrinkPriceAtValue(uidsOrdered[i], nextDrinkInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
                     bobaSellMattScript.sellableBobaDrinks.RemoveAt(0);
                 }
                 bobaSellMattScript.sellableBobaDrinksStrings.Clear();
@@ -152,8 +143,7 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
                     GameObject nextDrinkInMat = bobaSellMattScript.sellableBobaDrinks[0];
                     bobaSellMattScript.ShowCustomerTakesDrinkInDrinkMat(nextDrinkInMat, customerToSellDrinkTo, i);
 
-                    //FIXME: Still need to make payments go through.
-                    totalPayment += 10;
+                    thisRoundOverallInstanceScript.thisRoundMoneyJar.AddMoneyThisRound(CalculateAndCompareDrinkPriceAtValue(uidsOrdered[i], nextDrinkInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
                     bobaSellMattScript.sellableBobaDrinks.Remove(nextDrinkInMat);
                     bobaSellMattScript.sellableBobaDrinksStrings.Remove(nextDrinkInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
                 }
@@ -169,104 +159,113 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
         }
     }
 
-    public float CalculateDrinkPriceAtValue(string UUIDOfDrink)
+    //This compares drink values and returns the lower one.
+    public double CalculateAndCompareDrinkPriceAtValue(string UUIDOfDesiredDrink, string UUIDOfDrinkTaken)
     {
-        float costOfDrink = 10f;
+        double priceOfDesiredDrink = CalculateDrinkPriceAtValue(UUIDOfDesiredDrink);
+        double priceOfTakenDrink = CalculateDrinkPriceAtValue(UUIDOfDrinkTaken);
 
-        Debug.LogWarning("Sold a drink! " + costOfDrink);
-        return costOfDrink;
+        if (priceOfDesiredDrink < priceOfTakenDrink) {
+            return priceOfDesiredDrink;
+        }
+        else
+        {
+            return priceOfTakenDrink;
+        }
     }
 
-    //foreach (string drinkUIDToScan in customerWaitingDrinkHandlerScript.waitingForOrderCustomerQueue[0].GetComponent<CustomerDrinkScript>().drinksThisNPCOrdered)
-    //        {
-    //            //Temp index to save the info to make sure it spaces evenly.
-    //            int totalPayment = 0;
+    //This is used to calculate ONE drink.
+    public double CalculateDrinkPriceAtValue(string UUIDOfDrink)
+    {
+        double costOfDrink = 0f;
 
-    //            //Break down each drink UID to populate the tab.
-    //            //Tea Ingredient Base
-    //            switch (drinkUIDToScan.Substring(0, 2))
-    //            {
-    //                case "--":
-    //                    //Do Nothing.
-    //                    break;
-    //                case "PD":
+        //Break down each drink UID to populate the tab.
+        //Tea Ingredient Base
+        switch (UUIDOfDrink.Substring(0, 2))
+        {
+            case "--":
+                //Do nothing
+                break;
+            case "PD":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfPandan;
+                break;
+            case "BN":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfBanana;
+                break;
 
+            case "SB":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfStrawberry;
+                break;
 
-    //                    break;
-    //                case "BN":
+            case "MB":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfMango;
+                break;
 
-
-    //                    break;
-    //                case "SB":
-
-
-    //                    break;
-    //                case "MB":
-
-
-    //                    break;
-    //                case "UB":
-
-
-    //                    break;
-    //            }
-    //            //TeaBase
-    //            switch (drinkUIDToScan.Substring(2, 2))
-    //            {
-    //                case "--":
-    //                    //Do Nothing
-    //                    break;
-    //                case "GB":
-
-    //                    break;
-    //                case "BB":
-
-
-    //                    break;
-    //                case "OB":
-
-    //                    break;
-    //            }
-    //            //Drink overlay
-    //            switch (drinkUIDToScan.Substring(4, 1))
-    //            {
-    //                case "-":
-    //                    //Do Nothing.
-    //                    break;
-    //                case "M":
-
-
-    //                    break;
-    //                case "W":
-
-
-    //                    break;
-    //            }
-    //            //Toppings
-    //            switch (drinkUIDToScan.Substring(5, 2))
-    //            {
-    //                case "*-":
-    //                    //Do Nothing.
-    //                    break;
-    //                case "*B":
-
-
-    //                    break;
-    //            }
-    //            //Tempurature
-    //            switch (drinkUIDToScan.Substring(7, 1))
-    //            {
-    //                case "-":
-    //                    //Do Nothing.
-    //                    break;
-    //            }
-    //            //Sweetness
-    //            switch (drinkUIDToScan.Substring(8, 1))
-    //            {
-    //                case "-":
-    //                    //Do Nothing.
-    //                    break;
-    //            }
-    //        }
-
+            case "UB":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfUbe;
+                break;
+        }
+        //TeaBase
+        switch (UUIDOfDrink.Substring(2, 2))
+        {
+            case "--":
+                //Do Nothing
+                break;
+            case "GB":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfGreenTea;
+                break;
+            case "BB":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfBlackTea;
+                break;
+            case "OB":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfOolongTea;
+                break;
+        }
+        //Drink overlay
+        switch (UUIDOfDrink.Substring(4, 1))
+        {
+            case "-":
+                //Do Nothing.
+                break;
+            case "M":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfMilk;
+                break;
+            case "W":
+                //Enhance customer popularity gain and add tips! For now multiply by current drink price, or give a coin.
+                if (costOfDrink > 0)
+                {
+                    costOfDrink += costOfDrink * Random.Range(0f, 1f);
+                }
+                else
+                {
+                    costOfDrink = 1f;
+                }
+                break;
+        }
+        //Toppings
+        switch (UUIDOfDrink.Substring(5, 2))
+        {
+            case "*-":
+                //Do Nothing.
+                break;
+            case "*B":
+                costOfDrink += thisRoundOverallInstanceScript.priceOfCasavaTopping;
+                break;
+        }
+        //Tempurature
+        switch (UUIDOfDrink.Substring(7, 1))
+        {
+            case "-":
+                //Do Nothing.
+                break;
+        }
+        //Sweetness
+        switch (UUIDOfDrink.Substring(8, 1))
+        {
+            case "-":
+                //Do Nothing.
+                break;
+        }
+        return costOfDrink;
+    }
 }

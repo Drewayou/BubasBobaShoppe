@@ -24,7 +24,7 @@ public class ItemTrayObjectScript : MonoBehaviour
     public GameObject selectedIngredientItemPrefab;
 
     //Selected item index (saves what index item is placed inside this tray).
-    int selectedItemIndexThatWillBeInThisTray;
+    public int selectedItemIndexThatWillBeInThisTray;
 
     //The psudo game object inventory object for the boba shop round.
     [SerializeField]

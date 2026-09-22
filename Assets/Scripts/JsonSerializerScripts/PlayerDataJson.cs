@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 public class PlayerDataJson 
 {
     public bool newGame { get; set; }
-    public float playerCoins { get; set; }
+    public double playerCoins { get; set; }
     public int onDayNumber { get; set; }
     public int playerMaxHealth { get; set; }
     public float playerMaxStamina { get; set; }
@@ -23,6 +23,22 @@ public class PlayerDataJson
     public int strawberries { get; set; }
     public int mangos { get; set; }
     public int ube { get; set; }
+
+    //Player price for drinks
+    public double casavaToppingPlayerPrice { get; set; }
+    public double pandanPlayerPrice { get; set; }
+    public double bananaPlayerPrice { get; set; }
+    public double strawberryPlayerPrice { get; set; }
+    public double mangoPlayerPrice { get; set; }
+    public double ubePlayerPrice { get; set; }
+
+    //price for teas
+    public double greenTeaPlayerPrice { get; set; }
+    public double blackTeaPlayerPrice { get; set; }
+    public double oolongTeaPlayerPrice { get; set; }
+
+    //price for milk
+    public double milkPlayerPrice { get; set; }
 
     //Player boba shop items data
     public int greenTeaAmmount { get; set; }

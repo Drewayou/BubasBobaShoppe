@@ -52,7 +52,7 @@ public class GameManagerScript : MonoBehaviour
     private Inter_Dataservice DataService = new JsonDataService();
 
     //Set all JSON to the default base.
-    private PlayerDataJson PlayerStatsThisInstance = new PlayerDataJson();
+    private PlayerDataJson playerStatsThisInstance = new PlayerDataJson();
     private ShopCostsNEarnings thisInstanceOfPlayerShop = new ShopCostsNEarnings();
     private WorldState worldInstance = new WorldState();
 
@@ -80,7 +80,7 @@ public class GameManagerScript : MonoBehaviour
 
         //Start playing the intro if this is a new game save, else make sure it's off
         if(introContainer != null){
-            if(PlayerStatsThisInstance.newGame){
+            if(playerStatsThisInstance.newGame){
                 introContainer.SetActive(true);
                 if(GameObject.FindWithTag("IntroMusic") == null){
                     Instantiate(introMusic);
@@ -159,6 +159,21 @@ public class GameManagerScript : MonoBehaviour
         playerStats.mangos = 5;
         playerStats.ube = 5;
 
+        //Player prices for drinks (Add a screen for player to set prices)
+        //Player price for drinks
+        playerStats.casavaToppingPlayerPrice = 1f;
+        playerStats.pandanPlayerPrice = 1.5f;
+        playerStats.bananaPlayerPrice =  1.5f;
+        playerStats.strawberryPlayerPrice = 1.5f;
+        playerStats.mangoPlayerPrice = 1.5f;
+        playerStats.ubePlayerPrice = 1.5f;
+
+        playerStats.greenTeaPlayerPrice = 1f;
+        playerStats.blackTeaPlayerPrice = 1f;
+        playerStats.oolongTeaPlayerPrice = 1.5f;
+
+        playerStats.milkPlayerPrice = 0.5f;
+
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Below are shop data sets for player-related stats. NOT what the player can BUY from NPC shops!
         playerStats.milkAmmount = 100;
         playerStats.sugarAmmount = 100;
@@ -227,6 +242,20 @@ public class GameManagerScript : MonoBehaviour
         #region ShopAndSpawnStats
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        //Expected prices of drinks
+        ShopData.casavaToppingExpectedPrice = 1f;
+        ShopData.pandanExpectedPrice = 1.5f;
+        ShopData.bananaExpectedPrice = 1.5f;
+        ShopData.strawberryExpectedPrice = 1.5f;
+        ShopData.mangoExpectedPrice = 1.5f;
+        ShopData.ubeExpectedPrice = 1.5f;
+
+        ShopData.greenTeaExpectedPrice = 1f;
+        ShopData.blackTeaExpectedPrice = 1f;
+        ShopData.oolongTeaExpectedPrice = 1.5f;
+
+        ShopData.milkExpectedPrice = 0.5f;
 
         //NPC/Shop upgrade default settings
         ShopData.shopLevelAt = 1;
@@ -301,7 +330,7 @@ public class GameManagerScript : MonoBehaviour
         {
             try
             {
-                PlayerStatsThisInstance = DataService.LoadData<PlayerDataJson>("/alalaa/PlayerStats.json", EncryptionEnabled);
+                playerStatsThisInstance = DataService.LoadData<PlayerDataJson>("/alalaa/PlayerStats.json", EncryptionEnabled);
                 thisInstanceOfPlayerShop = DataService.LoadData<ShopCostsNEarnings>("/alalaa/PlayerShopData.json", EncryptionEnabled);
                 //FIXME: Unsure if BOC below should even be called
                 
@@ -366,7 +395,7 @@ public class GameManagerScript : MonoBehaviour
                 SetNewWorldSpawnRatesDecreased();
 
                 //thisTestState.chanceOfSlime = 1000f;
-                DataService.SaveData("/alalaa/PlayerStats.json", PlayerStatsThisInstance, EncryptionEnabled);
+                DataService.SaveData("/alalaa/PlayerStats.json", playerStatsThisInstance, EncryptionEnabled);
                 DataService.SaveData("/alalaa" + ReturnThisRoundInstanceWorldPath(worldSelected), worldInstance, EncryptionEnabled);
                 DataService.SaveData("/alalaa/CassavaCastleStats.json", cassavaBossLevel, EncryptionEnabled);
                 DataService.SaveData("/alalaa/DrinkMultiplier.json", drinkMultiplierInstance, EncryptionEnabled);
@@ -576,7 +605,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
     public PlayerDataJson ReturnStatsOfThisPlayer(){
-        return PlayerStatsThisInstance;
+        return playerStatsThisInstance;
     }
 
     public WorldState ReturnWorldStateSelected(WorldState worldSelected){
@@ -713,23 +742,23 @@ public class GameManagerScript : MonoBehaviour
     }
 
     public void UpdateHPStatsOfThisPlayer(int additionalHP){
-        PlayerStatsThisInstance.playerMaxHealth += additionalHP;
+        playerStatsThisInstance.playerMaxHealth += additionalHP;
     }
 
     public void UpdateStaminaStatsOfThisPlayer(float additionalStamina){
-        PlayerStatsThisInstance.playerMaxStamina += additionalStamina;
+        playerStatsThisInstance.playerMaxStamina += additionalStamina;
     }
 
     public void UpdateAttackStatsOfThisPlayer(int additionalAttack){
-        PlayerStatsThisInstance.playerAttackPoints += additionalAttack;
+        playerStatsThisInstance.playerAttackPoints += additionalAttack;
     }
 
     public int ReturnPlayerCoinStats(){
-        return (int)PlayerStatsThisInstance.playerCoins;
+        return (int)playerStatsThisInstance.playerCoins;
     }
 
-    public void UpdatePlayerCoinStats(int additionalGoldCoins){
-        PlayerStatsThisInstance.playerCoins += additionalGoldCoins;
+    public void UpdatePlayerCoinStats(double additionalGoldCoins){
+        playerStatsThisInstance.playerCoins += additionalGoldCoins;
     }
 
     public float ReturnPlayerShopCoinMultiplier(){
@@ -745,7 +774,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
     public int ReturnMaxBobaShopLineQueue(){
-        return PlayerStatsThisInstance.maxBobaShopLineQueue;
+        return playerStatsThisInstance.maxBobaShopLineQueue;
     }
 
     public void UpdateMaxBobaShopLineQueue(int newQueueLimit){
@@ -754,7 +783,7 @@ public class GameManagerScript : MonoBehaviour
 
     public float ReturnBobaShopCustomerPatience()
     {
-        return PlayerStatsThisInstance.customerPatience;
+        return playerStatsThisInstance.customerPatience;
     }
 
     public void UpdateBobaShopCustomerPatience(float newCustomerPatience)
@@ -771,7 +800,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
     public PlayerDataJson ReturnPlayerStats(){
-        return PlayerStatsThisInstance;
+        return playerStatsThisInstance;
     }
 
     public int ReturnMaxHealthStasThisGameCanHandle(){
@@ -800,18 +829,28 @@ public class GameManagerScript : MonoBehaviour
 
     public void doneWithNewGameIntro(){
         introContainer.SetActive(false);
-        PlayerStatsThisInstance.newGame = false;
+        playerStatsThisInstance.newGame = false;
         Destroy(GameObject.Find("IntroMusic(Clone)"));
         Instantiate(mainMenuMusic);
-        SaveShopAndPlayerDataAfterPurchase(thisInstanceOfPlayerShop,PlayerStatsThisInstance);
+        SaveShopAndPlayerDataAfterPurchase(thisInstanceOfPlayerShop,playerStatsThisInstance);
     }
 
     public void UpdatePlayerHuntInventoryGain(int cassava,int pandan,int banana,int strawberry,int mango,int ube){
-        PlayerStatsThisInstance.casavaBalls += cassava;
-        PlayerStatsThisInstance.pandanLeaves += pandan;
-        PlayerStatsThisInstance.bananas += banana;
-        PlayerStatsThisInstance.strawberries += strawberry;
-        PlayerStatsThisInstance.mangos += mango;
-        PlayerStatsThisInstance.ube += ube;
+        playerStatsThisInstance.casavaBalls += cassava;
+        playerStatsThisInstance.pandanLeaves += pandan;
+        playerStatsThisInstance.bananas += banana;
+        playerStatsThisInstance.strawberries += strawberry;
+        playerStatsThisInstance.mangos += mango;
+        playerStatsThisInstance.ube += ube;
+    }
+
+    public void UpdatePlayerHuntInventoryLossed(int cassava, int pandan, int banana, int strawberry, int mango, int ube)
+    {
+        playerStatsThisInstance.casavaBalls -= cassava;
+        playerStatsThisInstance.pandanLeaves -= pandan;
+        playerStatsThisInstance.bananas -= banana;
+        playerStatsThisInstance.strawberries -= strawberry;
+        playerStatsThisInstance.mangos -= mango;
+        playerStatsThisInstance.ube -= ube;
     }
 }

@@ -27,6 +27,21 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //The stats of this players shop is pulled from the GameManager.
     public ShopCostsNEarnings playersCurrentShopStats;
 
+    //The stats of this players data is pulled from the GameManager.
+    public PlayerDataJson playersCurrentDataStats;
+
+    //Drag the Trays object that holds all the ingredient trays.
+    [SerializeField]
+    [Header("Trays")]
+    [Tooltip("Put the game's \"Trays\" game object to access how much more ingredients the player has.")]
+    public GameObject traysInTheShop;
+
+    //The Money jar object so that the money can be calculated/visualized.
+    [SerializeField]
+    [Header("Waiting queue")]
+    [Tooltip("Put the game's \"MoneyJar\" game object to access how much money is being generated and how the money animations occur.")]
+    public MoneyJarScript thisRoundMoneyJar;
+
     //The Customer queue handler gameObject pulled from the Gameobjects and queue holders.
     [SerializeField]
     [Header("Waiting queue")]
@@ -120,8 +135,16 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     public float baseDrinkMultiplier = 1.0f, PandanMultiplier = 1.0f, BananaMultiplier = 1.0f,
     StrawberryMultiplier = 1.0f, MangoMultiplier = 1.0f, UbeMultiplier = 1.0f;
 
+    //ValuesOfEachDrinkSet by Overall Game Manager in pre-round UI and RNG, and player price.
+    public double priceOfCasavaTopping = 1.0f, priceOfPandan = 1.0f, priceOfBanana = 1.0f,
+    priceOfStrawberry = 1.0f, priceOfMango = 1.0f, priceOfUbe = 1.0f, priceOfGreenTea = 1.0f, priceOfBlackTea = 1.0f, priceOfOolongTea = 1.0f, priceOfMilk = 1.0f;
+
+    //Bools to see if player set price is higher than expected drink price.
+    public bool priceOfCasavaToppingScalped = false, priceOfPandanScalped = false, priceOfBananaScalped = false,
+    priceOfStrawberryScalped = false, priceOfMangoScalped = false, priceOfUbeScalped = false, priceOfGreenTeaScalped, priceOfBlackTeaScalped = false, priceOfOolongTeaScalped = false, priceOfMilkScalped = false;
+
     //Player Increased coin value by how much this round?
-    public float playerEarnedCoins = 0f;
+    public double playerEarnedCoins = 0;
 
     //FIXME: These are connected to the Spawner scripts, enemy agro, customer patience, ect. To manage the difficulty of the round. Should be modulated by a "level difficulty" method!
     //The int should be pulled by the GAMEMANAGER script!
@@ -162,6 +185,9 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         overallGameManager = GameObject.Find("GameManagerObject");
         thisGamesOverallInstanceScript = overallGameManager.GetComponent<GameManagerScript>();
         customersThatCanSpawnThisRoundScript = this.gameObject.GetComponent<NPCCustomersThatCanSpawnScript>();
+        whatDrinksArePopular = thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound();
+        playersCurrentShopStats = thisGamesOverallInstanceScript.ReturnCurrentShopInstance();
+        playersCurrentDataStats = thisGamesOverallInstanceScript.ReturnPlayerStats();
 
         //FIXME: Patience may change due to game events (Like Rain, Storms, Cold, Heat, Festivites, Ect.)
         customerOverallPatienceThisRound = thisGamesOverallInstanceScript.ReturnBobaShopCustomerPatience();
@@ -174,8 +200,10 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         customerTimerInQO1 = customerTimerInQO2 = customerTimerInQO3 = customerTimerInDO1 = customerTimerInDO2 = customerTimerInDO3 = customerTimerInDO4 = customerTimerInDO5 = customerTimerInDO6 = customerTimerInSO1 = 0.1f;
 
         //Get the drink demand from this game's manager and apply them to this round
-        //whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();
         UpdateThisRoundDrinksDemand();
+
+        //Set the prices of drinks.
+        SetDrinkPricesFromGameSave();
 
         //Update how often the customers can spawn depending on player data (Shop popularity).
         resetCustomerSpawnCooldownTimer();
@@ -194,7 +222,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
             roundTimer += Time.deltaTime;
             EscalateQueueTimers();
         }else{
-            endTheBOBASHOPRound();
+            EndTheBOBASHOPRound();
         }
 
         //FIXME: Timer for customer spawning.
@@ -279,7 +307,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     /// </summary>
     private void CalculateEndOfRoundScoreYields(){
 
-        //NOTE: This was the old logic newer logic beow: For however how many cassavaslimeball resources the player has earned, make a drink randomly and decrement until there are no more cassavaslimeballs left.
+        //NOTE: This was the old logic newer logic below: For however how many cassavaslimeball resources the player has earned, make a drink randomly and decrement until there are no more cassavaslimeballs left.
         //Use these values for the next step below.
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~OLD LOGIC USED THAT MAY BE RECYCLED!~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -392,7 +420,8 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     }
 
     private void UpdateAndSaveBobaShopInventory(){
-        thisGamesOverallInstanceScript.UpdatePlayerHuntInventoryGain(CassavaSlimeBalls, PandanLeaves, BananaMinis, StrawberryMinis, MangoMinis, UbeMinis);
+        CalculateItemsUsed();
+        thisGamesOverallInstanceScript.UpdatePlayerHuntInventoryLossed(CassavaSlimeBalls, PandanLeaves, BananaMinis, StrawberryMinis, MangoMinis, UbeMinis);
     }
 
     private void UpdateThisRoundDrinksDemand(){
@@ -439,7 +468,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //This method is used by the "Continue" button at the end of the "HUNT" round and updates
     //the overall inventory the player has, and saves new data! (Produces this levels states
     //into the save as well).
-    public void endTheBOBASHOPRound(){
+    public void EndTheBOBASHOPRound(){
 
         //Enable end of game UI
         EndOfRoundUIObject.SetActive(true);
@@ -459,6 +488,9 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
         //Use RNG and other values from the round start pulled via "getRoundSettingData()";
         CalculateEndOfRoundScoreYields();
+
+        //Call GameManager to change drink demand rates for next round
+        thisGamesOverallInstanceScript.SetNewDrinkDemandRates(thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound());
 
         EndOfRoundToastText.text = "The Day Has Ended!";
 
@@ -573,7 +605,8 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         UpdateAndSaveBobaShopInventory();
 
         //Update overall coin stats
-        thisGamesOverallInstanceScript.UpdatePlayerCoinStats((int)playerEarnedCoins);
+        MatchMoneyJar();
+        thisGamesOverallInstanceScript.UpdatePlayerCoinStats(Math.Round(playerEarnedCoins, 2, MidpointRounding.AwayFromZero));
 
         //Call GameManager to change spawn rates for next round
         //FIXME:thisGamesOverallInstance.SetNewWorldSpawnRatesState(whichWorldWasSelected);
@@ -708,6 +741,116 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     //    }
     //}
 
+    //Get prices of drinks and set them. If player's asking price is lower, set the bool for another script to deter customers from queue!
+    public void SetDrinkPricesFromGameSave()
+    {
+        if (playersCurrentDataStats.casavaToppingPlayerPrice <= playersCurrentShopStats.casavaToppingExpectedPrice)
+        {
+            priceOfCasavaTopping = playersCurrentDataStats.pandanPlayerPrice;
+            priceOfCasavaToppingScalped = false;
+        }
+        else
+        {
+            priceOfCasavaTopping = playersCurrentDataStats.pandanPlayerPrice;
+            priceOfCasavaToppingScalped = true;
+        }
+        if (playersCurrentDataStats.pandanPlayerPrice <= playersCurrentShopStats.pandanExpectedPrice)
+        {
+            priceOfPandan = playersCurrentDataStats.pandanPlayerPrice;
+            priceOfPandanScalped = false;
+        }
+        else
+        {
+            priceOfPandan = playersCurrentDataStats.pandanPlayerPrice;
+            priceOfPandanScalped = true;
+        }
+        if (playersCurrentDataStats.bananaPlayerPrice <= playersCurrentShopStats.bananaExpectedPrice)
+        {
+            priceOfBanana = playersCurrentDataStats.bananaPlayerPrice;
+            priceOfBananaScalped = false;
+        }
+        else
+        {
+            priceOfBanana = playersCurrentDataStats.bananaPlayerPrice;
+            priceOfBananaScalped = true;
+        }
+        if (playersCurrentDataStats.strawberryPlayerPrice <= playersCurrentShopStats.strawberryExpectedPrice)
+        {
+            priceOfStrawberry = playersCurrentDataStats.strawberryPlayerPrice;
+            priceOfStrawberryScalped = false;
+        }
+        else
+        {
+            priceOfStrawberry = playersCurrentDataStats.strawberryPlayerPrice;
+            priceOfStrawberryScalped = true;
+        }
+
+        if (playersCurrentDataStats.mangoPlayerPrice <= playersCurrentShopStats.mangoExpectedPrice)
+        {
+            priceOfMango = playersCurrentDataStats.mangoPlayerPrice;
+            priceOfMangoScalped = false;
+        }
+        else
+        {
+            priceOfMango = playersCurrentDataStats.mangoPlayerPrice;
+            priceOfMangoScalped = true;
+        }
+
+        if (playersCurrentDataStats.ubePlayerPrice <= playersCurrentShopStats.ubeExpectedPrice)
+        {
+            priceOfUbe = playersCurrentDataStats.ubePlayerPrice;
+            priceOfUbeScalped = false;
+        }
+        else
+        {
+            priceOfUbe = playersCurrentDataStats.ubePlayerPrice;
+            priceOfUbeScalped = true;
+        }
+        if (playersCurrentDataStats.greenTeaPlayerPrice <= playersCurrentShopStats.greenTeaExpectedPrice)
+        {
+            priceOfGreenTea = playersCurrentDataStats.greenTeaPlayerPrice;
+            priceOfGreenTeaScalped = false;
+        }
+        else
+        {
+            priceOfGreenTea = playersCurrentDataStats.greenTeaPlayerPrice;
+            priceOfGreenTeaScalped = true;
+        }
+
+        if (playersCurrentDataStats.blackTeaPlayerPrice <= playersCurrentShopStats.blackTeaExpectedPrice)
+        {
+            priceOfBlackTea = playersCurrentDataStats.blackTeaPlayerPrice;
+            priceOfBlackTeaScalped = false;
+        }
+        else
+        {
+            priceOfBlackTea = playersCurrentDataStats.blackTeaPlayerPrice;
+            priceOfBlackTeaScalped = true;
+        }
+
+        if (playersCurrentDataStats.oolongTeaPlayerPrice <= playersCurrentShopStats.oolongTeaExpectedPrice)
+        {
+            priceOfOolongTea = playersCurrentDataStats.oolongTeaPlayerPrice;
+            priceOfOolongTeaScalped = false;
+        }
+        else
+        {
+            priceOfOolongTea = playersCurrentDataStats.oolongTeaPlayerPrice;
+            priceOfOolongTeaScalped = true;
+        }
+
+        if (playersCurrentDataStats.milkPlayerPrice <= playersCurrentShopStats.milkExpectedPrice)
+        {
+            priceOfMilk = playersCurrentDataStats.milkPlayerPrice;
+            priceOfMilkScalped = false;
+        }
+        else
+        {
+            priceOfMilk = playersCurrentDataStats.milkPlayerPrice;
+            priceOfMilkScalped = true;
+        }
+    }
+
     //Chattiness adds (x * 5) seconds buffer when talking with front customers.
     public void CustomerInterationAddsPatienceToFrontCustomer(float chattiness,string QueueOfInteraction)
     {
@@ -725,6 +868,45 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         {
             eCustomerEndTimeAInSO1 = (chattiness * 5f) + eCustomerEndTimeAInSO1;
         }
+    }
+
+    public void CalculateItemsUsed()
+    {
+        foreach (GameObject Tray in traysInTheShop.transform)
+        {
+            switch (Tray.GetComponent<ItemTrayObjectScript>().selectedItemIndexThatWillBeInThisTray)
+            {
+                case 1:
+                    thisGamesOverallInstanceScript.ReturnPlayerStats().casavaBalls = Tray.GetComponent<ItemTrayObjectScript>().itemSelectedLeftInPlayerInventory;
+                    break;
+
+                case 2:
+                    thisGamesOverallInstanceScript.ReturnPlayerStats().pandanLeaves = Tray.GetComponent<ItemTrayObjectScript>().itemSelectedLeftInPlayerInventory;;
+                    break;
+
+                case 3:
+                    thisGamesOverallInstanceScript.ReturnPlayerStats().bananas = Tray.GetComponent<ItemTrayObjectScript>().itemSelectedLeftInPlayerInventory;;
+                    break;
+
+                case 4:
+                    thisGamesOverallInstanceScript.ReturnPlayerStats().strawberries = Tray.GetComponent<ItemTrayObjectScript>().itemSelectedLeftInPlayerInventory;;
+                    break;
+
+                case 5:
+                    thisGamesOverallInstanceScript.ReturnPlayerStats().mangos = Tray.GetComponent<ItemTrayObjectScript>().itemSelectedLeftInPlayerInventory;;
+                    break;
+
+                case 6:
+                    thisGamesOverallInstanceScript.ReturnPlayerStats().ube = Tray.GetComponent<ItemTrayObjectScript>().itemSelectedLeftInPlayerInventory; ;
+                    break;
+            }
+        }
+        
+    }
+
+    public void MatchMoneyJar()
+    {
+        playerEarnedCoins = thisRoundMoneyJar.GetComponent<MoneyJarScript>().ReturnMoneyThisRound();
     }
 
     public IEnumerator TurnOffInGameUIAfterNSeconds(float num)

@@ -170,7 +170,7 @@ public class RoundManagerScript : MonoBehaviour
 
         //Get the drink demand from this game's manager and apply them to this round
         //whatDrinksArePopular = thisGamesOverallInstance.ReturnDrinkRatesThisRound();
-        UpdateThisRoundDrinksDemand();
+        UpdateThisRoundDrinksDemand(); 
 
         //Setworld difficulty settings 
         setLevelDifficultySettings(levelDifficulty);
