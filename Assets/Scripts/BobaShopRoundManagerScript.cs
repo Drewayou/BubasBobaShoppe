@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Unity.Mathematics;
 using System;
 using TMPro;
+using System.Linq;
 
 public class BobaShopRoundManagerScript : MonoBehaviour
 {
@@ -73,6 +74,12 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     [Header("Boba Sell Mat GAMEOBJECT")]
     [Tooltip("Put the game's \"DrinkPlacementMat\" game object to access transform and script properties of this object.")]
     public GameObject bobaDrinkMat;
+
+    //This List will save the drinks UUID served during this round
+    public List<string> bobaDrinkUUIDList;
+
+    //This List will save the drinks ammounts served during this round coresponding to the above UUID string list
+    public List<int> bobaDrinkAmmountServedList;
 
     //The script attached to this game object that programs what customers can spawn.
     //Gets set via the Start() method.
@@ -907,6 +914,21 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     public void MatchMoneyJar()
     {
         playerEarnedCoins = thisRoundMoneyJar.GetComponent<MoneyJarScript>().ReturnMoneyThisRound();
+    }
+
+    public void AddDrinkSoldToList(String DrinkUUIDToAdd)
+    {
+        //If the lists already have the UUID, increase counter + 1, else add a new UUID to the list and add a new counter.
+        if (bobaDrinkUUIDList.Contains(DrinkUUIDToAdd))
+        {
+            int currentAmmountInIndex = bobaDrinkAmmountServedList.ElementAt(bobaDrinkUUIDList.IndexOf(DrinkUUIDToAdd));
+            bobaDrinkAmmountServedList[(bobaDrinkUUIDList.IndexOf(DrinkUUIDToAdd))] = currentAmmountInIndex + 1;
+        }
+        else
+        {
+            bobaDrinkUUIDList.Add(DrinkUUIDToAdd);
+            bobaDrinkAmmountServedList.Add(1);
+        }
     }
 
     public IEnumerator TurnOffInGameUIAfterNSeconds(float num)

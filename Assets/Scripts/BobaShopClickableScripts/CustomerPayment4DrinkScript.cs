@@ -80,6 +80,7 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
                         Debug.LogWarning("Drink price Calculated: " + CalculateDrinkPriceAtValue(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
                         thisRoundOverallInstanceScript.thisRoundMoneyJar.AddMoneyThisRound(CalculateDrinkPriceAtValue(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
                         bobaSellMattScript.sellableBobaDrinks.Remove(drinkThatMatchesInMat);
+                        thisRoundOverallInstanceScript.AddDrinkSoldToList(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
                     }
                     bobaSellMattScript.sellableBobaDrinksStrings.Clear();
                 }
@@ -95,6 +96,7 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
                         thisRoundOverallInstanceScript.thisRoundMoneyJar.AddMoneyThisRound(CalculateDrinkPriceAtValue(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
                         bobaSellMattScript.sellableBobaDrinks.Remove(drinkThatMatchesInMat);
                         bobaSellMattScript.sellableBobaDrinksStrings.Remove(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
+                        thisRoundOverallInstanceScript.AddDrinkSoldToList(drinkThatMatchesInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
                     }
                 }
 
@@ -131,6 +133,7 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
 
                     thisRoundOverallInstanceScript.thisRoundMoneyJar.AddMoneyThisRound(CalculateAndCompareDrinkPriceAtValue(uidsOrdered[i], nextDrinkInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
                     bobaSellMattScript.sellableBobaDrinks.RemoveAt(0);
+                    thisRoundOverallInstanceScript.AddDrinkSoldToList(nextDrinkInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
                 }
                 bobaSellMattScript.sellableBobaDrinksStrings.Clear();
             }
@@ -146,6 +149,7 @@ public class CustomerPayment4DrinkScript : MonoBehaviour
                     thisRoundOverallInstanceScript.thisRoundMoneyJar.AddMoneyThisRound(CalculateAndCompareDrinkPriceAtValue(uidsOrdered[i], nextDrinkInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID));
                     bobaSellMattScript.sellableBobaDrinks.Remove(nextDrinkInMat);
                     bobaSellMattScript.sellableBobaDrinksStrings.Remove(nextDrinkInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
+                    thisRoundOverallInstanceScript.AddDrinkSoldToList(nextDrinkInMat.GetComponent<BobaCupUIDSettingsScript>().drinkUID);
                 }
             }
 
