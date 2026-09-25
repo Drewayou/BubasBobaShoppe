@@ -23,7 +23,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     GameManagerScript thisGamesOverallInstanceScript;
 
     //Drink rate demands DrinkMultiplierScripts, which in turn is pulled from the GameManager.
-    public DrinkMultiplierScripts whatDrinksArePopular;
+    public DrinkMultiplierScripts drinksCurrentlyPopular;
 
     //The stats of this players shop is pulled from the GameManager.
     public ShopCostsNEarnings playersCurrentShopStats;
@@ -192,7 +192,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         overallGameManager = GameObject.Find("GameManagerObject");
         thisGamesOverallInstanceScript = overallGameManager.GetComponent<GameManagerScript>();
         customersThatCanSpawnThisRoundScript = this.gameObject.GetComponent<NPCCustomersThatCanSpawnScript>();
-        whatDrinksArePopular = thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound();
+        drinksCurrentlyPopular = thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound();
         playersCurrentShopStats = thisGamesOverallInstanceScript.ReturnCurrentShopInstance();
         playersCurrentDataStats = thisGamesOverallInstanceScript.ReturnPlayerStats();
 
@@ -314,116 +314,8 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     /// </summary>
     private void CalculateEndOfRoundScoreYields(){
 
-        //NOTE: This was the old logic newer logic below: For however how many cassavaslimeball resources the player has earned, make a drink randomly and decrement until there are no more cassavaslimeballs left.
-        //Use these values for the next step below.
+        SaveBeforeContinuingFullyEndingRound();
 
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~OLD LOGIC USED THAT MAY BE RECYCLED!~~~~~~~~~~~~~~~~~~~~~~~~~~
-        /*EXPAND BELOW
-        
-        for (int drinksToMakeLeft = CassavaSlimeBalls; drinksToMakeLeft > 0; drinksToMakeLeft =-1){
-            
-            makePossibleDrinkList();
-
-            //Pick random string from possibleDrinks list, and do the co-responding actions : add the drink made to their counter, subtract cassavaslimeballs to escape loop,
-            //and finally, re-update list to do it again if there's still resources left. This could maybe be made via recursion, but idk how yet.
-            string selectedDrinkToMake = possibleDrinksList[UnityEngine.Random.Range(0,possibleDrinksList.Count)];
-
-            //FIXME:
-
-            switch(selectedDrinkToMake){
-
-                case "Oolong": 
-
-                oolongSold += 1;
-                CassavaSlimeBalls -= 1;
-                break;
-
-                case "Pandan": 
-
-                PandanSold +=1;
-                CassavaSlimeBalls -= 1;
-                break;
-
-                case "Banana":
-
-                BananaSold +=1;
-                CassavaSlimeBalls -= 1;
-                break;
-
-                case "Strawberry":
-
-                StrawberrySold +=1;
-                CassavaSlimeBalls -= 1;
-                break;
-
-                case "Mango":
-
-                MangoSold += 1;
-                CassavaSlimeBalls -= 1;
-                break;
-
-                case "Ube":
-
-                UbeSold +=1;
-                CassavaSlimeBalls -= 1;
-                break;
-
-                default:
-
-                oolongSold += 1;
-                CassavaSlimeBalls -= 1;
-                break;
-            } 
-        } 
-        
-        //FIXME: Use this to make rng drink orders?
-    private void makePossibleDrinkList(){
-
-        //Reset the possible drinks
-        possibleDrinksList = new List<string>{};
-
-        //Add Oolong
-        if(CassavaSlimeBalls != 0){
-            possibleDrinksList.Add("Oolong");
-        }
-
-        //Add Pandan
-        if(PandanLeaves != 0){
-            possibleDrinksList.Add("Pandan");
-        }
-
-        //Add Banana
-        if(BananaMinis != 0){
-            possibleDrinksList.Add("Banana");
-        }
-
-        //Add Strawberry
-        if(StrawberryMinis != 0){
-            possibleDrinksList.Add("Strawberry");
-        }
-
-        //Add Mango
-        if(MangoMinis != 0){
-            possibleDrinksList.Add("Mango");
-        }
-
-        //Add Ube
-        if(UbeMinis != 0){
-            possibleDrinksList.Add("Ube");
-        }
-    }
-
-
-        //Actually calculate the ammount of coin the user gained this round.
-        //Math goes like this = Player shop multiplier * (Total drinks sold * Their Multipliers)
-        playerEarnedCoins = thisGamesOverallInstance.ReturnPlayerShopCoinMultiplier() * ((oolongSold * oolongMultiplier) + (PandanSold * PandanMultiplier) + 
-        (BananaSold * BananaMultiplier) + (StrawberrySold * StrawberryMultiplier) + (MangoSold * MangoMultiplier) + (UbeSold * UbeMultiplier));
-
-        //Debug.Log(playerEarnedCoins);
-
-        */
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~NEW LOGIC : Shop was revised!~~~~~~~~~~~~~~~~~~~~~~~~~~
-        
     }
 
     private void UpdateAndSaveBobaShopInventory(){
@@ -481,8 +373,8 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         EndOfRoundUIObject.SetActive(true);
         
         //Morescript to pull end of game UI
-        inGameUIAnimator.Play("EndOfGameMoveOutOfTheWay");
-        EndOfRoundUIAnimator.Play("MoveInEndOfRoundUI");
+        //inGameUIAnimator.Play("EndOfGameMoveOutOfTheWay");
+        //EndOfRoundUIAnimator.Play("MoveInEndOfRoundUI");
 
         //Used to freeze game and MOSTLY everything
         Time.timeScale = 0;
@@ -493,13 +385,10 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         //Turn off other UI after these many seconds
         StartCoroutine(TurnOffInGameUIAfterNSeconds(5f));
 
+        EndOfRoundToastText.text = "The Day Has Ended!";
+
         //Use RNG and other values from the round start pulled via "getRoundSettingData()";
         CalculateEndOfRoundScoreYields();
-
-        //Call GameManager to change drink demand rates for next round
-        thisGamesOverallInstanceScript.SetNewDrinkDemandRates(thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound());
-
-        EndOfRoundToastText.text = "The Day Has Ended!";
 
         //Update End of Round UI
         UpdateEndOfHUNTRoundUI();
@@ -605,7 +494,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
     }
 
     //This will be connected to the button for the "Continue" at the end of game UI.
-    public void saveBeforeContinuingBackToMainMenuButton(){
+    public void SaveBeforeContinuingFullyEndingRound(){
 
         thisGamesOverallInstanceScript.ReturnPlayerStats().onDayNumber += 1;
 
@@ -613,13 +502,17 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
         //Update overall coin stats
         MatchMoneyJar();
-        thisGamesOverallInstanceScript.UpdatePlayerCoinStats(Math.Round(playerEarnedCoins, 2, MidpointRounding.AwayFromZero));
+        playersCurrentDataStats.playerCoins = Math.Round(playerEarnedCoins, 2, MidpointRounding.AwayFromZero);
 
         //Call GameManager to change spawn rates for next round
         //FIXME:thisGamesOverallInstance.SetNewWorldSpawnRatesState(whichWorldWasSelected);
 
         //Call GameManager to change drink demand rates for next round
         thisGamesOverallInstanceScript.SetNewDrinkDemandRates(thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound());
+
+        Debug.LogWarning("Supposed to save this many player coins : " + Math.Round(playerEarnedCoins, 2, MidpointRounding.AwayFromZero));
+        Debug.LogWarning("Saving this many player coins : " + playersCurrentDataStats.playerCoins);
+        overallGameManager.GetComponent<GameManagerScript>().SaveGameAfterBobaShopRound(playersCurrentDataStats, drinksCurrentlyPopular);
     }
 
     //FIXME: Make the method to pull scripts / data rom JSON serialized object? This is for the current round level, spawner settings / availability, etc.
@@ -879,7 +772,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
     public void CalculateItemsUsed()
     {
-        foreach (GameObject Tray in traysInTheShop.transform)
+        foreach (Transform Tray in traysInTheShop.transform)
         {
             switch (Tray.GetComponent<ItemTrayObjectScript>().selectedItemIndexThatWillBeInThisTray)
             {

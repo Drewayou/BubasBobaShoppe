@@ -5639,6 +5639,8 @@ MonoBehaviour:
   customerWaitingDrinkHandlerScript: {fileID: 85980985}
   customerOrderPickupHandlerScript: {fileID: 85980986}
   bobaDrinkMat: {fileID: 6079893519306211258}
+  bobaDrinkUUIDList: []
+  bobaDrinkAmmountServedList: 
   inGameUIObject: {fileID: 0}
   EndOfRoundUIObject: {fileID: 227311152}
   EndOfRoundToastText: {fileID: 0}
@@ -6449,6 +6451,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303775207}
   m_CullTransparentMesh: 1
+--- !u!114 &1315628776 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4773748623098796413, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+  m_PrefabInstance: {fileID: 1718577523}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e71e73cf9ff154e498d7489203734bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1315628778 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7355240258060710481, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+  m_PrefabInstance: {fileID: 1718577523}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1336761075
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8063,16 +8087,60 @@ PrefabInstance:
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1315628778}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1178439966}
+      objectReference: {fileID: 1315628776}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_sprite
+      objectReference: {fileID: 0}
     - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: saveBeforeContinuingBackToMainMenuButton
+      value: LoadLevelByName
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.UI.Image, UnityEngine.UI
       objectReference: {fileID: 0}
     - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: BobaShopRoundManagerScript, Assembly-CSharp
+      value: LevelLoadButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 21300000, guid: d12bea744c5ad594ebe7f011ae45a247, type: 3}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: PreRoundMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Sprite, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590819064968817266, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3947841121023193497, guid: 767d2f9481c66a549b317827b66b8dc8, type: 3}
       propertyPath: m_Pivot.x

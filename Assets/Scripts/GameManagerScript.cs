@@ -432,6 +432,33 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    //FIXME: This save game method saves the game at the end of the DAY/(ROUND) of each game.
+    public void SaveGameAfterBobaShopRound(PlayerDataJson aNewBobashopRoundInstanceOfPlayer, DrinkMultiplierScripts aNewDrinkMultiInstance)
+    {
+        string path = Application.persistentDataPath + "/alalaa";
+        if (File.Exists(path + "/PlayerStats.json"))
+        {
+            try
+            {
+                SetNewWorldSpawnRatesIncreased();
+                SetNewWorldSpawnRatesDecreased();
+
+                //thisTestState.chanceOfSlime = 1000f;
+                DataService.SaveData("/alalaa/PlayerStats.json", aNewBobashopRoundInstanceOfPlayer, EncryptionEnabled);
+                DataService.SaveData("/alalaa/DrinkMultiplier.json", aNewDrinkMultiInstance, EncryptionEnabled);
+                Debug.LogWarning("Saved player stats!");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Couldn't find files! Game Dev has yet to understand why! (Sorry :<) \n Error:" + e);
+            }
+        }
+        else
+        {
+            Debug.LogError("Could not save game! Files cannot be found! Game Dev has yet to understand why! (Sorry :<)");
+        }
+    }
+
     //Call this save update after the player sucessfully picks items they want to sell pre-shop round!
     public void SavePlayerDataAfterSelectingIngredientsForShopRound(PlayerDataJson anInstanceOfPlayer){
         string path = Application.persistentDataPath + "/alalaa";

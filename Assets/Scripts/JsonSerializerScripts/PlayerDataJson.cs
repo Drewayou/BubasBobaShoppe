@@ -16,7 +16,7 @@ public class PlayerDataJson
     public bool unlockedLeve4 { get; set; }
     public bool unlockedBossFight { get; set; }
 
-    //Player dropable monster items data
+    //Player dropable monster items data ammount
     public int casavaBalls { get; set; }
     public int pandanLeaves { get; set; }
     public int bananas { get; set; }
