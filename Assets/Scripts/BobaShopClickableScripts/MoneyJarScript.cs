@@ -94,7 +94,7 @@ public class MoneyJarScript : MonoBehaviour
         bool generatedAVisualPriceForThisDrink = false;
 
         moneyEarnedThisRound += moneyEarned;
-        thisRoundOverallInstanceScript.playerEarnedCoins = moneyEarnedThisRound;
+        //thisRoundOverallInstanceScript.playerEarnedCoins += moneyEarnedThisRound;
 
         if (!generatedAVisualPriceForThisDrink)
         {
@@ -128,7 +128,7 @@ public class MoneyJarScript : MonoBehaviour
     public void SubtractMoneyThisRound(double moneyLossed)
     {
         moneyEarnedThisRound -= moneyLossed;
-        thisRoundOverallInstanceScript.playerEarnedCoins = moneyEarnedThisRound;
+        thisRoundOverallInstanceScript.playerEarnedCoins -= moneyEarnedThisRound;
         RenderJarMoney();
     }
 

@@ -391,7 +391,7 @@ public class BobaShopRoundManagerScript : MonoBehaviour
         CalculateEndOfRoundScoreYields();
 
         //Update End of Round UI
-        UpdateEndOfHUNTRoundUI();
+        UpdateEndRoundUI();
     }
 
     public void endTheRoundViaBossKill(string bossName){
@@ -502,16 +502,13 @@ public class BobaShopRoundManagerScript : MonoBehaviour
 
         //Update overall coin stats
         MatchMoneyJar();
-        playersCurrentDataStats.playerCoins = Math.Round(playerEarnedCoins, 2, MidpointRounding.AwayFromZero);
+        playersCurrentDataStats.playerCoins += Math.Round((double)playerEarnedCoins, 2);
 
         //Call GameManager to change spawn rates for next round
         //FIXME:thisGamesOverallInstance.SetNewWorldSpawnRatesState(whichWorldWasSelected);
 
         //Call GameManager to change drink demand rates for next round
         thisGamesOverallInstanceScript.SetNewDrinkDemandRates(thisGamesOverallInstanceScript.ReturnDrinkRatesThisRound());
-
-        Debug.LogWarning("Supposed to save this many player coins : " + Math.Round(playerEarnedCoins, 2, MidpointRounding.AwayFromZero));
-        Debug.LogWarning("Saving this many player coins : " + playersCurrentDataStats.playerCoins);
         overallGameManager.GetComponent<GameManagerScript>().SaveGameAfterBobaShopRound(playersCurrentDataStats, drinksCurrentlyPopular);
     }
 
